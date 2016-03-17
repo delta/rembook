@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+var Users = require("./Users");
 
 var RemsSchema = new mongoose.Schema({
-  from : {type:mongoose.Schema.Types.ObjectId, ref:'User'},
-  to : {type:mongoose.Schema.Types.ObjectId, ref:'User'},
+  from : Number,
+  to : Number,
   isApproved : {type:Boolean, default:0},
   nicknames : String,
   words : String,
@@ -10,4 +11,32 @@ var RemsSchema = new mongoose.Schema({
   about : String
 });
 
-mongoose.model('Rem', RemsSchema);
+var Rem = mongoose.model('Rem', RemsSchema);
+
+module.exports.createRem = function (remData, next) {
+  var rem = new Rem(remData);
+  rem.save(function (err, doc) {
+    if(!err){
+      var remFrom = doc.from;
+      var remid = doc._id;
+      var remTo = doc.to;
+      if (remTo === remFrom){
+        var update = {
+          myrem : remid,
+        };
+        Users.updateUser(remTo, update, next);
+      }else{
+        Users.getUserByRollno(remTo, function (err, doc) {
+          if(!err){
+            var rems = doc.rems;
+            rems.push(remid);
+            var update = {
+              rems : rems,
+            };
+            Users.updateUser(remTo, update, next);
+          }
+        });
+      }
+    }
+  });
+};
