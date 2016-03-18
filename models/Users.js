@@ -16,21 +16,56 @@ var UsersSchema = new mongoose.Schema({
 
 var User = mongoose.model('User', UsersSchema);
 
-module.exports.getUserByRollno = function (rollno, next) {
+var getUserByRollno = function (rollno, next) {
   User.findOne({rollno : rollno}, function (err, doc) {
-    next(err,doc);
+    if (err) {
+      // console.log("Error:",JSON.stringify(err));
+      next(err);
+      return;
+    }
+    if (!doc){
+      var error = {
+        name:"Not Found",
+      };
+      next(error);
+    }
+    if (doc){
+      next(null,doc);
+    }
   });
 };
 
-module.exports.createUser = function (userData, next) {
+var createUser = function (userData, next) {
   var user = new User(userData);
   user.save(function (err, doc) {
-    next(err, doc);
+    if (err) {
+      // console.log("Error:",JSON.stringify(err));
+      return next(err);
+    }
+    if (doc){
+      next(null,doc);
+    }
   });
 };
 
-module.exports.updateUser = function (rollno, update, next){
-  var conditions = { rollno: rollno };
-  var options = { multi: false };
-  User.update(conditions, update , options, next);
- };
+var updateUser = function (rollno, update, next){
+  getUserByRollno(rollno, function (err, doc) {
+    if (err){
+      next(err);
+    }
+    if (doc){
+      var condition = {rollno:rollno};
+      var options = { multi: false };
+      var callback = function(err, NumAffectedRows){
+        getUserByRollno(rollno,function (err,updatedUser) {
+          next(err,updatedUser);
+        });
+      };
+      User.update(condition, update, options, callback);
+    }
+  });
+};
+
+module.exports.getUserByRollno = getUserByRollno;
+module.exports.createUser = createUser;
+module.exports.updateUser = updateUser;
