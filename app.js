@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
-
+var sessionCheck = require('./controllers/session-check');
 var routes = require('./routes/index');
 
 var app = express();
@@ -17,6 +17,7 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('S3CRE7'));
@@ -25,7 +26,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(sessionCheck);
 
 app.use('/', routes);
 

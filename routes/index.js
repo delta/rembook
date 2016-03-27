@@ -16,7 +16,7 @@ router.post('/login',function (req, res, next) {
       res.redirect("/login");
     }else{
       res.set("X-Rembook-Login","Authenticated");
-      req.session.name = username;
+      req.session.username = username;
       res.redirect("/");
     }
   };
