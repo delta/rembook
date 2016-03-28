@@ -5,7 +5,16 @@ module.exports = function (req, res, next) {
     if (req._parsedUrl.path ==="/login"){
       next();
     }else{
-      res.redirect("/login");
+      var is_ajax_request = req.xhr;
+      if (is_ajax_request){
+        var response = {
+          status: "loggedOut",
+          redirectTo: "/login"
+        };
+        res.json(response);
+      }else {
+        res.redirect("/login");
+      }
     }
   }
 };
