@@ -1,8 +1,44 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+* {
+	box-sizing: border-box;
 }
 
-a {
-  color: #00B7FF;
+header {
+	box-shadow: 0 0 5px 0 #000;
+}
+
+#search-container input {
+	border-radius: 0;
+	border: none;
+}
+
+/* 
+	The following two hacks - related to padding are required
+	because semantic somehow messes up the layout otherwise
+*/
+#logo {
+	padding: 12px;
+	height: 100%;
+}
+#title {
+	vertical-align: middle;
+	font-family: "Futura";
+	font-size: 23px;
+}
+#search-container-container {
+	padding: 0;
+}
+/* 
+	hack over
+*/
+
+footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	padding: 10px;
+	background: green;
+	text-align: center;
+	font-weight: bold;
 }
