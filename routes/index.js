@@ -30,7 +30,7 @@ router.get('/',function (req, res, next) {
 
 router.get('/profile/:rollNumber',function (req, res, next) {
   var rollNumber = req.params.rollNumber;
-  user.getUserByRollNumber(req, res, rollNumber, next);
+  users.getUserByRollNumber(req, res, rollNumber, next);
 });
 
 module.exports = router;
