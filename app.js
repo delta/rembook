@@ -9,6 +9,8 @@ var sessionCheck = require('./controllers/session-check');
 var routes = require('./routes/index');
 
 var app = express();
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/rembook');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
