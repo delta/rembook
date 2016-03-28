@@ -33,4 +33,6 @@ router.get('/profile/:rollNumber',function (req, res, next) {
   users.getUserByRollNumber(req, res, rollNumber, next);
 });
 
+router.post('/profile/',users.updateProfile);
+
 module.exports = router;
