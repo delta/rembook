@@ -31,4 +31,21 @@ var getUserByRollNumber = function (req, res, rollNumber, next) {
   });
 };
 
+var updateProfile = function (req, res,next) {
+  var rollNumber = req.session.username;
+  var data = req.body;
+  var callback = function (err, success) {
+    if (err){
+      next(err);
+    }else{
+      var response = {
+        'success':1,
+      };
+      res.json(response);
+    }
+  };
+  User.updateProfile(rollNumber, data, callback);
+};
+
 module.exports.getUserByRollNumber = getUserByRollNumber;
+module.exports.updateProfile = updateProfile;
