@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -15,3 +17,8 @@ var userSchema = new Schema({
 var User = mongoose.model('User', userSchema);
 
 //Add Functions Below
+var getUserByRollNumber = function (rollNumber) {
+  return User.findOne({rollNumber:rollNumber});
+};
+
+module.exports.getUserByRollNumber = getUserByRollNumber;
