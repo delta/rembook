@@ -20,4 +20,21 @@ var getUserByRollNumber = function (rollNumber) {
   return User.findOne({rollNumber:rollNumber});
 };
 
+var updateProfile = function (rollNumber, data ,callback) {
+  User.findOne({rollNumber:rollNumber}).then(function (doc) {
+    if(data.email){
+      doc.email=data.email;
+    }
+    if (data.dob){
+      doc.email=data.dob;
+    }
+    doc.save().then(function (doc) {
+      callback(null, doc);
+    }).catch(function (err){
+      callback(err);
+    });
+  });
+};
+
 module.exports.getUserByRollNumber = getUserByRollNumber;
+module.exports.updateProfile = updateProfile;
