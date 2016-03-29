@@ -17,9 +17,9 @@ var getBioOf = function (rollNumber) {
 
 var editBioOf = function (rollNumber, data, callback) {
   Bio.findOne({user:rollNumber}).then(function(doc) {
-    // if (doc === null){
-    //   doc = new Bio();
-    // }
+    if (doc === null){
+      doc = new Bio();
+    }
     doc.user = rollNumber;
     doc.responses = data;
     doc.save().then(function(){
