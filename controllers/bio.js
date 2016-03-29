@@ -20,4 +20,22 @@ var getBioOf = function (req, res, next) {
     });
 };
 
+var editBioOf = function (req, res, next) {
+  var rollNumber = req.session.rollNumber;
+  var data = req.body;
+  var callback = function (err, doc){
+    if (err){
+      next(err);
+    }else{
+      var response = {
+        success:1,
+        message:"",
+      };
+      res.json(response);
+    }
+  };
+  Bio.editBioOf(rollNumber, data, callback);
+};
+
 module.exports.getBioOf = getBioOf;
+module.exports.editBioOf = editBioOf;
