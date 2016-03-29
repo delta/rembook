@@ -16,5 +16,6 @@ router.get('/bio/:rollNumber',bio.getBioOf);
 router.post('/bio/', bio.editBioOf);
 router.get('/rem/:rollNumber', rems.getAllRemsTo);
 router.post('/rem/:rollNumber', rems.updateRem);
+router.post('/rem/approve/:id', rems.approveRem);
 
 module.exports = router;
