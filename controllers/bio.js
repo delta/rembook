@@ -22,7 +22,7 @@ var getBioOf = function (req, res, next) {
 
 var editBioOf = function (req, res, next) {
   var rollNumber = req.session.rollNumber;
-  var data = req.body;
+  var data = JSON.parse(req.body.responses);
   var callback = function (err, doc){
     if (err){
       next(err);

@@ -21,7 +21,7 @@ var editBioOf = function (rollNumber, data, callback) {
       doc = new Bio();
     }
     doc.user = rollNumber;
-    doc.responses = JSON.parse(data.responses);
+    doc.responses = data;
     doc.save().then(function(){
       callback(null,doc);
     }).catch(function (err) {
