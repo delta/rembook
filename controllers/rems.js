@@ -1,4 +1,5 @@
 var Rem = require('../models/Rems');
+var Notification = require('../models/Notifications');
 
 var getAllRemsTo = function (req, res, next) {
   var rollNumber = req.params.rollNumber;
@@ -35,6 +36,7 @@ var getAllRemsTo = function (req, res, next) {
 
 var updateRem = function(req, res, next){
   var from = req.session.rollNumber;
+  var fromName = req.session.rollNumber; //TO change later
   var to = req.params.rollNumber;
   var data = JSON.parse(req.body.responses);
   var callback = function (err, doc) {
@@ -42,6 +44,11 @@ var updateRem = function(req, res, next){
     if (err){
       next(err);
     }else{
+      var notificationCallback = function (err, doc) {
+        console.log(JSON.stringify(doc));
+      };
+      var message = fromName +" wrote a rem about you";
+      Notification.notify(to, message, notificationCallback);
       response.success = 1;
       response.message = "";
       res.json(response);
