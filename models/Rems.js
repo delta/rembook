@@ -33,29 +33,39 @@ var updateRem = function (from, to, data, callback) {
   });
 };
 
-var approveRemForDisplay = function (id, approved,callback) {
+var approveRemForDisplay = function (id, requestedBy, approved,callback) {
  var _id = mongoose.Types.ObjectId(id);
  Rem.findOne({_id:_id}).then(function (doc) {
-   doc.approved = approved;
-   doc.save().then(function () {
-     callback(null, doc);
-   }).catch(function (err) {
-     console.log(err);
+   if(requestedBy !== doc.to){
+     var err={error:"permissionError"};
      callback(err);
-   });
+   }else{
+     doc.approved = approved;
+     doc.save().then(function () {
+       callback(null, doc);
+     }).catch(function (err) {
+       console.log(err);
+       callback(err);
+     });
+   }
  });
 };
 
-var approveRemForPrint = function (id, approved,callback) {
+var approveRemForPrint = function (id, requestedBy, approved,callback) {
  var _id = mongoose.Types.ObjectId(id);
  Rem.findOne({_id:_id}).then(function (doc) {
-   doc.print = approved;
-   doc.save().then(function () {
-     callback(null, doc);
-   }).catch(function (err) {
-     console.log(err);
+   if(requestedBy !== doc.to){
+     var err={error:"permissionError"};
      callback(err);
-   });
+   }else {
+     doc.print = approved;
+     doc.save().then(function () {
+       callback(null, doc);
+     }).catch(function (err) {
+       console.log(err);
+       callback(err);
+     });
+   }
  });
 };
 
