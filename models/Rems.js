@@ -1,0 +1,65 @@
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var remSchema = new Schema({
+  from : String,
+  to : String,
+  approved: Boolean,
+  print : Boolean,
+  responses:  [{
+                questionId:   Schema.Types.ObjectId,
+                response:     String,
+              }]
+});
+
+var Rem = mongoose.model('Rem', remSchema);
+
+var getAllRemsTo = function (rollNumber) {
+  return Rem.find({to:rollNumber});
+};
+
+var updateRem = function (rollNumber, data, callback) {
+  Rem.findOne({to:rollNumber}).then(function (doc) {
+    if (doc === null){
+      doc = new Rem();
+    }
+    doc.responses = data;
+    doc.save().then(function(){
+      callback(null,doc);
+    }).catch(function (err) {
+      console.log(err);
+      callback(err);
+    });
+  });
+};
+
+var approveRemForDisplay = function (id, approved,callback) {
+ var _id = mongoose.Types.ObjectId(id);
+ Rem.findOne({_id:_id}).then(function (doc) {
+   doc.approved = approved;
+   doc.save().then(function () {
+     callback(null, doc);
+   }).catch(function (err) {
+     console.log(err);
+     callback(err);
+   });
+ });
+};
+
+var approveRemForPrint = function (id, approved,callback) {
+ var _id = mongoose.Types.ObjectId(id);
+ Rem.findOne({_id:_id}).then(function (doc) {
+   doc.print = approved;
+   doc.save().then(function () {
+     callback(null, doc);
+   }).catch(function (err) {
+     console.log(err);
+     callback(err);
+   });
+ });
+};
+
+module.exports.getAllRemsTo = getAllRemsTo;
+module.exports.updateRem = updateRem;
+module.exports.approveRemForPrint = approveRemForPrint;
+module.exports.approveRemForDisplay = approveRemForDisplay;
