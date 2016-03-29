@@ -2,7 +2,7 @@ var Imap = require('imap');
 var host = "10.0.0.173";
 var port = 143;
 
-module.exports.authenticate=function(username, password, callback){
+var authenticate=function(username, password, callback){
 
   var imap = new Imap({
     user: username,
@@ -25,3 +25,28 @@ module.exports.authenticate=function(username, password, callback){
 
   imap.connect();
 };
+
+var processLogin = function (req, res, next) {
+  var username = req.body.username;
+  var password = req.body.password;
+  var callback = function (fail, success) {
+    if (fail){
+      res.set("X-Rembook-Login","Fail");
+      res.redirect("/login");
+    }else{
+      res.set("X-Rembook-Login","Authenticated");
+      req.session.username = username;
+      res.redirect("/");
+    }
+  };
+  authenticate(username, password, callback);
+};
+
+var initalPage = function (req, res, next) {
+  var init={};
+  res.render('index', { init: init, title:"Rembook" });
+};
+
+module.exports.authenticate = authenticate;
+module.exports.processLogin = processLogin;
+module.exports.initalPage = initalPage;
