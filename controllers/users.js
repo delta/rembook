@@ -41,6 +41,7 @@ var updateProfile = function (req, res,next) {
     }else{
       var response = {
         'success':1,
+        'message':"",
       };
       res.json(response);
     }
