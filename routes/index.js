@@ -11,10 +11,7 @@ router.post('/login',login.processLogin);
 
 router.get('/', login.initalPage);
 
-router.get('/profile/:rollNumber',function (req, res, next) {
-  var rollNumber = req.params.rollNumber;
-  users.getUserByRollNumber(req, res, rollNumber, next);
-});
+router.get('/profile/:rollNumber',users.getUserByRollNumber);
 
 router.post('/profile/',users.updateProfile);
 

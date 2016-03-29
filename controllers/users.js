@@ -1,6 +1,7 @@
 var User = require('../models/Users');
 
-var getUserByRollNumber = function (req, res, rollNumber, next) {
+var getUserByRollNumber = function (req, res, next) {
+  var rollNumber = req.params.rollNumber;
   var requestedBy = req.session.username;
   User.getUserByRollNumber(rollNumber).then(function (user) {
     var response;
