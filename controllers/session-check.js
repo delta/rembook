@@ -1,5 +1,5 @@
 module.exports = function (req, res, next) {
-  if(req.session.username){
+  if(req.session.rollNumber){
     next();
   }else{
     if (req._parsedUrl.path ==="/login"){

@@ -1,6 +1,9 @@
 var Imap = require('imap');
 var host = "10.0.0.173";
 var port = 143;
+var Questions = require('../models/Questions');
+var Notifications = require('../models/Notifications');
+var Users = require('../models/Users');
 
 var authenticate=function(username, password, callback){
 
@@ -35,7 +38,7 @@ var processLogin = function (req, res, next) {
       res.redirect("/login");
     }else{
       res.set("X-Rembook-Login","Authenticated");
-      req.session.username = username;
+      req.session.rollNumber = username;
       res.redirect("/");
     }
   };
@@ -56,7 +59,35 @@ var initalPage = function (req, res, next) {
     {code:"prod", name:"Production"},
     {code:"mme", name:"Metallurgical & Materials"},
   ];
-  res.render('index', { init: init, title:"Rembook" });
+  Questions.getAllQuestions()
+    .then(function(doc){
+      init.questions = doc;
+      init.rollNumber = req.session.rollNumber;
+      return Users.getUserByRollNumber(init.rollNumber);
+    })
+    .then(function (doc) {
+      if (doc === null){
+        init.name = req.session.name;
+        res.render('index', { init: init, title:"Rembook" });
+      }else {
+        init.name = doc.name;
+        init.hardCopyRequested = doc.hardCopyRequested;
+        init.department = doc.department;
+        Notifications.getAllNotificationTo(init.rollNumber)
+        .then(function (doc) {
+          init.notifications = doc;
+          res.render('index', { init: init, title:"Rembook" });
+        })
+        .catch(function (err) {
+          console.log(err);
+          next(err);
+        });
+      }
+    })
+    .catch(function (err) {
+        console.log(err);
+        next(err);
+    });
 };
 
 module.exports.authenticate = authenticate;

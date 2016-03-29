@@ -26,7 +26,7 @@ var updateProfile = function (rollNumber, data ,callback) {
       doc.email=data.email;
     }
     if (data.dob){
-      doc.email=data.dob;
+      doc.dob=data.dob;
     }
     doc.save().then(function (doc) {
       callback(null, doc);
