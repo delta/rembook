@@ -18,8 +18,8 @@ var getAllRemsTo = function (rollNumber) {
   return Rem.find({to:rollNumber});
 };
 
-var updateRem = function (rollNumber, data, callback) {
-  Rem.findOne({to:rollNumber}).then(function (doc) {
+var updateRem = function (from, to, data, callback) {
+  Rem.findOne({to:to, from:from}).then(function (doc) {
     if (doc === null){
       doc = new Rem();
     }
