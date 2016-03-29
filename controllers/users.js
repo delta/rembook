@@ -2,7 +2,7 @@ var User = require('../models/Users');
 
 var getUserByRollNumber = function (req, res, next) {
   var rollNumber = req.params.rollNumber;
-  var requestedBy = req.session.username;
+  var requestedBy = req.session.rollNumber;
   User.getUserByRollNumber(rollNumber).then(function (user) {
     var response;
     if (user === null){
@@ -33,7 +33,7 @@ var getUserByRollNumber = function (req, res, next) {
 };
 
 var updateProfile = function (req, res,next) {
-  var rollNumber = req.session.username;
+  var rollNumber = req.session.rollNumber;
   var data = req.body;
   var callback = function (err, success) {
     if (err){
