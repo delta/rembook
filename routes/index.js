@@ -12,5 +12,6 @@ router.get('/', login.initalPage);
 router.get('/profile/:rollNumber',users.getUserByRollNumber);
 router.post('/profile/',users.updateProfile);
 router.get('/bio/:rollNumber',bio.getBioOf);
+router.post('/bio/', bio.editBioOf);
 
 module.exports = router;
