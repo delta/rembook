@@ -44,6 +44,18 @@ var processLogin = function (req, res, next) {
 
 var initalPage = function (req, res, next) {
   var init={};
+  init.departmentCodes = [
+    {code:"arch", name:"Architecture"},
+    {code:"civ", name:"Civil"},
+    {code:"chem", name:"Chemical"},
+    {code:"cse", name:"Computer Science"},
+    {code:"ece", name:"Electronics & Communication"},
+    {code:"eee", name:"Elemctrical & Electronics"},
+    {code:"ice", name:"Instrumentation & Control"},
+    {code:"mech", name:"Mechanical"},
+    {code:"prod", name:"Production"},
+    {code:"mme", name:"Metallurgical & Materials"},
+  ];
   res.render('index', { init: init, title:"Rembook" });
 };
 
