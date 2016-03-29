@@ -3,9 +3,7 @@ var Rem = require('../models/Rems');
 var getAllRemsTo = function (req, res, next) {
   var rollNumber = req.params.rollNumber;
   var requestedBy = req.session.rollNumber;
-  console.log(rollNumber, "requests ", requestedBy);
   Rem.getAllRemsTo(rollNumber).then(function (doc) {
-    console.log(JSON.stringify(doc));
     var response = {};
     if (doc.length === 0){
       response.success = 0;
@@ -35,4 +33,22 @@ var getAllRemsTo = function (req, res, next) {
   });
 };
 
+var updateRem = function(req, res, next){
+  var from = req.session.rollNumber;
+  var to = req.params.rollNumber;
+  var data = JSON.parse(req.body.responses);
+  var callback = function (err, doc) {
+    var response={};
+    if (err){
+      next(err);
+    }else{
+      response.success = 1;
+      response.message = "";
+      res.json(response);
+    }
+  };
+  Rem.updateRem(from, to, data, callback);
+};
+
 module.exports.getAllRemsTo = getAllRemsTo;
+module.exports.updateRem = updateRem;
