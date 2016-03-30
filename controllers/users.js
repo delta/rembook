@@ -32,7 +32,7 @@ var getUserByRollNumber = function (req, res, next) {
   });
 };
 
-var updateProfile = function (req, res,next) {
+var updateProfile = function (req, res, next) {
   var rollNumber = req.session.rollNumber;
   var data = req.body;
   var callback = function (err, success) {

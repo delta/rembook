@@ -36,5 +36,17 @@ var updateProfile = function (rollNumber, data ,callback) {
   });
 };
 
+var updatePhotoName = function (rollNumber, photoName, callback) {
+  User.findOne({rollNumber:rollNumber}).then(function (doc) {
+    doc.photoName = photoName;
+    doc.save().then(function (doc) {
+      callback(null, doc);
+    }).catch(function (err){
+      callback(err);
+    });
+  });
+};
+
 module.exports.getUserByRollNumber = getUserByRollNumber;
 module.exports.updateProfile = updateProfile;
+module.exports.updatePhotoName = updatePhotoName;
