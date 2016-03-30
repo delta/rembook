@@ -39,22 +39,41 @@ var updateRem = function(req, res, next){
   var fromName = req.session.rollNumber; //TO change later
   var to = req.params.rollNumber;
   var data = JSON.parse(req.body.responses);
-  var callback = function (err, doc) {
-    var response={};
-    if (err){
-      next(err);
-    }else{
-      var notificationCallback = function (err, doc) {
-        console.log(JSON.stringify(doc));
-      };
-      var message = fromName +" wrote a rem about you";
-      Notification.notify(to, message, notificationCallback);
-      response.success = 1;
-      response.message = "";
-      res.json(response);
+  var i = 0;
+  var maxCharPerResonose = 1000;
+  var isResonseValid = 1;
+  for (i = 0; i< data.length; i++){
+    if (data[i].response.length > maxCharPerResonose){
+      isResonseValid = 0;
     }
-  };
-  Rem.updateRem(from, to, data, callback);
+  }
+  if (isResonseValid){
+    var callback = function (err, doc) {
+      var response={};
+      if (err){
+        next(err);
+      }else{
+        var notificationCallback = function (err, doc) {
+          if(err){
+            next(err);
+          }else{
+            // console.log(JSON.stringify(doc));
+          }
+        };
+        var message = fromName +" wrote a rem about you";
+        Notification.notify(to, message, notificationCallback);
+        response.success = 1;
+        response.message = "";
+        res.json(response);
+      }
+    };
+    Rem.updateRem(from, to, data, callback);
+  }else {
+    var response = {};
+    response.success = 0;
+    response.message = "Response is above Character Limit("+maxCharPerResonose+")";
+    res.json(response);
+  }
 };
 
 var approveRem = function(req, res, next){
