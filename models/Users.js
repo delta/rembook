@@ -15,18 +15,20 @@ var userSchema = new Schema({
 
 var User = mongoose.model('User', userSchema);
 
-//Add Functions Below
 var getUserByRollNumber = function (rollNumber) {
   return User.findOne({rollNumber:rollNumber});
 };
 
 var updateProfile = function (rollNumber, data ,callback) {
   User.findOne({rollNumber:rollNumber}).then(function (doc) {
-    if(data.email){
-      doc.email=data.email;
+    if (data.email){
+      doc.email = data.email;
     }
     if (data.dob){
-      doc.dob=data.dob;
+      doc.dob = data.dob;
+    }
+    if (typeof data.hardCopyRequested !== 'undefined'){
+      doc.hardCopyRequested = data.hardCopyRequested;
     }
     doc.save().then(function (doc) {
       callback(null, doc);
