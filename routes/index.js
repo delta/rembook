@@ -14,6 +14,7 @@ router.post('/login',login.processLogin);
 router.get('/', login.initalPage);
 router.get('/profile/:rollNumber',users.getUserByRollNumber);
 router.post('/profile/',users.updateProfile);
+router.post('/hardcopy',users.hardCopyRequest);
 router.get('/bio/:rollNumber',bio.getBioOf);
 router.post('/bio/', bio.editBioOf);
 router.get('/rem/:rollNumber', rems.getAllRemsTo);

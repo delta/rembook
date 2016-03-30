@@ -91,3 +91,4 @@ var search = function (req, res, next) {
 module.exports.getUserByRollNumber = getUserByRollNumber;
 module.exports.updateProfile = updateProfile;
 module.exports.search = search;
+module.exports.hardCopyRequest = updateProfile;
