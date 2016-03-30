@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-
+var fuse = require('fuse.js');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -47,6 +47,18 @@ var updatePhotoName = function (rollNumber, photoName, callback) {
   });
 };
 
+var fuzzySearch = function (search, department, callback) {
+  User.find({department:department}).then(function(users){
+    var options={
+      keys:['rollNumber','name']
+    };
+    var f = new fuse(users, options);
+    var results = f.search(search);
+    callback(null,results);
+  });
+};
+
 module.exports.getUserByRollNumber = getUserByRollNumber;
 module.exports.updateProfile = updateProfile;
 module.exports.updatePhotoName = updatePhotoName;
+module.exports.fuzzySearch = fuzzySearch;
