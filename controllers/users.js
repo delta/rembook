@@ -49,5 +49,45 @@ var updateProfile = function (req, res, next) {
   User.updateProfile(rollNumber, data, callback);
 };
 
+var search = function (req, res, next) {
+  var q = req.query.q;
+  var department;
+  if (typeof req.query.department !== 'undefined'){
+    department = req.query.department;
+  }else{
+    department = /.+/;
+  }
+  var callback = function (err, results) {
+    if (err){
+      next(err);
+    }else {
+      var response = {};
+      if (results.length === 0){
+        response.success = 0;
+        response.message = "No Results Found";
+      }else{
+        response.success = 1;
+        response.message = "";
+        var users = [];
+        var i;
+        var user ={};
+        for (i=0;i<results.length;i++){
+          user.name = results[i].name;
+          user.rollNumber = results[i].rollNumber;
+          user.email = results[i].email;
+          user.dob = results[i].dob;
+          user.department = results[i].department;
+          user.photoName = results[i].photoName;
+          users.push(user);
+        }
+        response.users = users;
+      }
+      res.json(response);
+    }
+  };
+  User.fuzzySearch(q, department, callback);
+};
+
 module.exports.getUserByRollNumber = getUserByRollNumber;
 module.exports.updateProfile = updateProfile;
+module.exports.search = search;

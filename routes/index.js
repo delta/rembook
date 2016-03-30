@@ -20,6 +20,7 @@ router.get('/rem/:rollNumber', rems.getAllRemsTo);
 router.post('/rem/:rollNumber', rems.updateRem);
 router.post('/rem/approve/:id', rems.approveRem);
 router.get('/notifications',notifications.getAllNotifications);
+router.get('/search',users.search);
 
 profilepic.uploadFile(router);
 
