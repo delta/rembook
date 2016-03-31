@@ -46,6 +46,20 @@ var updateProfile = function (rollNumber, data ,callback) {
   });
 };
 
+var createProfile = function (rollNumber, data ,callback) {
+  var user = new User();
+  user.rollNumber = data.rollNumber;
+  user.department = data.department;
+  user.name = data.name;
+  user.hardCopyRequested = false;
+  user.photoName = data.rollNumber+"_temp.jpg";
+  user.save().then(function (doc) {
+      callback(null, doc);
+    }).catch(function (err){
+      callback(err);
+    });
+};
+
 var updatePhotoName = function (rollNumber, photoName, callback) {
   User.findOne({rollNumber:rollNumber}).then(function (doc) {
     doc.photoName = photoName;
@@ -72,3 +86,4 @@ module.exports.getUserByRollNumber = getUserByRollNumber;
 module.exports.updateProfile = updateProfile;
 module.exports.updatePhotoName = updatePhotoName;
 module.exports.fuzzySearch = fuzzySearch;
+module.exports.createProfile = createProfile;
