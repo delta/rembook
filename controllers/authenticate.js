@@ -1,32 +1,94 @@
-var Imap = require('imap');
-var host = "10.0.0.173";
-var port = 143;
+// var Imap = require('imap');
+// var host = "10.0.0.173";
+// var port = 143;
 var Questions = require('../models/Questions');
 var Notifications = require('../models/Notifications');
 var Users = require('../models/Users');
 
+var host = '10.0.0.39';
+var domain = 'octa.edu';
+
+var ldap = require('ldapjs');
+var client = ldap.createClient({
+  url: 'ldap://10.0.0.39:389'
+});
+
+var getDepartment = function (rollNumber) {
+  var departmentCode = rollNumber.slice(0,4);
+  var department= "";
+  switch (departmentCode) {
+    case '1011':
+      department = "ARCH";
+      break;
+    case '1021':
+      department = "CIV";
+      break;
+    case '1031':
+      department = "CHEM";
+      break;
+    case '1061':
+      department = "CSE";
+      break;
+    case '1071':
+      department = "EEE";
+      break;
+    case '1081':
+      department = "ECE";
+      break;
+    case '1101':
+      department = "ICE";
+      break;
+    case '1111':
+      department = "MECH";
+      break;
+    case '1121':
+      department = "PROD";
+      break;
+    case '1141':
+      department = "MME";
+      break;
+  }
+  return department;
+};
+
+var generateDN = function (rollNumber) {
+  var year = "20"+ rollNumber.slice(4,6);
+  var department = getDepartment(rollNumber);
+  var DN = "CN="+rollNumber+",OU="+year+",OU=UG,OU="+department+",DC=octa,DC=edu";
+  return DN;
+};
+
 var authenticate=function(username, password, callback){
-
-  var imap = new Imap({
-    user: username,
-    password: password,
-    host: host,
-    port: port,
-    tls: false
+  var cn = username+'@'+domain;
+  client.bind(cn,password,function(err){
+    if (err){
+      callback (err);
+    }else{
+      var opts = {
+        scope: 'sub',
+      };
+      var DN = generateDN(username);
+      client.search(DN, opts, function(err, res) {
+        if (err){
+          callback(err);
+        }else{
+          res.on('searchEntry', function(entry) {
+            callback(null,entry.object);
+          });
+          // res.on('searchReference', function(referral) {
+          //   console.log('referral: ' + referral.uris.join());
+          // });
+          // res.on('error', function(err) {
+          //   console.error('error: ' + err.message);
+          // });
+          // res.on('end', function(result) {
+            // console.log('status: ' + result.status);
+          // });
+        }
+      });
+    }
+    client.unbind(function (err) {});
   });
-
-  imap.once('ready', function() {
-    // console.log("Logged In");
-    imap.end();
-    callback(null,1);
-  });
-
-  imap.once('error', function(err) {
-    // console.log(err);
-    callback(err);
-  });
-
-  imap.connect();
 };
 
 var processLogin = function (req, res, next) {
@@ -34,10 +96,20 @@ var processLogin = function (req, res, next) {
   var password = req.body.password;
   var callback = function (fail, success) {
     if (fail){
+      console.log(fail);
       res.set("X-Rembook-Login","Fail");
       res.redirect("/login");
     }else{
+      var year = parseInt( "20"+ username.slice(4,6));
+      if (year < 2013){
+        var data = {};
+        data.rollNumber = username;
+        data.name = success.displayName.trim();
+        data.department = getDepartment(rollNumber);
+        User.createProfile(username, data, function (err,doc){ });
+      }
       res.set("X-Rembook-Login","Authenticated");
+      req.session.name = success.displayName.trim();
       req.session.rollNumber = username;
       res.redirect("/");
     }
