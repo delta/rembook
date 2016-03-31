@@ -17,7 +17,9 @@ var getAllRemsTo = function (req, res, next) {
         var rem = {};
         rem.id = doc[i].id;
         rem.to = doc[i].to;
+        rem.toName = doc[i].toName;
         rem.from = doc[i].from;
+        rem.fromName = doc[i].fromName;
         rem.responses = doc[i].responses;
         if (rollNumber === requestedBy){
           rem.approved = doc[i].approved;
@@ -36,14 +38,19 @@ var getAllRemsTo = function (req, res, next) {
 
 var updateRem = function(req, res, next){
   var from = req.session.rollNumber;
-  var fromName = req.session.rollNumber; //TO change later
+  var fromName = req.session.name;
   var to = req.params.rollNumber;
-  var data = JSON.parse(req.body.responses);
+  var data = {};
+  data.from = from;
+  data.fromName = fromName;
+  data.to = to;
+  data.toName = req.body.toName;
+  data.responses = JSON.parse(req.body.responses);
   var i = 0;
   var maxCharPerResonose = 1000;
   var isResonseValid = 1;
-  for (i = 0; i< data.length; i++){
-    if (data[i].response.length > maxCharPerResonose){
+  for (i = 0; i< data.responses.length; i++){
+    if (data.responses.response[i].length > maxCharPerResonose){
       isResonseValid = 0;
     }
   }
@@ -67,7 +74,7 @@ var updateRem = function(req, res, next){
         res.json(response);
       }
     };
-    Rem.updateRem(from, to, data, callback);
+    Rem.updateRem(data, callback);
   }else {
     var response = {};
     response.success = 0;
