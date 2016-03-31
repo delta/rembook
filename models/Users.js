@@ -47,17 +47,26 @@ var updateProfile = function (rollNumber, data ,callback) {
 };
 
 var createProfile = function (rollNumber, data ,callback) {
-  var user = new User();
-  user.rollNumber = data.rollNumber;
-  user.department = data.department;
-  user.name = data.name;
-  user.hardCopyRequested = false;
-  user.photoName = data.rollNumber+"_temp.jpg";
-  user.save().then(function (doc) {
-      callback(null, doc);
-    }).catch(function (err){
-      callback(err);
-    });
+  getUserByRollNumber(rollNumber).then(function (doc) {
+    if (doc === null){
+      var user = new User();
+      user.rollNumber = data.rollNumber;
+      user.department = data.department;
+      user.name = data.name;
+      user.hardCopyRequested = false;
+      user.photoName = data.rollNumber+"_temp.jpg";
+      user.save().then(function (doc) {
+        console.log("User Created");
+        callback(null, doc);
+      }).catch(function (err){
+        callback(err);
+      });
+    }else{
+      console.log("User Exists");
+    }
+  }).catch(function(err){
+    console.log(err);
+  });
 };
 
 var updatePhotoName = function (rollNumber, photoName, callback) {
