@@ -73,9 +73,10 @@ var initalPage = function (req, res, next) {
         init.notifications = notifications;
       }
       res.render('index', { init: init, title:"Rembook" });
-  }).catch(function(err){
-    console.log(err);
-    next(err);
+    })
+    .catch(function(err){
+      console.log(err);
+      next(err);
   });
 };
 
