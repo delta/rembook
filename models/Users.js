@@ -8,6 +8,8 @@ var userSchema = new Schema({
   email:              String,
   dob:                Date,
   department:         String,
+  contact:            String,
+  hostels:            [String],
   photoName:          String,
   hardCopyRequested:  Boolean,
   lastLogin:         { type: Date, default: Date.now },
@@ -26,6 +28,12 @@ var updateProfile = function (rollNumber, data ,callback) {
     }
     if (data.dob){
       doc.dob = data.dob;
+    }
+    if (data.hostels){
+      doc.hostels = data.hostels;
+    }
+    if (data.contact){
+      doc.hostels = data.hostels;
     }
     if (typeof data.hardCopyRequested !== 'undefined'){
       doc.hardCopyRequested = data.hardCopyRequested;
