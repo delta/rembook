@@ -83,7 +83,7 @@ var updatePhotoName = function (rollNumber, photoName, callback) {
 var fuzzySearch = function (search, department, callback) {
   User.find({department:department}).then(function(users){
     var options={
-      keys:['rollNumber','name']
+      keys:['rollNumber','name','email']
     };
     var f = new fuse(users, options);
     var results = f.search(search);
