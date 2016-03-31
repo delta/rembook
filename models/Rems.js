@@ -12,6 +12,8 @@ var remSchema = new Schema({
               }]
 });
 
+var maxRemsForPrint =5;
+
 var Rem = mongoose.model('Rem', remSchema);
 
 var getAllRemsTo = function (rollNumber) {
@@ -58,13 +60,36 @@ var approveRemForPrint = function (id, requestedBy, approved,callback) {
      var err={error:"permissionError"};
      callback(err);
    }else {
-     doc.print = approved;
-     doc.save().then(function () {
-       callback(null, doc);
-     }).catch(function (err) {
-       console.log(err);
-       callback(err);
-     });
+     if (approved){
+       Rem.find({to:requestedBy,print:true}).then(function(approvedRems){
+         if (approvedRems.length < maxRemsForPrint){
+           doc.print = approved;
+           doc.save().then(function () {
+             callback(null, doc);
+           }).catch(function (err) {
+             console.log(err);
+             callback(err);
+           });
+         }else{
+           var err = {
+             error: "printLimitExceeded",
+             message : "You can only approve " + maxRemsForPrint + " rems for printing",
+           };
+           callback(err);
+         }
+       }).catch(function(err){
+         next(err);
+       });
+     }else{
+       doc.print = approved;
+       doc.save().then(function () {
+         callback(null, doc);
+       }).catch(function (err) {
+         console.log(err);
+         callback(err);
+       });
+     }
+
    }
  });
 };
