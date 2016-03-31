@@ -59,35 +59,24 @@ var initalPage = function (req, res, next) {
     {code:"prod", name:"Production"},
     {code:"mme", name:"Metallurgical & Materials"},
   ];
-  Questions.getAllQuestions()
-    .then(function(doc){
-      init.questions = doc;
-      init.rollNumber = req.session.rollNumber;
-      return Users.getUserByRollNumber(init.rollNumber);
-    })
-    .then(function (doc) {
-      if (doc === null){
-        init.name = req.session.name;
-        res.render('index', { init: init, title:"Rembook" });
-      }else {
-        init.name = doc.name;
-        init.hardCopyRequested = doc.hardCopyRequested;
-        init.department = doc.department;
-        Notifications.getAllNotificationTo(init.rollNumber)
-        .then(function (doc) {
-          init.notifications = doc;
-          res.render('index', { init: init, title:"Rembook" });
-        })
-        .catch(function (err) {
-          console.log(err);
-          next(err);
-        });
+  init.rollNumber = req.session.rollNumber;
+  Promise.all([Questions.getAllQuestions, Users.getUserByRollNumber(init.rollNumber), Notifications.getAllNotificationTo(init.rollNumber)])
+    .then(function(results){
+      var questions = results[0];
+      var user = results[1];
+      var notifications = results[2];
+      init.questions = questions;
+      if (user !== null){
+        init.name = user.name;
+        init.hardCopyRequested = user.hardCopyRequested;
+        init.department = user.department;
+        init.notifications = notifications;
       }
-    })
-    .catch(function (err) {
-        console.log(err);
-        next(err);
-    });
+      res.render('index', { init: init, title:"Rembook" });
+  }).catch(function(err){
+    console.log(err);
+    next(err);
+  });
 };
 
 module.exports.authenticate = authenticate;
