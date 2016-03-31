@@ -18,6 +18,8 @@ var getUserByRollNumber = function (req, res, next) {
         rollNumber: user.rollNumber,
         email: user.email,
         dob: user.dob,
+        hosels: user.hostels,
+        contact: user.contact,
         department: user.department,
         photoName: user.photoName
       };
