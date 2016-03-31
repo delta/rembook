@@ -3,7 +3,9 @@ var Schema = mongoose.Schema;
 
 var remSchema = new Schema({
   from : String,
+  fromName : String,
   to : String,
+  toName : String,
   approved: Boolean,
   print : Boolean,
   responses:  [{
@@ -12,7 +14,7 @@ var remSchema = new Schema({
               }]
 });
 
-var maxRemsForPrint =5;
+var maxRemsForPrint = 5;
 
 var Rem = mongoose.model('Rem', remSchema);
 
@@ -20,12 +22,20 @@ var getAllRemsTo = function (rollNumber) {
   return Rem.find({to:rollNumber});
 };
 
-var updateRem = function (from, to, data, callback) {
+var updateRem = function (data, callback) {
+  var to = data.to;
+  var from = data.from;
+  var toName = data.toName;
+  var fromName = data.fromName;
   Rem.findOne({to:to, from:from}).then(function (doc) {
     if (doc === null){
       doc = new Rem();
+      doc.to = to;
+      doc.from = from;
+      doc.fromName = formName;
+      doc.toName = toName;
     }
-    doc.responses = data;
+    doc.responses = data.responses;
     doc.save().then(function(){
       callback(null,doc);
     }).catch(function (err) {
