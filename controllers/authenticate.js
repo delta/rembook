@@ -5,6 +5,7 @@ var Questions = require('../models/Questions');
 var Notifications = require('../models/Notifications');
 var Users = require('../models/Users');
 
+var batch = 2012;
 var host = '10.0.0.39';
 var domain = 'octa.edu';
 
@@ -12,7 +13,6 @@ var ldap = require('ldapjs');
 var client = ldap.createClient({
   url: 'ldap://10.0.0.39:389'
 });
-
 var getDepartment = function (rollNumber) {
   var departmentCode = rollNumber.slice(0,4);
   var department= "";
@@ -101,12 +101,12 @@ var processLogin = function (req, res, next) {
       res.redirect("/login");
     }else{
       var year = parseInt( "20"+ username.slice(4,6));
-      if (year < 2013){
+      if (year <= batch){
         var data = {};
         data.rollNumber = username;
         data.name = success.displayName.trim();
-        data.department = getDepartment(rollNumber);
-        User.createProfile(username, data, function (err,doc){ });
+        data.department = getDepartment(username);
+        Users.createProfile(username, data, function (err,doc){ });
       }
       res.set("X-Rembook-Login","Authenticated");
       req.session.name = success.displayName.trim();
