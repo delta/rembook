@@ -55,7 +55,7 @@ var updateRem = function(req, res, next){
       }else{
         var notificationCallback = function (err, doc) {
           if(err){
-            next(err);
+            // next(err);
           }else{
             // console.log(JSON.stringify(doc));
           }
@@ -82,7 +82,11 @@ var approveRem = function(req, res, next){
   var callback = function (err, doc) {
     var response={};
     if (err){
-      if(err.error === "permissionError"){
+      if (err.error === "printLimitExceeded"){
+        response.success = 0;
+        response.message = err.message;
+        res.json(response);
+      } else if(err.error === "permissionError"){
         response.success = 0;
         response.message = "You do not have permission to Change this";
         res.send(response);
@@ -96,10 +100,11 @@ var approveRem = function(req, res, next){
     }
   };
   if (typeof req.body.approved !== 'undefined') {
-    var approved = req.body.approved;
+    var approved = JSON.parse(req.body.approved);
     Rem.approveRemForDisplay(id, requestedBy, approved, callback);
   }else if (typeof req.body.print !== 'undefined'){
-    var print = req.body.print;
+    var print = JSON.parse(req.body.print);
+    console.log(print);
     Rem.approveRemForPrint(id, requestedBy, print, callback);
   }
 };
