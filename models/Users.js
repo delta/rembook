@@ -9,6 +9,7 @@ var userSchema = new Schema({
   dob:                Date,
   department:         String,
   contact:            String,
+  address:            String,
   hostels:            [String],
   photoName:          String,
   hardCopyRequested:  Boolean,
@@ -31,6 +32,9 @@ var updateProfile = function (rollNumber, data ,callback) {
     }
     if (data.hostels){
       doc.hostels = data.hostels;
+    }
+    if (data.address){
+      doc.address = data.address;
     }
     if (data.contact){
       doc.hostels = data.hostels;
