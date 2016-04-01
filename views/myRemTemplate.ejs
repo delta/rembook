@@ -1,7 +1,9 @@
 <html>
 <head>
   <script src ='javascripts/angular.min.js' ></script>
+  <script src ='javascripts/jquery-1.12.2.min.js'></script>
   <script>
+
   var printRem = angular.module('printRem',[]);
 
   printRem.controller('userController',['$scope',function($scope){
@@ -67,6 +69,12 @@
   <link href='stylesheets/printMyRem.css' rel='stylesheet'>
 </head>
 <body ng-app='printRem'>
+  <div class="downloadButton no-print">
+    <div class="ui labelled icon button">
+      <i class="download icon"></i>
+      Download
+    </div>
+  </div>
   <table>
     <tr ng-controller='userController'>
       <td >
@@ -137,5 +145,10 @@
     </table>
 
   </div>
+  <script>
+  $(".downloadButton").on('click',function(){
+    window.print();
+  });
+  </script>
 </body>
 </html>

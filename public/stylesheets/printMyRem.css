@@ -27,3 +27,15 @@ td div{
 ul li{
   list-style: none;
 }
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+.downloadButton{
+  position: fixed;
+  top:100px;
+  right:20px;
+}
