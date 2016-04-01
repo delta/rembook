@@ -23,32 +23,38 @@ module.exports.uploadFile = function (router) {
         }
       });
     }else{
-      var fileName = rollNumber + "." + ext;
-      var finalPath = "./public/profilepic/"+fileName;
-      fs.rename(req.file.path, finalPath ,function (err, data) {
-        if (err){
-          next(err);
-        }else{
-          easyimage.resize({
-            src:finalPath,
-            dst:finalPath,
-            width:500,
-            height:500,
-          }).then(function(image){
-            var callback = function (err, doc) {
-              if (err){
-                next(err);
-              }else {
-                response.success = 1;
-                response.message = "";
-                res.json(response);
-              }
-            };
-            User.updatePhotoName(rollNumber, fileName, callback);
-          }).catch(function (err) {
+      var fileName=rollNumber+".jpg";
+      var finalPath = "./public/profilepic/"+rollNumber+".jpg";
+      easyimage.convert({
+        src:req.file.path,
+        dst:finalPath,
+        quality:100,
+      })
+      .then(function(file){
+        return easyimage.resize({
+          src:finalPath,
+          dst:finalPath,
+          width:400,
+          height:400,
+        });
+      })
+      .then(function(image){
+        fs.unlink(req.file.path,function(err){
+          console.log(err);
+        });
+        var callback = function (err, doc) {
+          if (err){
             next(err);
-          });
-        }
+          }else {
+            response.success = 1;
+            response.message = "";
+            res.json(response);
+          }
+        };
+        User.updatePhotoName(rollNumber, fileName, callback);
+      })
+      .catch(function(err){
+        next(err);
       });
     }
   });
