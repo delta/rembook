@@ -78,9 +78,9 @@ var authenticate=function(username, password, callback){
           // res.on('searchReference', function(referral) {
           //   console.log('referral: ' + referral.uris.join());
           // });
-          // res.on('error', function(err) {
-          //   console.error('error: ' + err.message);
-          // });
+          res.on('error', function(err) {
+            console.error('error: ' + err.message);
+          });
           // res.on('end', function(result) {
             // console.log('status: ' + result.status);
           // });
