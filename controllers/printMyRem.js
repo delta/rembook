@@ -15,18 +15,12 @@ var printMyRemPreview = function (req, res, next){
     var bio = results[1];
     var rems = results[2];
     var questions = results[3];
-    res.render('myRemTemplate', {layout: false}, function(err, html){
-
-      var response ={
-        user:user,
-        bio:bio,
-        rems:rems,
-        questions:questions,
-        my_html:html
-      };
-      res.send(response);
+    res.render('myRemTemplate',{
+      user:user,
+      bio:bio,
+      rems:rems,
+      questions:questions
     });
-
   }).catch( function(err) {
     next(err);
   });
