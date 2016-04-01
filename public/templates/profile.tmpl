@@ -1,0 +1,62 @@
+<!-- 
+    Vue-Template for the profile page
+
+    Object to be injected: {
+        name: String,
+        rollNumber: String,
+        department: String,         => To be formatted
+        dob: Date,                  => To be formatted
+        address: String,
+        email: String,
+        contact: String,
+        hostels: Array<String>
+        questions: Array<{ title, response }>,     => Yet to be handled
+        photoName: String -> Name of the profile photo
+    }
+-->
+
+<!-- for some reason, the following style rules don't work 
+    when placed in a css file, so inlining -->
+    <div style="width: 50%; display: flex; height: 100%; float: left">
+        <div style="margin: auto; padding: 10px;">
+            <div class="ui two column padded grid">
+                <div class="right aligned column" style="display: flex">
+                    <div style="margin: auto">
+                        <img class="dp ui medium image" src="profilepic/{{photoName}}">
+                    </div>
+                </div>
+                <div class="column" style="display: flex">
+                    <div class="ui" style="margin: auto">
+                        <div class="ui center aligned">
+                            <h1 class="ui header">{{name}}</h1>
+                            <h4 class="ui header">{{rollNumber}}, {{department}}</h4>
+                            <h4 class="ui header"><i class="calendar icon"></i>{{dob}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui two column divided grid piled segments center aligned">
+                <div class="column">
+                    <h2 class="ui header center aligned">Contact</h2>
+                    <div class="ui divider"></div>
+                    <h5 class="ui left aligned header"><i class="home icon"></i>{{address}}</h5>
+                    <h4 class="ui left aligned header"><i class="mail icon"></i>{{email}}</h4>
+                    <h5 class="ui left aligned header"><i class="phone icon"></i>{{contact}}</h5>
+                </div>
+                <div class="ui center aligned column">
+                    <h2 class="ui header center aligned">Hostels</h2>
+                    <div class="ui divider"></div>
+                    <h5 class="ui center aligned header" v-for="hostel in hostels">{{hostel}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width: 50%; display: flex; height: 100%; float: left">
+        <div style="margin: auto; padding: 10px;">
+            <template v-for="question in questions">
+                <h4>{{ question.title }}</h4>
+                {{question.response}}
+            </template>
+        </div>
+    </div>
