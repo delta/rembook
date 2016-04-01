@@ -56,13 +56,13 @@ var createProfile = function (rollNumber, data ,callback) {
       user.hardCopyRequested = false;
       user.photoName = data.rollNumber+"_temp.jpg";
       user.save().then(function (doc) {
-        console.log("User Created");
+        console.log("User Created:", doc.rollNumber);
         callback(null, doc);
       }).catch(function (err){
         callback(err);
       });
     }else{
-      console.log("User Exists");
+      console.log("User Exists", doc.rollNumber);
     }
   }).catch(function(err){
     console.log(err);
