@@ -1,30 +1,300 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
     <script src="javascripts/jquery-2.1.4.min.js"></script>
     <script src="semantic/dist/semantic.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
 
+    <link rel="stylesheet" type="text/css" href="BookBlock/css/bookblock.css" />
+    <script src="BookBlock/js/modernizr.custom.js"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-  </head>
-  <body>
+</head>
+<body style="background-color: rgb(140,140,0)">
     <header class="ui equal height two column padded grid">
-        <div id="logo" class="four wide computer four wide tablet sixteen wide mobile column blue ">
-            <span id="title">RemBook</span>
+        <div id="logo" class="four wide column black ">
+            <a href="#" id="title">RemBook</a>
         </div>
 
-        <div id="search-container-container" class="twelve wide computer twelve wide tablet sixteen wide mobile column">
+        <div id="search-container-container" class="twelve wide column">
             <div id="search-container" class="ui fluid left icon input big">
-                <input type="text" placeholder="Search your friends..." class="computer only">
+                <input type="text" placeholder="Search your friends...">
                 <i class="search icon"></i>
             </div>
         </div>
     </header>
 
-    <footer>
-        Made with ♥ by <span style="color:white">Delta Force</span>
-    </footer>
-  </body>
-</html>
+    <nav id="main-nav">
+        <a href="#" class="selected">
+            <i class="newspaper icon center aligned"></i>
+            <div>Profile</div>
+        </a>
+        <a href="#">
+            <i class="comments outline icon center aligned"></i>
+            <div>Rems</div>
+        </a>
+    </nav>
+    <div id="main">
+        <div class="rem-bookblock bb-bookblock">
+            <div class="bb-item profile-page">
+                <!-- for some reason, the following style rules don't work 
+                    when placed in a css file, so inlining -->
+                <div style="width: 50%; display: flex; height: 100%; float: left">
+                    <div style="margin: auto; padding: 10px;">
+                        <div class="ui two column padded grid">
+                            <div class="right aligned column" style="display: flex">
+                                <div style="margin: auto">
+                                    <img class="dp ui medium image" src="profilepic/107111085.jpg">
+                                </div>
+                            </div>
+                            <div class="column" style="display: flex">
+                                <div class="ui" style="margin: auto">
+                                    <div class="ui center aligned">
+                                        <h1 class="ui header">Selvendran Sundar</h1>
+                                        <h4 class="ui header">107111085, EEE</h4>
+                                        <h4 class="ui header"><i class="calendar icon"></i>28 May, 1996</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui two column divided grid piled segments center aligned">
+                            <div class="column">
+                                <h2 class="ui header center aligned">Contact</h2>
+                                <div class="ui divider"></div>
+                                <h5 class="ui left aligned header"><i class="home icon"></i>6/Old no. 8, Arumugam Street, Bharathi Block, Jafferkhanpet, Chennai - 83</h5>
+                                <h4 class="ui left aligned header"><i class="mail icon"></i>booty@gmail.com</h4>
+                                <h5 class="ui left aligned header"><i class="phone icon"></i>+917598341011</h5>
+                            </div>
+                            <div class="ui center aligned column">
+                                <h2 class="ui header center aligned">Hostels</h2>
+                                <div class="ui divider"></div>
+                                <h5 class="ui center aligned header">Room: 3, Diamond</h5>
+                                <h5 class="ui center aligned header">Room: 102, Amber A</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 50%; display: flex; height: 100%; float: left">
+                    <div style="margin: auto; padding: 10px;">
+                        <h4>My Nicknames:</h4>
+                        Booty, Nurse Selva, Data booty, Selva
+
+                        <h4>My Striking Attributes:</h4>
+                        Atheist family ,Kuruttu buddhi , Thing that you like most - SLEEP SLEEP and more SLEEP , Your extra caring Dad and all those sweets that you used to bring us from home.
+
+                        <h4>My Frequently Uttered Words:</h4>
+                        Ayyiyye athellaam mudiyaathu , Isku Isku ( You used to do that in second year everytime you poke people's waist), Ukkaanchikko , Asingamaa pannaatha ellaarukkum vei aunty
+
+                        <h4>About Me:</h4>
+                        A easy moving outspoken person- involved more in Festember, Pragyan & Nittfest than in any other subject in college. Known to a major population in this college. An Innocent youth- often mishyped as 'Casanova'. Genuinely caring, Friendly and well informed about everyone in a team.
+
+                    </div>
+                </div>
+            </div>
+            <div class="bb-item">
+                <div style="width: 100%; display: flex; height: 100%">
+                    <div class="ui two column padded grid" style="margin: auto; padding: 10px;">
+                        <div class="ui five wide column">
+                            <div class="center aligned two wide column">
+                                <img class="dp ui small image" src="background/goose.jpg">
+                            </div>
+                            <div class="thirteen wide column" style="display:flex; margin-top: 15px">
+                                <h3 style="margin: auto 0;">Prabhu Venkatesh K R says,</h3>
+                            </div>
+                            <div class="sixteen wide column">
+                                <h4>Nicknames:</h4>
+                                Booty, Nurse Selva, Data booty, Selva
+
+                                <h4>Striking Attributes:</h4>
+                                Atheist family ,Kuruttu buddhi , Thing that you like most - SLEEP SLEEP and more SLEEP , Your extra caring Dad and all those sweets that you used to bring us from home.
+
+                                <h4>Frequently Uttered Words:</h4>
+                                Ayyiyye athellaam mudiyaathu , Isku Isku ( You used to do that in second year everytime you poke people's waist), Ukkaanchikko , Asingamaa pannaatha ellaarukkum vei aunty
+                            </div>
+                        </div>
+                        <div class="eleven wide column" style="font-family: 'Comic Sans MS'; display: flex">
+                            <div style="margin: auto;">
+                                <h4>Memories</h4>
+
+                                <div style="-webkit-column-width: 300px">
+                                    Right from the first year, we were destined to be lab mates. Call it your good luck or my bad fortune, we were to spend the next 4 years together(:p). I had a lot on my mind back then during labs and yes, I remained perpetually frustrated. And you people left no stone unturned to annoy me further. Starting from supplying you stationery items to ending up plotting your graphs, these extra burden helped my grades a lot :P :D. But as time passed, your acts stopped annoying me. rather, they seemed funny. You have been one of the most amazingly cool people I have met. I still remember during my ill-health, how you ran across the department for getting my work done. Thanks for all those warm gestures. A go-to person in every sense, your oration skills have saved us many a times during class presentations and simultaneously bored everyone else. I really admire your sense of responsibility and hardcore dedication. Keep up the good work and continue inspiring people. Do consider entering politics. I will definitely not vote for you. Keep smiling
+
+                                    <img style="margin: 15px auto; " class="dp ui medium image ui piled segment center aligned" src="background/jayti.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bb-item">
+                <div style="width: 100%; display: flex; height: 100%">
+                    <div class="ui two column padded grid" style="margin: auto; padding: 10px;">
+                        <div class="ui five wide column">
+                            <div class="center aligned two wide column">
+                                <img class="dp ui small image" src="background/goose.jpg">
+                            </div>
+                            <div class="thirteen wide column" style="display:flex; margin-top: 15px">
+                                <h3 style="margin: auto 0;">Prabhu Venkatesh K R says,</h3>
+                            </div>
+                            <div class="sixteen wide column">
+                                <h4>Nicknames:</h4>
+                                Booty, Nurse Selva, Data booty, Selva
+
+                                <h4>Striking Attributes:</h4>
+                                Atheist family ,Kuruttu buddhi , Thing that you like most - SLEEP SLEEP and more SLEEP , Your extra caring Dad and all those sweets that you used to bring us from home.
+
+                                <h4>Frequently Uttered Words:</h4>
+                                Ayyiyye athellaam mudiyaathu , Isku Isku ( You used to do that in second year everytime you poke people's waist), Ukkaanchikko , Asingamaa pannaatha ellaarukkum vei aunty
+                            </div>
+                        </div>
+                        <div class="eleven wide column" style="font-family: 'Comic Sans MS'; display: flex">
+                            <div style="margin: auto;">
+                                <h4>Memories</h4>
+
+                                <div style="-webkit-column-width: 300px">
+                                    Booty... I came to know you when we were both working late at night in admin almost every day around pragyan... you were my go to guy if I felt sleepy or needed someone to talk to during night-outs.. during that time we got really close. You always give me confidence and support me when I am down... Thanks a lot for everything...I still wonder how you are able to know everything that happens in college!!! NITT Overall Coordinator _/\_ Lets hangout in chennai and go on biking trips :P .... All the best for your future :)
+
+                                    <img style="margin: 15px auto; " class="dp ui medium image ui piled segment center aligned" src="background/jayti.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bb-item">
+                <div style="width: 100%; display: flex; height: 100%">
+                    <div class="ui two column padded grid" style="margin: auto; padding: 10px;">
+                        <div class="ui five wide column">
+                            <div class="center aligned two wide column">
+                                <img class="dp ui small image" src="background/goose.jpg">
+                            </div>
+                            <div class="thirteen wide column" style="display:flex; margin-top: 15px">
+                                <h3 style="margin: auto 0;">Prabhu Venkatesh K R says,</h3>
+                            </div>
+                            <div class="sixteen wide column">
+                                <h4>Nicknames:</h4>
+                                Booty, Nurse Selva, Data booty, Selva
+
+                                <h4>Striking Attributes:</h4>
+                                Atheist family ,Kuruttu buddhi , Thing that you like most - SLEEP SLEEP and more SLEEP , Your extra caring Dad and all those sweets that you used to bring us from home.
+
+                                <h4>Frequently Uttered Words:</h4>
+                                Ayyiyye athellaam mudiyaathu , Isku Isku ( You used to do that in second year everytime you poke people's waist), Ukkaanchikko , Asingamaa pannaatha ellaarukkum vei aunty
+                            </div>
+                        </div>
+                        <div class="eleven wide column" style="font-family: 'Comic Sans MS'; display: flex">
+                            <div style="margin: auto;">
+                                <h4>Memories</h4>
+
+                                <div style="-webkit-column-width: 300px">
+                                    Right from the first year, we were destined to be lab mates. Call it your good luck or my bad fortune, we were to spend the next 4 years together(:p). I had a lot on my mind back then during labs and yes, I remained perpetually frustrated. And you people left no stone unturned to annoy me further. Starting from supplying you stationery items to ending up plotting your graphs, these extra burden helped my grades a lot :P :D. But as time passed, your acts stopped annoying me. rather, they seemed funny. You have been one of the most amazingly cool people I have met. I still remember during my ill-health, how you ran across the department for getting my work done. Thanks for all those warm gestures. A go-to person in every sense, your oration skills have saved us many a times during class presentations and simultaneously bored everyone else. I really admire your sense of responsibility and hardcore dedication. Keep up the good work and continue inspiring people. Do consider entering politics. I will definitely not vote for you. Keep smiling
+
+                                    <img style="margin: 15px auto; " class="dp ui medium image ui piled segment center aligned" src="background/jayti.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div><!-- /container -->
+
+<footer>
+    Made with ❤ by <span style="color:white">Delta Force</span>
+</footer>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="BookBlock/js/jquerypp.custom.js"></script>
+<script src="BookBlock/js/jquery.bookblock.js"></script>
+<script>
+    var Page = (function() {
+
+        var config = {
+            $bookBlock : $( '.rem-bookblock' ),
+            $navNext : $( '#bb-nav-next' ),
+            $navPrev : $( '#bb-nav-prev' ),
+            $navFirst : $( '#bb-nav-first' ),
+            $navLast : $( '#bb-nav-last' )
+        },
+        init = function() {
+            config.$bookBlock.bookblock( {
+                speed : 1250,
+                shadowSides : 0.8,
+                shadowFlip : 0.5
+            } );
+            initEvents();
+        },
+        initEvents = function() {
+
+            var $slides = config.$bookBlock.children();
+
+                // add navigation events
+                config.$navNext.on( 'click touchstart', function() {
+                    config.$bookBlock.bookblock( 'next' );
+                    return false;
+                } );
+
+                config.$navPrev.on( 'click touchstart', function() {
+                    config.$bookBlock.bookblock( 'prev' );
+                    return false;
+                } );
+
+                config.$navFirst.on( 'click touchstart', function() {
+                    config.$bookBlock.bookblock( 'first' );
+                    return false;
+                } );
+
+                config.$navLast.on( 'click touchstart', function() {
+                    config.$bookBlock.bookblock( 'last' );
+                    return false;
+                } );
+
+                // add swipe events
+                $slides.on( {
+                    'swipeleft' : function( event ) {
+                        config.$bookBlock.bookblock( 'next' );
+                        return false;
+                    },
+                    'swiperight' : function( event ) {
+                        config.$bookBlock.bookblock( 'prev' );
+                        return false;
+                    }
+                } );
+
+                // add keyboard events
+                $( document ).keydown( function(e) {
+                    var keyCode = e.keyCode || e.which,
+                    arrow = {
+                        left : 37,
+                        up : 38,
+                        right : 39,
+                        down : 40
+                    };
+
+                    switch (keyCode) {
+                        case arrow.left:
+                        config.$bookBlock.bookblock( 'prev' );
+                        break;
+                        case arrow.right:
+                        config.$bookBlock.bookblock( 'next' );
+                        break;
+                    }
+                } );
+            };
+
+            return { init : init };
+
+        })();
+        Page.init();
+
+        $("body").on("mousemove", function(e) {
+            $("#background").css({
+                "transform": "translate(" + e.pageX / -100 + "px, " + e.pageY / -100 + "px)"
+            });
+        });
+    </script>
+    </html>
