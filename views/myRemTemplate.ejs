@@ -1,0 +1,141 @@
+<html>
+<head>
+  <script src ='javascripts/angular.min.js' ></script>
+  <script>
+  var printRem = angular.module('printRem',[]);
+
+  printRem.controller('userController',['$scope',function($scope){
+    var user = <%- JSON.stringify(user) %>;
+    $scope.rollNumber = user.rollNumber;
+    $scope.profilepic = "/profilepic/"+user.photoName;
+    $scope.hostels = user.hostels;
+    $scope.name = user.name;
+    $scope.email = user.email;
+    $scope.dob = user.dob;
+    $scope.department = user.department;
+    console.log(user);
+  }]);
+
+  printRem.controller('bioController',['$scope',function($scope){
+    $scope.bio = <%- JSON.stringify(bio) %>;
+    $scope.questions = <%- JSON.stringify(questions) %>;
+    $scope.responses = $scope.bio.responses;
+    console.log($scope.responses);
+    console.log($scope.bio);
+    console.log($scope.questions);
+    $scope.findQuestion = function(id){
+      var i = 0;
+      for (i = 0; i < $scope.questions.length; i++){
+        if ($scope.questions[i]._id === id){
+          return $scope.questions[i].description;
+        }
+      }
+    }
+  }]);
+
+  printRem.controller('remController',['$scope',function($scope){
+    $scope.questions = <%- JSON.stringify(questions) %>;
+    $scope.rems = <%- JSON.stringify(rems) %>;
+    $scope.findQuestion = function(id){
+      var i = 0;
+      for (i = 0; i < $scope.questions.length; i++){
+        if ($scope.questions[i]._id === id){
+          return $scope.questions[i].description;
+        }
+      }
+    }
+    console.log($scope.rems);
+  }]);
+
+  printRem.directive('checkImage', function($http) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        attrs.$observe('ngSrc', function(ngSrc) {
+          $http.get(ngSrc).success(function(){
+          }).error(function(){
+            element.attr('src', 'profilepic/default.png');
+          });
+        });
+      }
+    };
+  });
+
+  </script>
+
+  <link href='stylesheets/semantic.min.css' rel='stylesheet'>
+  <link href='stylesheets/printMyRem.css' rel='stylesheet'>
+</head>
+<body ng-app='printRem'>
+  <table>
+    <tr ng-controller='userController'>
+      <td >
+        <img check-image ng-src= "{{ profilepic}}" class="profilepic">
+      </td>
+      <td>
+        <div class="ui header">{{name}} </div>
+        <div>{{rollNumber}} , {{department}}</div>
+        <div ng-show='address'> <i class="home icon"></i> {{address}}</div>
+        <div ng-show='email'> <i class="mail icon"></i>{{email}} </div>
+        <div ng-show='dob'> <i class="calendar icon"></i>{{dob|date:'dd MMM, yyyy' }}</div>
+        <div ng-show='hostels ' class="ui horizontal divider"><div class="ui header center aligned">Hostels</div></div>
+        <div>
+          <div class="ui relaxed divided list">
+            <div class ='item' ng-repeat='hostel in hostels'>{{hostel}}</li>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan='2'>
+          <div>
+            <div class="ui hrizontal divider"> </div>
+          </div>
+          <div>
+            <h4 class="ui center aligned header">My Final Rem </h4>
+          </div>
+        </td>
+      </tr>
+      <tr ng-controller='bioController'>
+        <td colspan='2'>
+          <div class="ui list">
+            <div  ng-repeat='response in responses' class="item">
+              <div class='heading' >{{findQuestion(response.questionId)}}</div>
+              <div >{{response.response}}</div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan='2'>
+          <div class="ui hrizontal divider"> </div>
+          <div>  <h4 class="ui center aligned header">  What Others Said About You ... </h4> </div>
+        </td>
+      </tr>
+      <tr ng-controller='remController'>
+        <td colspan='2'>
+          <div class='ui divided list'>
+            <div ng-show='rem.responses[0]' ng-repeat='rem in rems' class="item">
+              <h4 class="ui header">
+                <img check-image ng-src="profilepic/{{rem.from}}.jpg" class="ui circular image tiny">
+                <div class="content">
+                  {{rem.fromName}} ({{rem.from}})<br> says:
+                </div>
+              </h4>
+              <br>
+              <div >
+                <div ng-repeat='response in rem.responses'>
+                  <div class="heading">{{findQuestion(response.questionId)}}</div>
+                  <div class="description">{{response.response}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</body>
+</html>
