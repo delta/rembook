@@ -5,6 +5,7 @@ var users = require('../controllers/users');
 var bio = require('../controllers/bio');
 var rems = require('../controllers/rems');
 var notifications = require('../controllers/notifications');
+var printMyRem = require('../controllers/printMyRem');
 var profilepic = require('./profilepic');
 
 router.get('/login', function(req, res, next) {
@@ -22,6 +23,8 @@ router.post('/rem/:rollNumber', rems.updateRem);
 router.post('/rem/approve/:id', rems.approveRem);
 router.get('/notifications',notifications.getAllNotifications);
 router.get('/search',users.search);
+router.get('/printMyRemPreview', printMyRem.printMyRemPreview );
+router.get('/logout', login.logout);
 
 profilepic.uploadFile(router);
 
