@@ -4,15 +4,13 @@
 var Questions = require('../models/Questions');
 var Notifications = require('../models/Notifications');
 var Users = require('../models/Users');
+var ldap = require('ldapjs');
 
 var batch = 2012;
 var host = '10.0.0.39';
 var domain = 'octa.edu';
 
-var ldap = require('ldapjs');
-var client = ldap.createClient({
-  url: 'ldap://10.0.0.39:389'
-});
+
 var getDepartment = function (rollNumber) {
   var departmentCode = rollNumber.slice(0,4);
   var department= "";
@@ -59,11 +57,15 @@ var generateDN = function (rollNumber) {
 };
 
 var authenticate=function(username, password, callback){
+  var client = ldap.createClient({
+    url: 'ldap://10.0.0.39:389'
+  });
   var cn = username+'@'+domain;
   client.bind(cn,password,function(err){
     if (err){
       callback (err);
     }else{
+      console.log("Authenticated");
       var opts = {
         scope: 'sub',
       };
@@ -152,6 +154,14 @@ var initalPage = function (req, res, next) {
   });
 };
 
+var logout = function(req, res, next){
+  req.session.destroy();
+  var response = {};
+  response.success =1;
+  response.message ="Logged Out";
+  res.json(response);
+};
 module.exports.authenticate = authenticate;
 module.exports.processLogin = processLogin;
 module.exports.initalPage = initalPage;
+module.exports.logout = logout;
