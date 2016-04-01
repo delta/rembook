@@ -18,7 +18,7 @@ var getUserByRollNumber = function (req, res, next) {
         rollNumber: user.rollNumber,
         email: user.email,
         dob: user.dob,
-        hosels: user.hostels,
+        hostels: user.hostels,
         contact: user.contact,
         department: user.department,
         photoName: user.photoName
@@ -37,6 +37,7 @@ var getUserByRollNumber = function (req, res, next) {
 var updateProfile = function (req, res, next) {
   var rollNumber = req.session.rollNumber;
   var data = req.body;
+  data.hostels = JSON.parse(data.hostels);
   var callback = function (err, success) {
     if (err){
       next(err);
