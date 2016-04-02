@@ -95,8 +95,13 @@ var fuzzySearch = function (search, department, callback) {
   });
 };
 
+var getAllUsers = function () {
+  return User.find({});
+};
+
 module.exports.getUserByRollNumber = getUserByRollNumber;
 module.exports.updateProfile = updateProfile;
 module.exports.updatePhotoName = updatePhotoName;
 module.exports.fuzzySearch = fuzzySearch;
 module.exports.createProfile = createProfile;
+module.exports.getAllUsers = getAllUsers;
