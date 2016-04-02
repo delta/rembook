@@ -2,3 +2,4 @@ requires:
 nodejs
 monogdb
 ImageMagick
+PhantomJS
