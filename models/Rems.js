@@ -104,7 +104,11 @@ var approveRemForPrint = function (id, requestedBy, approved,callback) {
  });
 };
 
+var getAllApprovedForPrintRems = function (rollNumber) {
+  return Rem.find({print:true});
+};
 module.exports.getAllRemsTo = getAllRemsTo;
 module.exports.updateRem = updateRem;
 module.exports.approveRemForPrint = approveRemForPrint;
 module.exports.approveRemForDisplay = approveRemForDisplay;
+module.exports.getAllApprovedForPrintRem = getAllApprovedForPrintRems;
