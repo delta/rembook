@@ -31,6 +31,11 @@ var editBioOf = function (rollNumber, data, callback) {
   });
 };
 
+var getAllBios = function(){
+  return Bio.find({});
+};
+
+module.exports.getAllBios = getAllBios;
 module.exports.Bio = Bio;
 module.exports.getBioOf = getBioOf;
 module.exports.editBioOf = editBioOf;
