@@ -4,6 +4,8 @@
     <title></title>
     <script src ='javascripts/angular.min.js' ></script>
     <link rel = 'stylesheet' href='stylesheets/finalRembook.css'>
+    <script src ='javascripts/jquery-1.12.2.min.js'></script>
+
     <script>
       var printRembook = angular.module('printRembook', []);
       var users = <%- JSON.stringify(users) %>
@@ -30,6 +32,132 @@
     </script>
   </head>
   <body>
-    <div class="rembookPage"></div>
+    <div class="rembookPage">
+      <div class="leftPage">
+        <div class="name centerAlign">Some Name
+        </div>
+        <img src="profilepic/111113070.jpg" class="profilepic">
+        <div class="rollNumber centerAlign">
+          111113070
+        </div>
+        <div class="nicknames">
+          asdf, asdfasdf, asfasdf
+        </div>
+        <div class="email">
+          rizwan.hkm@gmail.com
+        </div>
+        <div class="contact">
+          9994289772
+        </div>
+        <div class="dob">
+          12.08.1995
+        </div>
+        <div class="place">
+          CHENNAI
+        </div>
+        <div class="hostel">
+          ZIRCON C 104
+        </div>
+        <div class="department">
+          MECH
+        </div>
+      </div>
+      <div class="rightPage">
+        <div class="name centerAlign">
+          Some Other Name
+        </div>
+        <img src  = "profilepic/111113070.jpg" class="profilepic">
+        <div class="rollNumber centerAlign">
+          111113070
+        </div>
+        <div class="nicknames">
+          asdf, asdfasdf, asfasdf
+        </div>
+        <div class="email">
+          rizwan.hkm@gmail.com
+        </div>
+        <div class="contact">
+          9994289772
+        </div>
+        <div class="dob">
+          12.08.1995
+        </div>
+        <div class="place">
+          CHENNAI
+        </div>
+        <div class="hostel">
+          ZIRCON C 104
+        </div>
+        <div class="department">
+          MECH
+        </div>
+      </div>
+    </div>
+    <div class="rembookPage">
+      <div class="leftPage">
+        <div class="name centerAlign">Some Name
+        </div>
+        <img src="profilepic/111113070.jpg" class="profilepic">
+        <div class="rollNumber centerAlign">
+          111113070
+        </div>
+        <div class="nicknames">
+          asdf, asdfasdf, asfasdf
+        </div>
+        <div class="email">
+          rizwan.hkm@gmail.com
+        </div>
+        <div class="contact">
+          9994289772
+        </div>
+        <div class="dob">
+          12.08.1995
+        </div>
+        <div class="place">
+          CHENNAI
+        </div>
+        <div class="hostel">
+          ZIRCON C 104
+        </div>
+        <div class="department">
+          MECH
+        </div>
+      </div>
+      <div class="rightPage">
+        <div class="name centerAlign">
+          Some Other Name
+        </div>
+        <img src  = "profilepic/111113070.jpg" class="profilepic">
+        <div class="rollNumber centerAlign">
+          111113070
+        </div>
+        <div class="nicknames">
+          asdf, asdfasdf, asfasdf
+        </div>
+        <div class="email">
+          rizwan.hkm@gmail.com
+        </div>
+        <div class="contact">
+          9994289772
+        </div>
+        <div class="dob">
+          12.08.1995
+        </div>
+        <div class="place">
+          CHENNAI
+        </div>
+        <div class="hostel">
+          ZIRCON C 104
+        </div>
+        <div class="department">
+          MECH
+        </div>
+      </div>
+    </div>
   </body>
+  <script>
+  $(".rembookPage").on('click', function(e){
+    console.log(e.pageX, e.pageY);
+  })
+  </script>
 </html>
