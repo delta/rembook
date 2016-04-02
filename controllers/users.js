@@ -76,8 +76,9 @@ var search = function (req, res, next) {
         response.message = "";
         var users = [];
         var i;
-        var user ={};
+        var user;
         for (i=0;i<results.length;i++){
+          user ={};
           user.name = results[i].name;
           user.rollNumber = results[i].rollNumber;
           user.email = results[i].email;
