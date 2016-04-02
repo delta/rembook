@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <script src ='javascripts/angular.min.js' ></script>
+    <link rel = 'stylesheet' href='stylesheets/finalRembook.css'>
+    <script>
+      var printRembook = angular.module('printRembook', []);
+      var users = <%- JSON.stringify(users) %>
+      var questions = <%- JSON.stringify(questions) %>
+
+      var i = 0;
+      for (i = 0; i < users.length; i++){
+        if (users[i].left.user.rollNumber === "111113070"){
+          console.log(users[i]);
+        }
+        if (typeof users[i].right !== 'undefined'){
+          if (users[i].right.user.rollNumber === "111113070"){
+            console.log(users[i]);
+          }
+        }
+      }
+
+      printRembook.controller('layoutController',['$scope', function ($scope) {
+
+      }]);
+
+
+
+    </script>
+  </head>
+  <body>
+    <div class="rembookPage"></div>
+  </body>
+</html>

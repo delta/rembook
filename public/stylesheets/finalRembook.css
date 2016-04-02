@@ -1,0 +1,10 @@
+body{
+  margin: 0;
+  padding: 0;
+  border:1px solid #000;
+}
+.rembookPage{
+  height: 2480px;
+  width: 3508px;
+  background-image: url('../images/rembook.png');
+}
