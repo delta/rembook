@@ -13,18 +13,21 @@ var getAllRemsTo = function (req, res, next) {
     }else{
       var rems =[];
       var i;
+      var rem;
       for (i=0;i<doc.length;i++){
-        var rem = {};
+        rem = {};
+        if ( (doc[i].approved !== true) && (rollNumber !== requestedBy)){
+          continue;
+        }else if (rollNumber === requestedBy){
+          rem.approved = doc[i].approved;
+          rem.print = doc[i].print;
+        }
         rem.id = doc[i].id;
         rem.to = doc[i].to;
         rem.toName = doc[i].toName;
         rem.from = doc[i].from;
         rem.fromName = doc[i].fromName;
         rem.responses = doc[i].responses;
-        if (rollNumber === requestedBy){
-          rem.approved = doc[i].approved;
-          rem.print = doc[i].print;
-        }
         rems.push(rem);
       }
       response.rems = rems;

@@ -19,7 +19,12 @@ var printMyRemPreview = function (req, res, next){
       user:user,
       bio:bio,
       rems:rems,
-      questions:questions
+      questions:questions,
+    }, function(err, html){
+      //Generrate PDF
+      
+      //For Testing
+       res.send(html);
     });
   }).catch( function(err) {
     next(err);
