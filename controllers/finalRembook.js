@@ -2,6 +2,8 @@ var Users = require('../models/Users');
 var Rems = require('../models/Rems');
 var Bios = require('../models/Bio');
 var Questions = require('../models/Questions');
+var fs = require('fs');
+var pdf = require('html-pdf');
 
 var download = function(req, res, next){
   Promise.all([
@@ -69,7 +71,23 @@ var download = function(req, res, next){
         if (err){
           next(err);
         }else{
-          res.send(html);
+          var config = {
+            directory:"./pdfs/",
+            height:"2480px",
+            width:"3508px",
+            base:"file:///home/rizwan/projects/rembook/public/",
+            phantomPath:"./node_modules/phantomjs/bin/phantomjs",
+            timeout:150000
+          };
+
+          pdf.create(html, config).toFile(function(err, result){
+            if (err){
+              next(err);
+            }else{
+              res.download(result.filename);
+            }
+          });
+          // res.send(html);
         }
       });
   }).catch(function(err){
