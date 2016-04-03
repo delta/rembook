@@ -137,7 +137,11 @@ var initalPage = function (req, res, next) {
     {code:"mme", name:"Metallurgical & Materials"},
   ];
   init.rollNumber = req.session.rollNumber;
-  Promise.all([Questions.getAllQuestions, Users.getUserByRollNumber(init.rollNumber), Notifications.getAllNotificationTo(init.rollNumber)])
+  Promise.all([
+    Questions.getAllQuestions(),
+    Users.getUserByRollNumber(init.rollNumber),
+    Notifications.getAllNotificationTo(init.rollNumber)
+  ])
     .then(function(results){
       var questions = results[0];
       var user = results[1];
