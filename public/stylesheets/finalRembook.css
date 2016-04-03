@@ -1,8 +1,8 @@
 body{
   margin: 0;
   padding: 0;
-  border:1px solid #000;
-  font-size: 70px;
+  /*border:1px solid #000;*/
+  font-size: 60px;
 }
 .rembookPage{
   height: 2480px;
@@ -50,29 +50,29 @@ body{
   text-align: center;
 }
 .profilepic{
-  top: 203px;
+  top: 192px;
   border-radius: 200px;
-  height: 400px;
-  width: 400px;
+  height: 420px;
+  width: 420px;
   position: absolute;
 }
 .department{
   position: absolute;
   top:2000px;
-  transform: rotate(270deg);
+  -webkit-transform: rotate(270deg);
   color: #ccc;
   width: 365px;
   text-align: center;
   line-height: 95px;
 }
 .leftPage .profilepic{
-  left: 1260px;
+  left: 1250px;
 }
 .leftPage .email, .leftPage .nicknames {
   left: 280px;
 }
 .leftPage .contact{
-  left: 1350px;
+  left: 1300px;
 }
 .leftPage .dob{
   left:245px;
@@ -94,13 +94,13 @@ body{
   width: 900px;
 }
 .rightPage .profilepic{
-  left:1850px;
+  left:1835px;
 }
 .rightPage .email , .rightPage .nicknames{
   left: 1900px;
 }
 .rightPage .contact{
-  left: 2980px;
+  left: 2930px;
 }
 .rightPage .dob{
   left: 1865px;
