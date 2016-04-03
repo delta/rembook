@@ -2,6 +2,9 @@ var Users = require('../models/Users');
 var Rems = require('../models/Rems');
 var Bio = require('../models/Bio');
 var Questions = require('../models/Questions');
+var fs = require('fs');
+var pdf = require('html-pdf');
+
 
 var printMyRemPreview = function (req, res, next){
   var rollNumber = req.session.rollNumber;
@@ -22,9 +25,35 @@ var printMyRemPreview = function (req, res, next){
       questions:questions,
     }, function(err, html){
       //Generrate PDF
-      
+      var config = {
+        directory:"./pdfs/",
+        // width:"595px",
+        // height:"1000px",
+        // format:"A4"
+        width:"700px",
+        height:"14in",
+        // orientation:"portrait",
+        border:{
+          "top": "0.5in",
+          "right": "0.5in",
+          "bottom": "0.5in",
+          "left": "0.5in"
+        },
+        base:"file:///home/rizwan/projects/rembook/public/",
+        phantomPath:"./node_modules/phantomjs/bin/phantomjs"
+      };
+
+      var testhtml= "<html><body>Hello</body></html>";
+      pdf.create(html, config).toFile(function(err, result){
+        if (err){
+          next(err);
+        }else{
+          res.download(result.filename);
+        }
+      });
+
       //For Testing
-       res.send(html);
+      //  res.send(html);
     });
   }).catch( function(err) {
     next(err);

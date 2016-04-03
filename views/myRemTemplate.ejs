@@ -9,12 +9,14 @@
   printRem.controller('userController',['$scope',function($scope){
     var user = <%- JSON.stringify(user) %>;
     $scope.rollNumber = user.rollNumber;
-    $scope.profilepic = "/profilepic/"+user.photoName;
+    $scope.profilepic = "./profilepic/"+user.photoName;
     $scope.hostels = user.hostels;
     $scope.name = user.name;
     $scope.email = user.email;
     $scope.dob = user.dob;
     $scope.department = user.department;
+    $scope.address = user.address;
+    $scope.contact = user.contact;
     console.log(user);
   }]);
 
@@ -83,13 +85,16 @@
       <td>
         <div class="ui header">{{name}} </div>
         <div>{{rollNumber}} , {{department}}</div>
-        <div ng-show='address'> <i class="home icon"></i> {{address}}</div>
-        <div ng-show='email'> <i class="mail icon"></i>{{email}} </div>
-        <div ng-show='dob'> <i class="calendar icon"></i>{{dob|date:'dd MMM, yyyy' }}</div>
-        <div ng-show='hostels ' class="ui horizontal divider"><div class="ui header center aligned">Hostels</div></div>
+        <div class='description' ng-show='address'> <i class="home icon"></i> {{address}}</div>
+        <div class='description' ng-show='email'> <i class="mail icon"></i>{{email}} </div>
+        <div class='description' ng-show='contact'> <i class="contact icon"></i>{{contact}} </div>
+        <div class='description' ng-show='dob'> <i class="calendar icon"></i>{{dob|date:'dd MMM, yyyy' }}</div>
+        <div ng-show='hostels' class="ui horizontal divider">
+          <div class="ui header center aligned">Hostels</div>
+        </div>
         <div>
-          <div class="ui relaxed divided list">
-            <div class ='item' ng-repeat='hostel in hostels'>{{hostel}}</li>
+          <div class="ui list">
+            <div class ='item description' ng-repeat='hostel in hostels'>{{hostel}}</li>
             </div>
           </div>
         </td>
@@ -109,7 +114,7 @@
           <div class="ui list">
             <div  ng-repeat='response in responses' class="item">
               <div class='heading' >{{findQuestion(response.questionId)}}</div>
-              <div >{{response.response}}</div>
+              <div class="description">{{response.response}}</div>
             </div>
           </div>
         </td>
