@@ -15,23 +15,18 @@
     }
 -->
 
-<!-- for some reason, the following style rules don't work 
-    when placed in a css file, so inlining -->
-    <div style="width: 50%; display: flex; height: 100%; float: left">
-        <div style="margin: auto; padding: 10px;">
+<div class="bb-item">
+    <div class="profile-side">
+        <div class="side-content">
             <div class="ui two column padded grid">
-                <div class="right aligned column" style="display: flex">
-                    <div style="margin: auto">
-                        <img class="dp ui medium image" src="profilepic/{{photoName}}">
-                    </div>
+                <div class="right aligned column profile-dp-container">
+                    <img class="dp ui medium image" :src="'profilepic/' + profile.photoName">
                 </div>
-                <div class="column" style="display: flex">
-                    <div class="ui" style="margin: auto">
-                        <div class="ui center aligned">
-                            <h1 class="ui header">{{name}}</h1>
-                            <h4 class="ui header">{{rollNumber}}, {{department}}</h4>
-                            <h4 class="ui header"><i class="calendar icon"></i>{{dob}}</h4>
-                        </div>
+                <div class="column profile-intro-wrapper">
+                    <div class="ui profile-intro-container">
+                        <h1 class="ui header">{{profile.name}}</h1>
+                        <h4 class="ui header">{{profile.rollNumber}}, {{profile.department}}</h4>
+                        <h4 class="ui header"><i class="calendar icon"></i>Birthday: {{ profile.dob }}</h4>
                     </div>
                 </div>
             </div>
@@ -40,23 +35,25 @@
                 <div class="column">
                     <h2 class="ui header center aligned">Contact</h2>
                     <div class="ui divider"></div>
-                    <h5 class="ui left aligned header"><i class="home icon"></i>{{address}}</h5>
-                    <h4 class="ui left aligned header"><i class="mail icon"></i>{{email}}</h4>
-                    <h5 class="ui left aligned header"><i class="phone icon"></i>{{contact}}</h5>
+                    <h4 class="ui left aligned header"><i class="home icon"></i>{{profile.address}}</h4>
+                    <h4 class="ui left aligned header"><i class="mail icon"></i>{{profile.email}}</h4>
+                    <h4 class="ui left aligned header"><i class="phone icon"></i>{{profile.contact}}</h4>
                 </div>
                 <div class="ui center aligned column">
                     <h2 class="ui header center aligned">Hostels</h2>
                     <div class="ui divider"></div>
-                    <h5 class="ui center aligned header" v-for="hostel in hostels">{{hostel}}</h5>
+                    <h5 class="ui center aligned header" v-if="profile.hostels.length == 0">Hostels not available</h5>
+                    <h5 class="ui center aligned header" track-by="$index" v-for="hostel in profile.hostels">{{hostel}}</h5>
                 </div>
             </div>
         </div>
     </div>
-    <div style="width: 50%; display: flex; height: 100%; float: left">
-        <div style="margin: auto; padding: 10px;">
-            <template v-for="question in questions">
-                <h4>{{ question.title }}</h4>
+    <div class="profile-side">
+        <div class="side-content bio">
+            <template v-for="question in bio.responses">
+                <h4>{{question.description}}</h4>
                 {{question.response}}
             </template>
         </div>
     </div>
+</div>
