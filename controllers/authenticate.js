@@ -57,6 +57,10 @@ var generateDN = function (rollNumber) {
 };
 
 var authenticate=function(username, password, callback){
+  // var success = {
+  //   displayName : "Rizwan H",
+  // };
+  // callback(null, success);
   var client = ldap.createClient({
     url: 'ldap://10.0.0.39:389'
   });
@@ -76,6 +80,7 @@ var authenticate=function(username, password, callback){
         }else{
           res.on('searchEntry', function(entry) {
             callback(null,entry.object);
+            client.unbind(function (err) {});
           });
           // res.on('searchReference', function(referral) {
           //   console.log('referral: ' + referral.uris.join());
@@ -89,7 +94,6 @@ var authenticate=function(username, password, callback){
         }
       });
     }
-    client.unbind(function (err) {});
   });
 };
 
