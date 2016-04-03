@@ -37,7 +37,7 @@ var updateProfile = function (rollNumber, data ,callback) {
       doc.address = data.address;
     }
     if (data.contact){
-      doc.hostels = data.hostels;
+      doc.contact = data.contact;
     }
     if (typeof data.hardCopyRequested !== 'undefined'){
       doc.hardCopyRequested = data.hardCopyRequested;
