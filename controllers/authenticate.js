@@ -87,6 +87,7 @@ var authenticate=function(username, password, callback){
           // });
           res.on('error', function(err) {
             console.error('error: ' + err.message);
+            client.unbind(function (err) {});
           });
           // res.on('end', function(result) {
             // console.log('status: ' + result.status);
