@@ -26,6 +26,7 @@ var getUserByRollNumber = function (req, res, next) {
       };
       if (requestedBy === user.rollNumber){
         response.hardCopyRequested = user.hardCopyRequested;
+        response.lastLogin = user.lastLogin;
       }
       res.json(response);
     }
