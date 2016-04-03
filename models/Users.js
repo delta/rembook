@@ -13,7 +13,7 @@ var userSchema = new Schema({
   hostels:            [String],
   photoName:          String,
   hardCopyRequested:  Boolean,
-  lastLogin:         { type: Date, default: Date.now },
+  lastLogin:         { type: Date, default: null },
 });
 
 var User = mongoose.model('User', userSchema);
@@ -65,6 +65,14 @@ var createProfile = function (rollNumber, data ,callback) {
       }).catch(function (err){
         callback(err);
       });
+    }else if (typeof data.lastLogin !== 'undefined'){
+      doc.lastLogin = data.lastLogin;
+      doc.save().then(function (doc) {
+        callback(null, doc);
+      }).catch(function (err) {
+        callback(err);
+      });
+      callback();
     }else{
       console.log("User Exists", doc.rollNumber);
     }
