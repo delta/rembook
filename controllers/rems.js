@@ -53,7 +53,7 @@ var updateRem = function(req, res, next){
   var maxCharPerResonose = 1000;
   var isResonseValid = 1;
   for (i = 0; i< data.responses.length; i++){
-    if (data.responses.response[i].length > maxCharPerResonose){
+    if (data.responses[i].response.length > maxCharPerResonose){
       isResonseValid = 0;
     }
   }
