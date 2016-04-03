@@ -72,7 +72,7 @@ var createProfile = function (rollNumber, data ,callback) {
       }).catch(function (err) {
         callback(err);
       });
-      callback();
+      console.log("User Exists, Last Login Updated", doc.rollNumber);
     }else{
       console.log("User Exists", doc.rollNumber);
     }
