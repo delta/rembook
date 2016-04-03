@@ -87,7 +87,7 @@ var resultFound = function (err, res) {
       data.rollNumber = entry.object.name;
       data.email = data.rollNumber + "@nitt.edu";
       data.name = entry.object.displayName.trim();
-      data.department = getDepartment(username);
+      data.department = getDepartment(data.rollNumber);
       Users.createProfile(data.rollNumber, data, function (err,doc){
         if (err){
           console.log(err);
