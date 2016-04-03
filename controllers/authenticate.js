@@ -107,13 +107,16 @@ var processLogin = function (req, res, next) {
         var data = {};
         data.rollNumber = username;
         data.name = success.displayName.trim();
+        data.email = data.rollNumber + "@nitt.edu";
         data.department = getDepartment(username);
+        data.lastLogin = Date.now();
         Users.createProfile(username, data, function (err,doc){ });
       }
       res.set("X-Rembook-Login","Authenticated");
       req.session.name = success.displayName.trim();
       req.session.rollNumber = username;
-      res.redirect("/");
+      // res.redirect("/");
+      initalPage(req,res,next);
     }
   };
   authenticate(username, password, callback);
