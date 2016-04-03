@@ -27,12 +27,8 @@ var printMyRemPreview = function (req, res, next){
       //Generrate PDF
       var config = {
         directory:"./pdfs/",
-        // width:"595px",
-        // height:"1000px",
-        // format:"A4"
         width:"700px",
         height:"14in",
-        // orientation:"portrait",
         border:{
           "top": "0.5in",
           "right": "0.5in",
