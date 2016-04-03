@@ -70,6 +70,71 @@ header {
 	background: rgba(255,255,255,0.95);
 }
 
+.profile-side {
+	width: 50% !important;
+	display: flex !important;
+	height: 100% !important;
+	float: left !important;
+}
+
+.profile-side .dp {
+	max-width: 250px;
+}
+
+.side-content {
+	width: 100%;
+	margin: auto !important;
+	padding: 10px !important;
+}
+
+.side-content.bio {
+	padding: 20px !important;
+}
+
+.profile-intro-wrapper {
+	display: flex !important;
+}
+
+.profile-intro-container {
+	margin: auto !important;
+}
+
+.rem-page {
+	width: 100% !important;
+	display: flex !important;
+	height: 100% !important;
+	font-family: 'Comic Sans MS'
+}
+
+.rem-author-name {
+	display: flex !important;
+	margin-top: 15px !important;
+}
+
+.rem-trivia-container h4 {
+	margin: 20px 0 0 0 !important;
+}
+
+.rem-memories-column {
+	display: flex !important;
+}
+
+.rem-memories-wrapper {
+	margin: auto 10px !important;
+}
+
+.rem-memories-container {
+	-webkit-column-width: 300px !important;
+	-moz-column-width: 300px !important;
+	-ms-column-width: 300px !important;
+	-o-column-width: 300px !important;
+	column-width: 300px !important;
+}
+
+img.rem-pic {
+	margin: 15px auto !important;
+}
+
 footer {
 	position: fixed;
 	bottom: 0;
@@ -102,20 +167,6 @@ footer {
 	width: 100%;
 	float: left;
 	overflow-y: auto;
-}
-
-.rem-page, .rem-firstpage {
-	//display: flex !important;
-	width: 50%;
-	height: 100%;
-	padding: 3%;
-	float: left;
-	//border: 1px solid black;
-}
-
-.rem-pagecontent {
-	margin: auto;
-	width: 100%;
 }
 
 @font-face {
