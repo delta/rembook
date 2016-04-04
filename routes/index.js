@@ -8,6 +8,10 @@ var notifications = require('../controllers/notifications');
 var printMyRem = require('../controllers/printMyRem');
 var profilepic = require('./profilepic');
 var finalRembook = require('../controllers/finalRembook');
+var multer = require('multer');
+var upload = multer({
+  dest:"./public/rempic",
+});
 
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Rembook' });
@@ -22,6 +26,7 @@ router.post('/bio/', bio.editBioOf);
 router.get('/rem/:rollNumber', rems.getAllRemsTo);
 router.post('/rem/:rollNumber', rems.updateRem);
 router.post('/rem/approve/:id', rems.approveRem);
+router.post('/rempic/:rollNumber', upload.single('remPic'), rems.uploadPic);
 router.get('/notifications',notifications.getAllNotifications);
 router.get('/search',users.search);
 router.get('/printMyRemPreview', printMyRem.printMyRemPreview );
