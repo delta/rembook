@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 
 var Profile = Backbone.Model.extend({
 	idAttribute: "rollNumber",
-	urlRoot: "profile",
+	urlRoot: "/profile",
 	defaults: {
 		name:               "Name not available",
 		rollNumber:         "Roll number not available",

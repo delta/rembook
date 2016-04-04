@@ -6,7 +6,7 @@ var Rems = Backbone.Collection.extend({
 		this.rollNumber = options.rollNumber;
 	},
 	url: function() {
-		return "rem/" + this.rollNumber;
+		return "/rem/" + this.rollNumber;
 	},
 	model: Rem,
 	parse: function(response) {
