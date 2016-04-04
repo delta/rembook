@@ -7,10 +7,12 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var sessionCheck = require('./controllers/session-check');
 var routes = require('./routes/index');
+var globalConfig = require('./config').config;
+
 
 var app = express();
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/rembook');
+mongoose.connect(globalConfig.db);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var globalConfig = require('../config').config;
+
 
 var remSchema = new Schema({
   from : String,
@@ -15,7 +17,7 @@ var remSchema = new Schema({
               }]
 });
 
-var maxRemsForPrint = 5;
+var maxRemsForPrint = globalConfig.maxRemsForPrint;
 
 var Rem = mongoose.model('Rem', remSchema);
 
