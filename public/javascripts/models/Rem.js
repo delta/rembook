@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 
 var Rem = Backbone.Model.extend({
 	idAttribute: "id",
-	url: "rem",
+	url: "/rem",
 	defaults: {
 		from: '',
 		fromName: '',
@@ -27,12 +27,14 @@ var Rem = Backbone.Model.extend({
 		var ret = obj;
 		ret.trivia = [];
 		for(var q of obj.responses) {
-			if (/memories/i.test(__RemBookInit__.questions[q.questionId].title)) {
+			if (/about/i.test(__RemBookInit__.questions[q.questionId].title)) {
 				ret.memories = q.response;
 			}
 			else {
 				ret.trivia.push({
 					title: __RemBookInit__.questions[q.questionId].title,
+					description: __RemBookInit__.questions[q.questionId].description,
+					bio_description: __RemBookInit__.questions[q.questionId].bio_description,
 					response: q.response
 				});
 			}
