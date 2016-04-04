@@ -181,7 +181,6 @@
 		_navigate : function( dir, page ) {
 
 			if ( this.isAnimating ) {
-				throw new Error("RemBook Hack: BookBlock currently animating");
 				return false;
 			}
 
@@ -491,6 +490,8 @@
 
 	$.fn.bookblock = function( options ) {
 		if ( typeof options === 'string' ) {
+			var retval = null;
+
 			var args = Array.prototype.slice.call( arguments, 1 );
 			this.each(function() {
 				var instance = $.data( this, 'bookblock' );
@@ -503,8 +504,13 @@
 					logError( "no such method '" + options + "' for bookblock instance" );
 					return;
 				}
-				instance[ options ].apply( instance, args );
+				retval = instance[ options ].apply( instance, args );
 			});
+
+			if(retval === null)
+				retval = this;
+
+			return retval;
 		} 
 		else {
 			this.each(function() {	
