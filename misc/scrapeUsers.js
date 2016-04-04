@@ -1,3 +1,12 @@
+var username =""; //Octa Username
+var password = ""; //Octa Password
+//Add rollNumbers below
+var init= [
+  {start:"111113001", end:"111113101"},
+  {start:"107113001", end:"107113106"},
+
+];
+
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/rembook');
 var Users = require('../models/Users');
@@ -64,17 +73,10 @@ var generateRollNumbers = function (init ,rollNumbers) {
 };
 
 
-var username ="";
-var password = "";
 var cn = username+'@'+domain;
 client.bind(cn,password,function(err){});
 
 var i;
-var init= [
-  {start:"111113001", end:"111113101"},
-  {start:"107113001", end:"107113106"},
-
-];
 var rollNumbers = [];
 generateRollNumbers(init, rollNumbers);
 
