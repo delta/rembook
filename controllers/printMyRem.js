@@ -7,7 +7,7 @@ var pdf = require('html-pdf');
 var globalConfig = require('../config').config;
 
 
-var printMyRemPreview = function (req, res, next){
+var printMyRem = function (req, res, next){
   var rollNumber = req.session.rollNumber;
   Promise.all([
     Users.getUserByRollNumber(rollNumber),
@@ -55,4 +55,4 @@ var printMyRemPreview = function (req, res, next){
     next(err);
   });
 };
-module.exports.printMyRemPreview = printMyRemPreview;
+module.exports.printMyRem = printMyRem;

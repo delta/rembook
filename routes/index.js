@@ -29,7 +29,7 @@ router.post('/rem/approve/:id', rems.approveRem);
 router.post('/rempic/:rollNumber', upload.single('remPic'), rems.uploadPic);
 router.get('/notifications',notifications.getAllNotifications);
 router.get('/search',users.search);
-router.get('/printMyRemPreview', printMyRem.printMyRemPreview );
+router.get('/printMyRem', printMyRem.printMyRem );
 router.get('/logout', login.logout);
 router.get('/finalRembook',finalRembook.download);
 
