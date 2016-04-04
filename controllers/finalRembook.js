@@ -80,14 +80,14 @@ var download = function(req, res, next){
             timeout:150000
           };
 
-          // pdf.create(html, config).toFile(function(err, result){
-          //   if (err){
-          //     next(err);
-          //   }else{
-          //     res.download(result.filename);
-          //   }
-          // });
-          res.send(html);
+          pdf.create(html, config).toFile(function(err, result){
+            if (err){
+              next(err);
+            }else{
+              res.download(result.filename);
+            }
+          });
+          // res.send(html);
         }
       });
   }).catch(function(err){
