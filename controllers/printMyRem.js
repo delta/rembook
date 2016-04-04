@@ -44,7 +44,13 @@ var printMyRem = function (req, res, next){
         if (err){
           next(err);
         }else{
-          res.download(result.filename);
+          res.download(result.filename, "MyRems.pdf", function (err) {
+            fs.unlink(result.filename, function(err){
+              if(err){
+                console.log(err);
+              }
+            });
+          });
         }
       });
 
