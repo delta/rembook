@@ -7,6 +7,7 @@ var remSchema = new Schema({
   to : String,
   toName : String,
   approved: Boolean,
+  photoName: {type :String, default:""},
   print : Boolean,
   responses:  [{
                 questionId:   Schema.Types.ObjectId,
@@ -107,8 +108,21 @@ var approveRemForPrint = function (id, requestedBy, approved,callback) {
 var getAllApprovedForPrintRems = function (rollNumber) {
   return Rem.find({print:true});
 };
+
+var updateRemPhoto = function (from, to, photoName, callback) {
+  Rem.findOne({from : from, to : to}).then(function (doc) {
+    doc.photoName = photoName;
+    doc.save().then(function (doc) {
+      callback(null, doc);
+    }).catch(function (err){
+      callback(err);
+    });
+  });
+};
+
 module.exports.getAllRemsTo = getAllRemsTo;
 module.exports.updateRem = updateRem;
 module.exports.approveRemForPrint = approveRemForPrint;
 module.exports.approveRemForDisplay = approveRemForDisplay;
 module.exports.getAllApprovedForPrintRem = getAllApprovedForPrintRems;
+module.exports.updateRemPhoto = updateRemPhoto;

@@ -1,5 +1,7 @@
 var Rem = require('../models/Rems');
 var Notification = require('../models/Notifications');
+var fs = require('fs');
+var easyimage = require('easyimage');
 
 var getAllRemsTo = function (req, res, next) {
   var rollNumber = req.params.rollNumber;
@@ -28,6 +30,7 @@ var getAllRemsTo = function (req, res, next) {
         rem.from = doc[i].from;
         rem.fromName = doc[i].fromName;
         rem.responses = doc[i].responses;
+        rem.photoName = doc[i].photoName;
         rems.push(rem);
       }
       response.rems = rems;
@@ -86,6 +89,54 @@ var updateRem = function(req, res, next){
   }
 };
 
+var uploadPic = function(req, res, next){
+  var from = req.session.rollNumber;
+  var fromName = req.session.name;
+  var to = req.params.rollNumber;
+  var ext = req.file.mimetype.split("/")[1];
+  var fileType = req.file.mimetype.split("/")[0];
+  var response = {};
+  if (fileType !== "image"){
+    fs.unlink(req.file.path, function(err,data){
+      if (err){
+        next(err);
+      }else {
+        response.success = 0;
+        response.message = "Not a Image File";
+        res.json(response);
+      }
+    });
+  }else{
+    var photoName = from + "_" + to + ".jpg";
+    var finalPath = "./public/rempic/"+photoName;
+    easyimage.convert({
+      src:req.file.path,
+      dst:finalPath,
+      quality:100,
+    })
+    .then(function(file){
+      fs.unlink(req.file.path,function(err){
+        console.log(err);
+      });
+      var callback = function (err, doc) {
+        if (err){
+          next(err);
+        }else {
+          var notificationCallback = function (err, doc) {};
+          var message = fromName +" uploaded a Photo";
+          Notification.notify(to, message, notificationCallback);
+          response.success = 1;
+          response.message = "";
+          res.json(response);
+        }
+      };
+      Rem.updateRemPhoto(from, to, photoName, callback);
+    })
+    .catch(function(err){
+      next(err);
+    });
+  }
+};
 var approveRem = function(req, res, next){
   var id = req.params.id;
   var requestedBy = req.session.rollNumber;
@@ -122,3 +173,4 @@ var approveRem = function(req, res, next){
 module.exports.getAllRemsTo = getAllRemsTo;
 module.exports.updateRem = updateRem;
 module.exports.approveRem = approveRem;
+module.exports.uploadPic = uploadPic;
