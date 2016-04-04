@@ -145,7 +145,8 @@
 
   <div class="rembookPage" ng-repeat="page in pages">
     <div class="leftPage">
-      <div class="name centerAlign">{{page.left.user.name}}
+      <div class="name centerAlign">
+        <span>{{page.left.user.name}}</span>
       </div>
       <img ng-src="{{getProfilePic(page.left.user)}}" class="profilepic" >
       <div class="rollNumber centerAlign">
@@ -178,7 +179,7 @@
     </div>
     <div class="rightPage">
       <div class="name centerAlign">
-        {{page.right.user.name}}
+        <span>{{page.right.user.name}}<span>
       </div>
       <img ng-src="{{getProfilePic(page.right.user)}}" class="profilepic">
       <div class="rollNumber centerAlign">

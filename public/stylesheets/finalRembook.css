@@ -21,14 +21,20 @@ body{
   position: relative;
 }
 .leftPage .name, .leftPage .rollNumber{
-  font-size: 45px;
+  font-size: 50px;
   position: absolute;
   left: 260px;
   /*border: 1px solid #000;*/
   height: 145px;
   line-height: 145px;
   width: 900px;
-  font-family: LithosProRegular
+  font-family: LithosProRegular;
+}
+ .name span{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  margin-top: 15px;
 }
 .name{
   top: 225px;
@@ -121,7 +127,7 @@ body{
   line-height: 145px;
   width: 900px;
   font-family: LithosProRegular;
-  font-size: 45px;
+  font-size: 50px;
 }
 .rightPage .profilepic{
   left:1835px;
