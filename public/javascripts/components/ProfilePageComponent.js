@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 var ProfilePageComponent = Vue.extend({
-    template: require('../../templates/profile.tmpl')
+    template: require('../../templates/ProfilePageComponent.tmpl')
 });
 
 Vue.component('profile-page', ProfilePageComponent);

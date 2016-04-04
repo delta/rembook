@@ -1,32 +1,64 @@
 import Vue from 'vue';
+import Backbone from 'backbone';
 
 Vue.config.debug = true;
 
 var RemBook = require('./models/RemBook');
 var ProfilePageComponent = require('./components/ProfilePageComponent');
 var RemsComponent = require('./components/RemsComponent');
+var RemBookRouter = null;
 
-new ProfilePageComponent({
-	el: '#profile-page-mount-point',
-	data: {
-		profile: RemBook.currentRemBookOf.Profile.attributes,
-		bio: RemBook.currentRemBookOf.Bio.attributes
+function goLeft() {
+	if(RemBook.currentRemPage >= 2) {
+		safelyTurnPageTo(RemBook.currentRemPage - 1);
 	}
-});
+	else {
+		$('.rem-bookblock').bookblock( 'prev' );
+	}
+}
+
+function goRight() {
+	if(RemBook.currentRemPage <= RemBook.currentRemBookOf.Rems.models.length) {
+		safelyTurnPageTo(RemBook.currentRemPage + 1);
+	}
+	else {
+		$('.rem-bookblock').bookblock( 'next' );
+	}
+}
+
+function safelyTurnPageTo(page) {
+	// a very dirty hack below.
+	// Changed the bookblock plugin to
+	// throw an error saying "RemBook Hack: BookBlock currently animating"
+	// whenever it is currently animating and we command it 
+	// to jump. This is required because BookBlock ignores any commands
+	// given to it while it is animating, and we need to know 
+	// when it ignores that, so that we don't update the 
+	// current window location.
+	try {
+		RemBook.loadRemPage(RemBook.currentRemBookOf.attributes.rollNumber, page);
+	}
+	catch(e) {
+		if(/hack/i.test(e.message))
+			return;
+	}
+	if(page == 1) {
+		RemBookRouter.navigate(RemBook.currentRemBookOf.attributes.rollNumber + "/profile/");
+	}
+	else {
+		RemBookRouter.navigate(RemBook.currentRemBookOf.attributes.rollNumber + "/rems/" + (page-1));
+	}
+}
 
 function restartBookBlock() {
 	var Page = (function() {
 
 		var config = {
-			$bookBlock : $( '.rem-bookblock' ),
-			$navNext : $( '#bb-nav-next' ),
-			$navPrev : $( '#bb-nav-prev' ),
-			$navFirst : $( '#bb-nav-first' ),
-			$navLast : $( '#bb-nav-last' )
+			$bookBlock : $( '.rem-bookblock' )
 		},
 		init = function() {
 			config.$bookBlock.bookblock( {
-				speed : 1250,
+				speed : 1000,
 				shadowSides : 0.8,
 				shadowFlip : 0.5
 			} );
@@ -35,27 +67,6 @@ function restartBookBlock() {
 		initEvents = function() {
 
 			var $slides = config.$bookBlock.children();
-
-			// add navigation events
-			config.$navNext.on( 'click touchstart', function() {
-				config.$bookBlock.bookblock( 'next' );
-				return false;
-			} );
-
-			config.$navPrev.on( 'click touchstart', function() {
-				config.$bookBlock.bookblock( 'prev' );
-				return false;
-			} );
-
-			config.$navFirst.on( 'click touchstart', function() {
-				config.$bookBlock.bookblock( 'first' );
-				return false;
-			} );
-
-			config.$navLast.on( 'click touchstart', function() {
-				config.$bookBlock.bookblock( 'last' );
-				return false;
-			} );
 
 			// add swipe events
 			$slides.on( {
@@ -71,8 +82,10 @@ function restartBookBlock() {
 
 			// add keyboard events
 			$( document ).keydown( function(e) {
-				var keyCode = e.keyCode || e.which,
-				arrow = {
+				if(e.target != document.body) return true;
+				var keyCode = e.keyCode || e.which;
+
+				var arrow = {
 					left : 37,
 					up : 38,
 					right : 39,
@@ -81,10 +94,10 @@ function restartBookBlock() {
 
 				switch (keyCode) {
 					case arrow.left:
-					config.$bookBlock.bookblock( 'prev' );
+					goLeft();
 					break;
 					case arrow.right:
-					config.$bookBlock.bookblock( 'next' );
+					goRight();
 					break;
 				}
 			});
@@ -110,5 +123,56 @@ function renderRems() {
 
 	restartBookBlock();
 }
-RemBook.currentRemBookOf.Rems.on('update', renderRems)
-renderRems();
+
+function onChangeBook() {
+	new ProfilePageComponent({
+		el: '#profile-page-mount-point',
+		data: {
+			profile: RemBook.currentRemBookOf.Profile.attributes,
+			bio: RemBook.currentRemBookOf.Bio.attributes
+		}
+	});
+
+	RemBook.currentRemBookOf.Rems.on('update', renderRems)
+	renderRems();
+}
+
+function onChangeRemPage() {
+	$(".rem-bookblock").bookblock('jump', RemBook.currentRemPage);
+}
+
+RemBook.on('changeRemBook', onChangeBook);
+RemBook.on('changeRemPage', onChangeRemPage);
+
+
+var _RemBookRouter = Backbone.Router.extend({
+	routes: {
+		"(/)": "root",
+		"login(/)": "root",
+		":rollNumber/profile(/)": "profile",
+		":rollNumber/rems(/)": "rems",
+		":rollNumber/rems/:page(/)": "rems",
+		":rollNumber/rems/write(/)": "writeRem",
+		"*path": "root"
+	},
+	"root": function root() {
+		this.navigate(RemBook.currentUser.attributes.rollNumber + "/profile/", { trigger: true });
+	},
+	"profile": function profile(rollNumber) {
+		safelyTurnPageTo(1);
+	},
+	"rems": function rems(rollNumber, page) {
+		page = parseInt(page || 2);
+		page = page > 1 ? page : 2;
+
+		safelyTurnPageTo(page);
+	},
+	"writeRem": function writeRem(rollNumber) {
+		alert("Screw you");
+	}
+});
+
+RemBookRouter = new _RemBookRouter();
+
+Backbone.history.start();
+//onChangeBook();
