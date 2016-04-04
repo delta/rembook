@@ -181,6 +181,7 @@
 		_navigate : function( dir, page ) {
 
 			if ( this.isAnimating ) {
+				throw new Error("RemBook Hack: BookBlock currently animating");
 				return false;
 			}
 

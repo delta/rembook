@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 var RemsComponent = Vue.extend({
-    template: require('../../templates/rems.tmpl')
+    template: require('../../templates/RemsComponent.tmpl')
 });
 
 Vue.component('rems-component', RemsComponent);

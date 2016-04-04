@@ -3,6 +3,7 @@
 <head>
     <title><%= title %></title>
     <script>
+      var __RemBookInit__ = <%- JSON.stringify(init) %>;
       var _questions = {};
       for(var q of __RemBookInit__.questions)
         _questions[q._id] = q;
@@ -37,7 +38,7 @@
             <i class="newspaper icon center aligned"></i>
             <div>Profile</div>
         </a>
-        <a href="#">
+        <a href="#106114062/rems/">
             <i class="comments outline icon center aligned"></i>
             <div>Rems</div>
         </a>
