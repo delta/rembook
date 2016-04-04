@@ -46,6 +46,14 @@ body{
   width: 460px;
   /*border: 1px solid #000;*/
 }
+.about{
+  position: absolute;
+  top:1140px;
+  height: 1075px;
+  width: 1350px;
+  /*border: 1px solid #000;*/
+  overflow: hidden;
+}
 .centerAlign{
   text-align: center;
 }
@@ -86,6 +94,9 @@ body{
 .leftPage .department{
   left:-70px;
 }
+.leftPage .about {
+  left:260px;
+}
 .rightPage .name, .rightPage .rollNumber {
   position: absolute;
   left: 2360px;
@@ -113,4 +124,7 @@ body{
 }
 .rightPage .department{
   left:3200px;
+}
+.rightPage .about{
+  left:1885px;
 }
