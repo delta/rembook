@@ -58,7 +58,7 @@ var createProfile = function (rollNumber, data ,callback) {
       user.department = data.department;
       user.name = data.name;
       user.hardCopyRequested = false;
-      user.photoName = data.rollNumber+"_temp.jpg";
+      user.photoName = "profilepic_temp.jpg";
       user.save().then(function (doc) {
         console.log("User Created:", doc.rollNumber);
         callback(null, doc);
