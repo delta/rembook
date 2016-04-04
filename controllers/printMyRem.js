@@ -39,7 +39,6 @@ var printMyRemPreview = function (req, res, next){
         phantomPath:"./node_modules/phantomjs/bin/phantomjs"
       };
 
-      var testhtml= "<html><body>Hello</body></html>";
       pdf.create(html, config).toFile(function(err, result){
         if (err){
           next(err);
