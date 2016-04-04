@@ -5,6 +5,8 @@ var upload = multer({
 var fs = require('fs');
 var easyimage = require('easyimage');
 var User = require('../models/Users');
+var globalConfig = require('../config').config;
+
 
 module.exports.uploadFile = function (router) {
   router.post('/profilepic', upload.single('profilepic'), function (req, res, next) {
@@ -24,7 +26,7 @@ module.exports.uploadFile = function (router) {
       });
     }else{
       var fileName=rollNumber+".jpg";
-      var finalPath = "./public/profilepic/"+rollNumber+".jpg";
+      var finalPath = globalConfig.profilePicPath + rollNumber+".jpg";
       easyimage.convert({
         src:req.file.path,
         dst:finalPath,

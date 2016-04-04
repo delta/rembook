@@ -4,6 +4,7 @@ var Bios = require('../models/Bio');
 var Questions = require('../models/Questions');
 var fs = require('fs');
 var pdf = require('html-pdf');
+var globalConfig = require('../config').config;
 
 var download = function(req, res, next){
   Promise.all([
@@ -72,11 +73,11 @@ var download = function(req, res, next){
           next(err);
         }else{
           var config = {
-            directory:"./pdfs/",
+            directory:globalConfig.pdfsDirectory,
             height:"2480px",
             width:"3508px",
-            base:"file:///home/rizwan/projects/rembook/public/",
-            phantomPath:"./node_modules/phantomjs/bin/phantomjs",
+            base: globalConfig.base,
+            phantomPath: globalConfig.phantomPath,
             timeout:150000
           };
 
