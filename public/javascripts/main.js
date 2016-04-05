@@ -7,6 +7,7 @@ var RemBook = require('./models/RemBook');
 var ProfilePageComponent = require('./components/ProfilePageComponent');
 var RemsComponent = require('./components/RemsComponent');
 var ConditionallyEditableComponent = require('./components/ConditionallyEditableComponent');
+var ConditionallyEditableTextAreaComponent = require('./components/ConditionallyEditableTextAreaComponent');
 var NavComponent = require('./components/NavComponent');
 
 var RemBookRouter = null;
@@ -37,9 +38,9 @@ function goRight() {
 
 function safelyTurnPageTo(rollNumber, page) {
 	if (!bookBlock || bookBlock.bookblock('isActive'))
-		return setTimeout(function() {
+		return ;/*setTimeout(function() {
 			safelyTurnPageTo(rollNumber, page)
-		}, 500);
+		}, 400);*/
 
 	RemBook.loadRemPage(rollNumber, page);
 	if(page == 1) {
@@ -74,7 +75,7 @@ function restartBookBlock() {
 	$bookBlock = $( '.rem-bookblock' );
 	var init = function() {
 		bookBlock = $bookBlock.bookblock({
-			speed : 1000,
+			speed : 800,
 			shadowSides : 0.8,
 			shadowFlip : 0.5
 		});
@@ -126,11 +127,48 @@ function updateNav() {
 }
 
 function onChangeBook() {
+	function changeBio(e) {
+		var questionId = e.dataId.match(/\#(.+)/)[1];
+		var responses = RemBook.currentRemBookOf.Bio.attributes.responses;
+		for(var [i,q] of responses.entries()) {
+			if(questionId == q._id) {
+				responses[i].response = e.newValue;
+			}
+		}
+		RemBook.currentRemBookOf.Bio.save({
+			responses: responses
+		});
+	}
+
+	function changeRegularProfile(e) {
+		RemBook.currentRemBookOf.Profile.set(e.dataId, e.newValue);
+		RemBook.currentRemBookOf.Profile.save();
+	}
+
+	function changeHostel(e) {
+		var hostelId = parseInt(e.dataId.match(/\#(.+)/)[1]);
+		var hostels = RemBook.currentRemBookOf.Profile.attributes.hostels;
+		hostels[hostelId] = e.newValue;
+		RemBook.currentRemBookOf.Profile.set('hostels', hostels);
+		RemBook.currentRemBookOf.Profile.save();
+	}
+
 	new ProfilePageComponent({
 		el: '#profile-page-mount-point',
 		data: {
 			profile: RemBook.currentRemBookOf.Profile.attributes,
-			bio: RemBook.currentRemBookOf.Bio.attributes
+			bio: RemBook.currentRemBookOf.Bio.attributes,
+			questionMap: __RemBookInit__.questions
+		},
+		events: {
+			change: function(e) {
+				if(/hostel\#/i.test(e.dataId))
+					changeHostel(e);
+				else if(/question\#/.test(e.dataId))
+					changeBio(e);
+				else
+					changeRegularProfile(e);
+			}
 		}
 	});
 

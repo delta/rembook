@@ -8,10 +8,11 @@ var defaults = {
 for(var key of Object.keys(__RemBookInit__.questions)) {
 	var question = __RemBookInit__.questions[key];
 	defaults.responses.push({ 
+		_id: question._id,
 		title: question.title, 
 		description: question.descriptiion, 
 		bio_description: question.bio_description, 
-		response: 'N/A' 
+		response: '' 
 	});
 }
 

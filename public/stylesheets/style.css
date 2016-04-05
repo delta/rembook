@@ -131,6 +131,44 @@ header {
 	column-width: 300px !important;
 }
 
+.conditionally_editable span {
+	width: 80%;
+	display: inline-block;
+}
+
+.editable input,
+.editable textarea {
+	-webkit-transition: 0.1s all;
+	-moz-transition: 0.1s all;
+	-o-transition: 0.1s all;
+	-ms-transition: 0.1s all;
+	transition: 0.1s all;
+	border: 1px solid transparent !important;
+	border-radius: 4px;
+}
+
+.editable input,
+.editable textarea {
+	border: none;
+	width: 80%;
+}
+
+.editable textarea {
+	border-bottom: 1px solid black !important;
+    display:inline-block;
+    min-height:10px;
+}
+
+.editable input:hover, .editable input:focus,
+.editable textarea:hover, .editable textarea:focus {
+	border-bottom: 1px solid black !important;
+}
+
+.editable input:focus,
+.editable textarea:focus {
+	outline: none;
+}
+
 img.rem-pic {
 	margin: 15px auto !important;
 }

@@ -6,12 +6,12 @@ var Profile = Backbone.Model.extend({
 	defaults: {
 		name:               "Name not available",
 		rollNumber:         "Roll number not available",
-		email:              "Email not available",
-		contact:            "Contact not available",
-		address:            "Address not available",
-		hostels:          	['Hostel not available'],
-		dob:                "N/A",
-		department:         "Department not available",
+		email:              "",
+		contact:            "",
+		address:            "",
+		hostels:          	['','','',''],
+		dob:                "",
+		department:         "",
 		photoName:          "temp.png",
 		hardCopyRequested:  false
 	}

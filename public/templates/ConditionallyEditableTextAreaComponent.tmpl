@@ -1,0 +1,25 @@
+<!-- 
+    Vue-Template for a conditionally editable text area
+
+    Object to be injected: {
+        dataId: String,
+        data: String,
+		placeholder: String,
+        maxLength: int,
+        editable: bool
+    }
+-->
+
+<div :class="{'editable' : editable, 'editing': _editing_}" class="conditionally_editable">
+	<div v-show="!editable">{{data && data.trim() ? data : placeholder}}</div>
+	<textarea class="_dummy_"
+			v-on:focus="onfocusdummy($event)" 
+			v-show="!_editing_ && editable"
+			:placeholder="placeholder">{{data}}</textarea>
+
+	<textarea class="_real_" 
+			v-show="_editing_" 
+			:placeholder="placeholder"
+			v-on:blur="onblurreal($event)" 
+			v-on:change="onchange($event)">{{data}}</textarea>
+</div>
