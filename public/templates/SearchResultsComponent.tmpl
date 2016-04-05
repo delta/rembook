@@ -1,0 +1,38 @@
+<div class="search-results-container">
+	<div class="topbar">
+		<div class="dropdown-container">
+			<h4 class="ui header">Department</h4>
+			<div class="ui selection dropdown">
+				<input type="hidden" name="department" v-on:change="onchange($event)">
+				<i class="dropdown icon"></i>
+				<div class="default text">Any</div>
+				<div class="menu">
+					<div class="item" data-value="">Any</div>
+					<div class="item" data-value="ARCH">Archi</div>
+					<div class="item" data-value="CIV">Civil</div>
+					<div class="item" data-value="CHEM">Chemical</div>
+					<div class="item" data-value="CSE">CSE</div>
+					<div class="item" data-value="EEE">EEE</div>
+					<div class="item" data-value="ECE">ECE</div>
+					<div class="item" data-value="ICE">ICE</div>
+					<div class="item" data-value="MECH">Mech</div>
+					<div class="item" data-value="PROD">Prod</div>
+					<div class="item" data-value="MME">MME</div>
+				</div>
+			</div>
+		</div>
+
+		<i class="ui right floated close icon big" v-on:click="onclose($event)"></i>
+	</div>
+
+	<div class="search-results">
+		<template v-for="result in results">
+			<a href="#{{result.attributes.rollNumber}}/profile">
+				<img :src="'/profilepic/' + result.attributes.photoName">
+				<span>{{result.attributes.name}}</span>
+				<span>{{result.attributes.department}}</span>
+				<span>{{result.attributes.rollNumber}}</span>
+			</a>
+		</template>
+	</div>
+</div>

@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var User = require('./User');
 var Notifications = require('./Notifications');
+var Search = require('./Search');
 
 var _RemBookLoaded = false;
 var currentUser = {};
@@ -27,6 +28,7 @@ RemBook = {
 	questionMap: __RemBookInit__.questions,
 	notifications: new Notifications(__RemBookInit__.notifications),
 	hardCopyRequested: __RemBookInit__.hardCopyRequested,
+	search: new Search(),
 	_usersCache_: {
 		[currentUser.rollNumber]: currentUser
 	},

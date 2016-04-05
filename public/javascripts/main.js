@@ -8,12 +8,16 @@ var ProfilePageComponent = require('./components/ProfilePageComponent');
 var RemsComponent = require('./components/RemsComponent');
 var ConditionallyEditableComponent = require('./components/ConditionallyEditableComponent');
 var NavComponent = require('./components/NavComponent');
+var SearchControlComponent = require('./components/SearchControlComponent');
+var SearchResultsComponent = require('./components/SearchResultsComponent');
 
 var RemBookRouter = null;
 var $bookBlock = null;
 var bookBlock = null;
 var keyboardEventsHandlerRegistered = false;
 var navComponent = null;
+var searchControlComponent = null;
+var searchResultsComponent = null;
 
 function goLeft() {
 	if(RemBook.currentRemPage >= 2) {
@@ -151,6 +155,7 @@ var _RemBookRouter = Backbone.Router.extend({
 	routes: {
 		"(/)": "root",
 		"login(/)": "root",
+		":rollNumber(/)": "profile",
 		":rollNumber/profile(/)": "profile",
 		":rollNumber/rems(/)": "rems",
 		":rollNumber/rems/:page(/)": "rems",
@@ -158,18 +163,23 @@ var _RemBookRouter = Backbone.Router.extend({
 		"*path": "root"
 	},
 	"root": function root() {
+		searchResultsComponent.onclose();
 		this.navigate(RemBook.currentUser.attributes.rollNumber + "/profile/", { trigger: true, replace: true });
 	},
 	"profile": function profile(rollNumber) {
+		searchResultsComponent.onclose();
+		this.navigate(rollNumber + "/rollNumber", { replace: true});
 		safelyTurnPageTo(rollNumber, 1);
 	},
 	"rems": function rems(rollNumber, page) {
+		searchResultsComponent.onclose();
 		page = parseInt(page || 1);
 		page = page > 1 ? (page+1) : 2;
 
 		safelyTurnPageTo(rollNumber, page);
 	},
 	"writeRem": function writeRem(rollNumber) {
+		searchResultsComponent.onclose();
 		alert("Screw you");
 	}
 });
@@ -184,5 +194,49 @@ navComponent = new NavComponent({
 	}
 });
 
+searchResultsComponent = new SearchResultsComponent({
+	el: '#search-results-mount-point',
+	methods: {
+		_moreResults: function _moreResults() {
+			this.results = RemBook.search.models;
+		},
+		show: function show() {
+			$(this.$el).show();
+			RemBook.search.on('update', this._moreResults);
+		},
+		onclose: function onclose() {
+			$(this.$el).hide();
+			RemBook.search.off('update', this._moreResults);
+		},
+		onchange: function onchange(e) {
+			RemBook.search.setDepartment($(this.$el).find('input').val());
+		}
+	},
+	data: {
+		results: RemBook.search.models
+	}
+});
+
+searchControlComponent = new SearchControlComponent({
+	el: '#search-control-mount-point',
+	methods: {
+		onsearchfocus(e) {
+			searchResultsComponent.show();
+		},
+		oninput(e) {
+			if(this._isDebouncing_) return;
+			else {
+				this._isDebouncing_ = true;
+				var that = this;
+				setTimeout(function() {
+					RemBook.search.setQuery($(that.$el).find('input').val());
+					that._isDebouncing_ = false;
+				}, 300);
+			}
+		}
+	}
+});
+
+searchResultsComponent.init();
 restartBookBlock();
 Backbone.history.start();
