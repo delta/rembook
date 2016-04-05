@@ -1,0 +1,16 @@
+<!-- Nav component
+	Data to be injected: {
+		rollNumber,
+		currentPage
+	}
+ -->
+<nav id="main-nav">
+	<a href="#{{rollNumber}}/profile" :class="currentPage == 1 ? 'selected' : ''">
+		<i class="newspaper icon center aligned"></i>
+		<div>Profile</div>
+	</a>
+	<a href="#{{rollNumber}}/rems/" :class="currentPage == 1 ? '' : 'selected'">
+		<i class="comments outline icon center aligned"></i>
+		<div>Rems</div>
+	</a>
+</nav>

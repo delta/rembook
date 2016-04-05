@@ -6,16 +6,21 @@ Vue.config.debug = true;
 var RemBook = require('./models/RemBook');
 var ProfilePageComponent = require('./components/ProfilePageComponent');
 var RemsComponent = require('./components/RemsComponent');
+var ConditionallyEditableComponent = require('./components/ConditionallyEditableComponent');
+var NavComponent = require('./components/NavComponent');
+
 var RemBookRouter = null;
 var $bookBlock = null;
 var bookBlock = null;
 var keyboardEventsHandlerRegistered = false;
+var navComponent = null;
 
 function goLeft() {
 	if(RemBook.currentRemPage >= 2) {
 		safelyTurnPageTo(RemBook.currentRemBookOf.attributes.rollNumber, RemBook.currentRemPage - 1);
 	}
 	else {
+		// just to give the 'no-more-pages' flip effect
 		$('.rem-bookblock').bookblock( 'prev' );
 	}
 }
@@ -25,6 +30,7 @@ function goRight() {
 		safelyTurnPageTo(RemBook.currentRemBookOf.attributes.rollNumber, RemBook.currentRemPage + 1);
 	}
 	else {
+		// just to give the 'no-more-pages' flip effect
 		$('.rem-bookblock').bookblock( 'next' );
 	}
 }
@@ -114,6 +120,11 @@ function renderRems() {
 	restartBookBlock();
 }
 
+function updateNav() {
+	navComponent.$set('rollNumber', RemBook.currentRemBookOf.Profile.attributes.rollNumber);
+	navComponent.$set('currentPage', RemBook.currentRemPage);
+}
+
 function onChangeBook() {
 	new ProfilePageComponent({
 		el: '#profile-page-mount-point',
@@ -123,17 +134,18 @@ function onChangeBook() {
 		}
 	});
 
+	updateNav();
 	RemBook.currentRemBookOf.Rems.on('update', renderRems)
 	renderRems();
 }
 
 function onChangeRemPage() {
+	updateNav();
 	$(".rem-bookblock").bookblock('jump', RemBook.currentRemPage);
 }
 
 RemBook.on('changeRemBook', onChangeBook);
 RemBook.on('changeRemPage', onChangeRemPage);
-
 
 var _RemBookRouter = Backbone.Router.extend({
 	routes: {
@@ -146,7 +158,7 @@ var _RemBookRouter = Backbone.Router.extend({
 		"*path": "root"
 	},
 	"root": function root() {
-		this.navigate(RemBook.currentUser.attributes.rollNumber + "/profile/", { trigger: true });
+		this.navigate(RemBook.currentUser.attributes.rollNumber + "/profile/", { trigger: true, replace: true });
 	},
 	"profile": function profile(rollNumber) {
 		safelyTurnPageTo(rollNumber, 1);
@@ -163,6 +175,14 @@ var _RemBookRouter = Backbone.Router.extend({
 });
 
 RemBookRouter = new _RemBookRouter();
+
+navComponent = new NavComponent({
+	el: '#nav-component-mount-point',
+	data: {
+		rollNumber: '',
+		currentPage: 1
+	}
+});
 
 restartBookBlock();
 Backbone.history.start();
