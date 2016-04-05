@@ -19,10 +19,10 @@ router.get('/login', function(req, res, next) {
 router.post('/login',login.processLogin);
 router.get('/', login.initalPage);
 router.get('/profile/:rollNumber',users.getUserByRollNumber);
-router.post('/profile/',users.updateProfile);
+router.post('/profile/:rollNumber',users.updateProfile);
 router.post('/hardcopy',users.hardCopyRequest);
 router.get('/bio/:rollNumber',bio.getBioOf);
-router.post('/bio/', bio.editBioOf);
+router.post('/bio/:rollNumber', bio.editBioOf);
 router.get('/rem/:rollNumber', rems.getAllRemsTo);
 router.post('/rem/:rollNumber', rems.updateRem);
 router.post('/rem/approve/:id', rems.approveRem);
