@@ -1,6 +1,7 @@
 var Questions = require('../models/Questions');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/rembook');
+var globalConfig = require('../config').config;
+mongoose.connect(globalConfig.db);
 
 var Qs = [
   {title:"nicknames", description:"Nicknames of", bio_description:"My Nicknames"},
