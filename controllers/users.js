@@ -39,11 +39,9 @@ var getUserByRollNumber = function (req, res, next) {
 var updateProfile = function (req, res, next) {
   var rollNumber = req.session.rollNumber;
   var data = req.body;
-  if (data.hostels){
-    data.hostels = JSON.parse(data.hostels);
-  }
   var callback = function (err, success) {
     if (err){
+      console.log(err);
       next(err);
     }else{
       var response = {
