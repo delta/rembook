@@ -1,0 +1,13 @@
+<!-- 
+    Vue-Template for a conditionally editable field
+
+    Object to be injected: {
+        data: String,
+        maxLength: int,
+        editable: bool
+    }
+-->
+
+<div contenteditable="{{ editable }}">
+	{{data}}
+</div>
