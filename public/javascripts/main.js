@@ -86,19 +86,6 @@ function restartBookBlock() {
 		initEvents();
 	};
 	var initEvents = function() {
-		var $slides = $bookBlock.children();
-			// add swipe events
-		$slides.on( {
-			'swipeleft' : function( event ) {
-				$bookBlock.bookblock( 'next' );
-				return false;
-			},
-			'swiperight' : function( event ) {
-				$bookBlock.bookblock( 'prev' );
-				return false;
-			}
-		} );
-
 		// add keyboard events
 		if(!keyboardEventsHandlerRegistered) {
 			keyboardEventsHandlerRegistered = true;
