@@ -1,0 +1,59 @@
+<!-- 
+    Vue-Template for the profile page
+
+    Object to be injected: {
+        name: String,
+        rollNumber: String,
+        department: String,         => To be formatted
+        dob: Date,                  => To be formatted
+        address: String,
+        email: String,
+        contact: String,
+        hostels: Array<String>
+        questions: Array<{ title, response }>,     => Yet to be handled
+        photoName: String -> Name of the profile photo
+    }
+-->
+
+<div class="bb-item">
+    <div class="profile-side">
+        <div class="side-content">
+            <div class="ui two column padded grid">
+                <div class="right aligned column profile-dp-container">
+                    <img class="dp ui medium image" :src="'/profilepic/' + profile.photoName">
+                </div>
+                <div class="column profile-intro-wrapper">
+                    <div class="ui profile-intro-container">
+                        <conditionally-editable class="ui header" :data.sync="profile.name" :editable="_isEditable_"></conditionally-editable>
+                        <h4 class="ui header">{{profile.rollNumber}}, {{profile.department}}</h4>
+                        <conditionally-editable class="ui header"><i class="calendar icon"></i>Birthday: {{ profile.dob }}</conditionally-editable>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui two column divided grid piled segments center aligned">
+                <div class="column">
+                    <h2 class="ui header center aligned">Contact</h2>
+                    <div class="ui divider"></div>
+                    <h4 class="ui left aligned header"><i class="home icon"></i>{{profile.address}}</h4>
+                    <h4 class="ui left aligned header"><i class="mail icon"></i>{{profile.email}}</h4>
+                    <h4 class="ui left aligned header"><i class="phone icon"></i>{{profile.contact}}</h4>
+                </div>
+                <div class="ui center aligned column">
+                    <h2 class="ui header center aligned">Hostels</h2>
+                    <div class="ui divider"></div>
+                    <h5 class="ui center aligned header" v-if="profile.hostels.length == 0">Hostels not available</h5>
+                    <h5 class="ui center aligned header" track-by="$index" v-for="hostel in profile.hostels">{{hostel}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-side">
+        <div class="side-content bio">
+            <template v-for="question in bio.responses">
+                <h4>{{question.bio_description}}</h4>
+                {{question.response}}
+            </template>
+        </div>
+    </div>
+</div>
