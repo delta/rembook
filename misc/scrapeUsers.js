@@ -16,7 +16,8 @@ var init= [
 ];
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/rembook');
+var globalConfig = require('../config').config;
+mongoose.connect(globalConfig.db);
 var Users = require('../models/Users');
 
 var domain = "octa.edu";
