@@ -9,7 +9,6 @@
 body{
   margin: 0;
   padding: 0;
-  /*border:1px solid #000;*/
   font-size: 45px;
 }
 .rembookPage{
@@ -24,7 +23,6 @@ body{
   font-size: 50px;
   position: absolute;
   left: 260px;
-  /*border: 1px solid #000;*/
   height: 145px;
   line-height: 145px;
   width: 900px;
@@ -45,7 +43,6 @@ body{
 .nicknames{
   position: absolute;
   top: 720px;
-  /*border: 1px solid #000;*/
   width: 1350px;
   font-size: 50px;
   font-family: LithosProRegular
@@ -64,14 +61,12 @@ body{
   line-height: 120px;
   width: 460px;
   font-family: LithosProRegular;
-  /*border: 1px solid #000;*/
 }
 .about{
   position: absolute;
   top:1140px;
   height: 1075px;
   width: 1350px;
-  /*border: 1px solid #000;*/
   overflow: hidden;
   font-family: SegoePrint;
 }
