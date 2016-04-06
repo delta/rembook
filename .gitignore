@@ -3,3 +3,5 @@ public/rempic/*
 node_modules/phantomjs
 pdfs/
 node_modules/
+semantic/*
+semantic.json
