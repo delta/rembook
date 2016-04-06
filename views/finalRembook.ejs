@@ -50,7 +50,7 @@
       if (indexOftemp === -1){
         return "./profilepic/"+user.photoName;
       }else {
-        return "./profilepic/default.png";
+        return "./profilepic/profilepic_temp.jpg";
       }
 
     }
@@ -195,7 +195,7 @@
         {{page.right.user.contact}}
       </div>
       <div class="dob">
-        {{page.right.user.dob}}
+        {{page.right.user.dob|date:'dd.MM.yyyy'}}
       </div>
       <div class="place">
         {{page.right.user.address}}
