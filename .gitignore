@@ -2,3 +2,5 @@ public/profilepic/*
 public/rempic/*
 node_modules/phantomjs
 node_modules/
+semantic/*
+semantic.json

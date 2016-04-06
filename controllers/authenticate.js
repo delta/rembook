@@ -15,36 +15,37 @@ var getDepartment = function (rollNumber) {
   var departmentCode = rollNumber.slice(0,4);
   var department= "";
   switch (departmentCode) {
-    case '1011':
-      department = "ARCH";
-      break;
+  case '1011':
+    department = "ARCHI";
+    break;
     case '1021':
-      department = "CIV";
-      break;
+    department = "CHL";
+    break;
     case '1031':
-      department = "CHEM";
-      break;
+    department = "CIV";
+    break;
     case '1061':
-      department = "CSE";
-      break;
+    department = "CSE";
+    break;
     case '1071':
-      department = "EEE";
-      break;
+    department = "EEE";
+    break;
     case '1081':
-      department = "ECE";
-      break;
+    department = "ECE";
+    break;
     case '1101':
-      department = "ICE";
-      break;
+    department = "ICE";
+    break;
     case '1111':
-      department = "MECH";
-      break;
+    department = "MECH";
+    break;
     case '1121':
-      department = "PROD";
-      break;
+    department = "MME";
+    break;
     case '1141':
-      department = "MME";
-      break;
+    department = "PROD";
+    break;
+
   }
   return department;
 };
