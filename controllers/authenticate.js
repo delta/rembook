@@ -57,11 +57,6 @@ var generateDN = function (rollNumber) {
 };
 
 var authenticate=function(username, password, callback){
-   var success = {
-     displayName : "Rizwan H",
-   };
-   callback(null, success);
-   return;
   var client = ldap.createClient({
     url: 'ldap://10.0.0.39:389'
   });
