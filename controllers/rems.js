@@ -161,10 +161,10 @@ var approveRem = function(req, res, next){
     }
   };
   if (typeof req.body.approved !== 'undefined') {
-    var approved = JSON.parse(req.body.approved);
+    var approved = req.body.approved;
     Rem.approveRemForDisplay(id, requestedBy, approved, callback);
   }else if (typeof req.body.print !== 'undefined'){
-    var print = JSON.parse(req.body.print);
+    var print = req.body.print;
     console.log(print);
     Rem.approveRemForPrint(id, requestedBy, print, callback);
   }

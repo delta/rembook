@@ -207,17 +207,12 @@ header {
 }
 
 .rem-component.emptiness {
-	display: flex;
 	font-size: 20px;
 	color: #1B1C1D;
-	-webkit-transition: 0.1s all;
-	-moz-transition: 0.1s all;
-	-o-transition: 0.1s all;
-	-ms-transition: 0.1s all;
-	transition: 0.1s all;
+	width: 100%;
 }
 
-.rem-component.emptiness div {
+.rem-component.emptiness div:not(.rem-page) {
 	margin: auto;
 	-webkit-transition: 0.1s all;
 	-moz-transition: 0.1s all;

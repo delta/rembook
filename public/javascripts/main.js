@@ -115,8 +115,16 @@ function renderRems() {
 	new RemsComponent({
 		el: '#rems-component-mount-point',
 		data: {
-			rems: m
-		}
+			rems: m,
+			RemBook: RemBook
+		},
+		methods: {
+	    	'toggleApprove': function(e) {
+	    		$.post('/rem/approve/' + e.target.id, function() {
+	    			alert("Done");
+	    		});
+	    	}
+	    }
 	});
 
 	restartBookBlock();
