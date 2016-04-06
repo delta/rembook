@@ -169,8 +169,6 @@ function onChangeBook() {
 	}
 
 	function changeRegularProfile(e) {
-		if(e.dataId == "dob" && $(e.DOMEvent.target).parent().find("input[type=date]").has(":focus").length) 
-			return setTimeout(function() { changeRegularProfile(e) }, 500);
 		RemBook.currentRemBookOf.Profile.set(e.dataId, e.newValue);
 		RemBook.currentRemBookOf.Profile.save();
 	}
@@ -196,7 +194,11 @@ function onChangeBook() {
 					changeHostel(e);
 				else if(/question\#/.test(e.dataId))
 					changeBio(e);
-				else
+				else if(e.dataId != 'dob')
+					changeRegularProfile(e);
+			},
+			blur: function(e) {
+				if(e.dataId == "dob")
 					changeRegularProfile(e);
 			}
 		}

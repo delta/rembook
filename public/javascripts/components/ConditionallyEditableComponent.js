@@ -21,8 +21,14 @@ var ConditionallyEditableComponent = Vue.extend({
     		$(this.$el).find("._real_").show().focus();
     	},
     	onblurreal(e) {
-			$(e.target).hide();
+		$(e.target).hide();
     		$(this.$el).find("._dummy_").show();
+		var that = this;
+		that.$dispatch('blur', {
+			DOMEvent: e,
+			dataId: that.dataId,
+			newValue: that.data
+		});
     	},
     	onchange(e) {
     		var that = this;
