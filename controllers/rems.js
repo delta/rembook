@@ -18,7 +18,7 @@ var getAllRemsTo = function (req, res, next) {
       var rem;
       for (i=0;i<doc.length;i++){
         rem = {};
-        if ( (doc[i].approved !== true) && (rollNumber !== requestedBy)){
+        if ( (doc[i].approved !== true) && (rollNumber !== requestedBy) && (doc[i].from !== requestedBy)){
           continue;
         }else if (rollNumber === requestedBy){
           rem.approved = doc[i].approved;
@@ -45,13 +45,13 @@ var getAllRemsTo = function (req, res, next) {
 var updateRem = function(req, res, next){
   var from = req.session.rollNumber;
   var fromName = req.session.name;
-  var to = req.params.rollNumber;
+  var to = req.body.to;
   var data = {};
   data.from = from;
   data.fromName = fromName;
   data.to = to;
   data.toName = req.body.toName;
-  data.responses = JSON.parse(req.body.responses);
+  data.responses = req.body.responses;
   var i = 0;
   var maxCharPerResonose = 1000;
   var isResonseValid = 1;

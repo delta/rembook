@@ -4,8 +4,11 @@ import Backbone from 'backbone';
 Vue.config.debug = true;
 
 var RemBook = require('./models/RemBook');
+var Rem = require('./models/Rem');
+
 var ProfilePageComponent = require('./components/ProfilePageComponent');
 var RemsComponent = require('./components/RemsComponent');
+var WriteRemPageComponent = require('./components/WriteRemPageComponent');
 var ConditionallyEditableComponent = require('./components/ConditionallyEditableComponent');
 var ConditionallyEditableTextAreaComponent = require('./components/ConditionallyEditableTextAreaComponent');
 var NavComponent = require('./components/NavComponent');
@@ -19,10 +22,11 @@ var keyboardEventsHandlerRegistered = false;
 var navComponent = null;
 var searchControlComponent = null;
 var searchResultsComponent = null;
+var writeRemPageComponent = null;
 
 function goLeft() {
 	if(RemBook.currentRemPage >= 2) {
-		safelyTurnPageTo(RemBook.currentRemBookOf.attributes.rollNumber, RemBook.currentRemPage - 1);
+		navigateToPage(RemBook.currentRemPage - 1);
 	}
 	else {
 		// just to give the 'no-more-pages' flip effect
@@ -32,7 +36,7 @@ function goLeft() {
 
 function goRight() {
 	if(RemBook.currentRemPage <= RemBook.currentRemBookOf.Rems.models.length) {
-		safelyTurnPageTo(RemBook.currentRemBookOf.attributes.rollNumber, RemBook.currentRemPage + 1);
+		navigateToPage(RemBook.currentRemPage + 1);
 	}
 	else {
 		// just to give the 'no-more-pages' flip effect
@@ -40,19 +44,25 @@ function goRight() {
 	}
 }
 
-function safelyTurnPageTo(rollNumber, page) {
-	if (!bookBlock || bookBlock.bookblock('isActive'))
-		return ;/*setTimeout(function() {
-			safelyTurnPageTo(rollNumber, page)
-		}, 400);*/
-
-	RemBook.loadRemPage(rollNumber, page);
-	if(page == 1) {
-		RemBookRouter.navigate(rollNumber + "/profile/");
+// utility for goLeft and goRight
+function navigateToPage(page) {
+	var rollNumber = RemBook.currentRemBookOf.Profile.attributes.rollNumber;
+	if(page <= 1) {
+		if(safelyTurnPageTo(rollNumber, page))
+			RemBookRouter.navigate(rollNumber + "/profile");
 	}
 	else {
-		RemBookRouter.navigate(RemBook.currentRemBookOf.attributes.rollNumber + "/rems/" + (page-1));
+		if(safelyTurnPageTo(rollNumber, page))
+			RemBookRouter.navigate(rollNumber + "/rems/" + (page-1));
 	}
+}
+
+function safelyTurnPageTo(rollNumber, page) {
+	if (!bookBlock || bookBlock.bookblock('isActive'))
+		return false;
+
+	RemBook.loadRemPage(rollNumber, page);
+	return true;
 }
 
 function bookBlockKeyHandler(e) {
@@ -114,7 +124,7 @@ function renderRems() {
 
 function updateNav() {
 	navComponent.$set('rollNumber', RemBook.currentRemBookOf.Profile.attributes.rollNumber);
-	navComponent.$set('currentPage', RemBook.currentRemPage);
+	navComponent.$set('RemBook', RemBook);
 }
 
 function onChangeBook() {
@@ -173,6 +183,35 @@ function onChangeRemPage() {
 	$(".rem-bookblock").bookblock('jump', RemBook.currentRemPage);
 }
 
+function renderWriteRemPage() {
+	var tmpRem = new Rem({
+		from: RemBook.currentUser.Profile.attributes.rollNumber,
+		fromName: RemBook.currentUser.Profile.attributes.name,
+		to: RemBook.currentRemBookOf.Profile.attributes.rollNumber,
+		toName: RemBook.currentRemBookOf.Profile.attributes.name
+	});
+
+	var oldRem = RemBook.currentRemBookOf.Rems.findWhere({
+		from: RemBook.currentUser.Profile.attributes.rollNumber
+	});
+
+	if(oldRem) {
+		tmpRem = oldRem;
+	}
+	
+	tmpRem = tmpRem.attributes;
+	writeRemPageComponent.from = tmpRem.from;
+	writeRemPageComponent.fromPhotoName = tmpRem.fromPhotoName;
+	writeRemPageComponent.fromName = tmpRem.fromName;
+	writeRemPageComponent.to = tmpRem.to;
+	writeRemPageComponent.toName = tmpRem.toName;
+	writeRemPageComponent.toPhotoName = tmpRem.toPhotoName;
+	writeRemPageComponent.trivia = tmpRem.trivia;
+	writeRemPageComponent.memories = tmpRem.memories;
+
+	writeRemPageComponent.show();
+}
+
 RemBook.on('changeRemBook', onChangeBook);
 RemBook.on('changeRemPage', onChangeRemPage);
 
@@ -183,29 +222,44 @@ var _RemBookRouter = Backbone.Router.extend({
 		":rollNumber(/)": "profile",
 		":rollNumber/profile(/)": "profile",
 		":rollNumber/rems(/)": "rems",
-		":rollNumber/rems/:page(/)": "rems",
 		":rollNumber/rems/write(/)": "writeRem",
+		":rollNumber/rems/:page(/)": "rems",
 		"*path": "root"
 	},
 	"root": function root() {
 		searchResultsComponent.onclose();
-		this.navigate(RemBook.currentUser.attributes.rollNumber + "/profile/", { trigger: true, replace: true });
+		navComponent.writeRemPage = false;
+		this.navigate(RemBook.currentUser.Profile.attributes.rollNumber + "/profile/", { trigger: true, replace: true });
 	},
 	"profile": function profile(rollNumber) {
 		searchResultsComponent.onclose();
-		this.navigate(rollNumber + "/rollNumber", { replace: true});
+		navComponent.writeRemPage = false;
+		this.navigate(rollNumber + "/profile/", { replace: true});
 		safelyTurnPageTo(rollNumber, 1);
 	},
 	"rems": function rems(rollNumber, page) {
+		if(!RemBook.isFinalYear(rollNumber))
+			return this.navigate(rollNumber + "/profile/", { replace: true });
+
 		searchResultsComponent.onclose();
+		navComponent.writeRemPage = false;
+
 		page = parseInt(page || 1);
 		page = page > 1 ? (page+1) : 2;
 
 		safelyTurnPageTo(rollNumber, page);
 	},
 	"writeRem": function writeRem(rollNumber) {
+		if(!RemBook.isFinalYear(rollNumber))
+			return this.navigate(rollNumber + "/profile/", { replace: true });
+
 		searchResultsComponent.onclose();
-		alert("Screw you");
+		navComponent.writeRemPage = true;
+		RemBook.loadRemBook(rollNumber, function() {
+			RemBook.currentRemBookOf.Rems.fetch({
+				success: renderWriteRemPage
+			})
+		});
 	}
 });
 
@@ -215,7 +269,7 @@ navComponent = new NavComponent({
 	el: '#nav-component-mount-point',
 	data: {
 		rollNumber: '',
-		currentPage: 1
+		RemBook: RemBook
 	}
 });
 
@@ -258,6 +312,44 @@ searchControlComponent = new SearchControlComponent({
 					that._isDebouncing_ = false;
 				}, 300);
 			}
+		}
+	}
+});
+
+writeRemPageComponent = new WriteRemPageComponent({
+	el: '#write-rem-mount-point',
+	methods: {
+		show: function show() {
+			$(this.$el).show();
+			var that = this;
+			this._Rem_ = new Rem({
+				from: that.from,
+				to: that.to
+			});
+		},
+		onclose: function onclose() {
+			$(this.$el).hide();
+			window.history.back();
+		}
+	},
+	data: (new Rem({
+		from: RemBook.currentUser.Profile.rollNumber,
+		fromName: RemBook.currentUser.Profile.name,
+		to: '',
+		toName: '',
+		trivia: [],
+		memories: ''
+	})).attributes,
+	events: {
+		change: function(e) {
+			var that = this;
+
+			this._Rem_.save({
+				fromName: that.fromName,
+				toName: that.toName,
+				trivia: that.trivia,
+				memories: that.memories
+			});
 		}
 	}
 });

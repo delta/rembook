@@ -1,16 +1,55 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <form method="post" action="/login">
-      <input type="text" name="username" placeholder="User Name">
-      <input type="password" name="password" placeholder="Password">
-      <input type="submit">
-    </form>
-  </body>
+<head>
+	<title>RemBook | Login</title>
+	<link rev="text/css" rel="stylesheet" href="stylesheets/main.css"/>
+	<link rev="text/css" rel="stylesheet" href="stylesheets/login.css"/>
+</head>
+
+<body>
+	<div class="main">
+		
+		<div id="loginSignupContainer">
+			<div id="tabContainer">
+				<a id="loginTab" class="tab active" href="#login">RemBook</a>
+			</div>
+			<div id="loginContainer">
+				<form id="loginForm" action="/login" method="post">
+					<p>
+						<label for="txtRoll1">Roll number: </label>
+						<input type="text" id="txtRoll1" name="username" placeholder="Your 9-digit roll number..." />
+					</p>
+					<p>
+						<label for="txtPass1">Password: </label>
+						<input type="password" id="txtPass1" name="password" placeholder="Password..." /> 
+					</p>
+
+					<p>
+						<label>&nbsp;</label>
+						<input type="submit" id="btnSubmit1" value="Login" />
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="javascripts/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">
+
+		function validateLoginForm() {
+			var r = $("#txtRoll1").val(),
+				p = $("#txtPass1").val();
+
+			var RE_ROLL = /^[0-9]{9}$/;
+			if(!RE_ROLL.test(r))
+				return "Enter a valid roll number.";
+			if(!p)
+				return "Enter a valid password";
+
+			return {
+				roll: r,
+				pass: p
+			};
+		}
+	</script>
+</body>
 </html>

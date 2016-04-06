@@ -22,7 +22,7 @@ currentUser.fetch({
 
 RemBook = {
 	currentUser: currentUser,
-	currentRemBookOf: null,
+	currentRemBookOf: currentUser,
 	currentRemPage: -1,
 	departmentCodeMap: __RemBookInit__.departmentCodes,
 	questionMap: __RemBookInit__.questions,
@@ -32,27 +32,30 @@ RemBook = {
 	_usersCache_: {
 		[currentUser.rollNumber]: currentUser
 	},
-	loadRemBook: function(rollNumber) {
+	loadRemBook: function(rollNumber, cb) {
 		var that = this;
-		if(this.currentRemBookOf && this.currentRemBookOf.attributes.rollNumber == rollNumber && _RemBookLoaded) return;
+		if(this.currentRemBookOf && this.currentRemBookOf.attributes.rollNumber == rollNumber && _RemBookLoaded) return cb && cb();
 		if(this._usersCache_[rollNumber]) {
 			this.currentRemBookOf = this._usersCache_[rollNumber];
 			this.trigger("changeRemBook", this);
+			cb && cb();
 		}
 		this.currentRemBookOf = new User({ rollNumber: rollNumber });
 		this.currentRemBookOf.fetch({
 			success: function() {
 				that._usersCache_[rollNumber] = that.currentRemBookOf;
 				that.trigger("changeRemBook", that);
+				cb && cb();
 			}
 		});
 	},
-	loadRemPage: function(rollNumber, page) {
+	loadRemPage: function(rollNumber, page, cb) {
 		var that = this;
 		if(this.currentRemBookOf && this.currentRemBookOf.attributes.rollNumber == rollNumber && _RemBookLoaded) {
-			if(this.currentRemPage == page) return;
+			if(this.currentRemPage == page) return cb && cb();
 			this.currentRemPage = page;
 			this.trigger("changeRemPage", this);
+			cb && cb();
 		}
 		else {
 			this.loadRemBook(rollNumber);
@@ -60,10 +63,15 @@ RemBook = {
 				if(that.currentRemBookOf.attributes.rollNumber == rollNumber) {
 					that.currentRemPage = page;
 					that.trigger("changeRemPage", that);
-					that.on('changeRemBook', changeNotifier);
+					cb && cb();
+					that.off('changeRemBook', changeNotifier);
 				}
 			});
 		}
+	},
+	isFinalYear: function(rollNumber) {
+		rollNumber += "";
+		return parseInt(rollNumber.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
 	}
 };
 

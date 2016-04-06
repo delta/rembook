@@ -5,8 +5,14 @@ var NavComponent = Vue.extend({
     computed: {
     	finalYear: function() {
     		return parseInt(this.rollNumber.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
+    	},
+    	isProfilePage: function() {
+    		return this.RemBook.currentRemPage == 1;
+    	},
+    	isRemPage: function() {
+    		return this.RemBook.currentRemPage > 1;
     	}
-    }
+    },
 });
 
 Vue.component('nav-component', NavComponent);

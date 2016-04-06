@@ -5,16 +5,22 @@
 	}
  -->
 <nav id="main-nav">
-	<a href="#{{rollNumber}}/profile" :class="currentPage == 1 ? 'selected' : ''">
+	<a href="#{{rollNumber}}/profile" :class="isProfilePage ? 'selected' : ''">
 		<i class="newspaper icon center aligned"></i>
 		<div>Profile</div>
 	</a>
-	<!--<a v-if="finalYear" href="#{{rollNumber}}/rems/" :class="currentPage == 1 ? '' : 'selected'">
+	<a v-if="finalYear" href="#{{rollNumber}}/rems/" :class="isProfilePage ? '' : 'selected'">
 		<i class="comments outline icon center aligned"></i>
 		<div>Rems</div>
-	</a>-->
-	<a href="#{{rollNumber}}/rems/" :class="currentPage == 1 ? '' : 'selected'">
-		<i class="comments outline icon center aligned"></i>
-		<div>Rems</div>
+	</a>
+	
+	<a v-if="finalYear" href="#{{rollNumber}}/rems/write/">
+		<i class="write icon center aligned"></i>
+		<div>Write</div>
+	</a>
+
+	<a href="/logout">
+		<i class="sign out icon center aligned"></i>
+		<div>Logout</div>
 	</a>
 </nav>
