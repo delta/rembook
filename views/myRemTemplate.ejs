@@ -17,21 +17,25 @@
     $scope.department = user.department;
     $scope.address = user.address;
     $scope.contact = user.contact;
-    console.log(user);
+    // console.log(user);
   }]);
 
   printRem.controller('bioController',['$scope',function($scope){
     $scope.bio = <%- JSON.stringify(bio) %>;
+    if ($scope.bio == null){
+      return;
+    }
     $scope.questions = <%- JSON.stringify(questions) %>;
     $scope.responses = $scope.bio.responses;
-    console.log($scope.responses);
-    console.log($scope.bio);
-    console.log($scope.questions);
+    // console.log($scope.responses);
+    // console.log($scope.bio);
+    // console.log($scope.questions);
     $scope.findQuestion = function(id){
+      // console.log(id);
       var i = 0;
       for (i = 0; i < $scope.questions.length; i++){
         if ($scope.questions[i]._id === id){
-          return $scope.questions[i].description;
+          return $scope.questions[i].bio_description;
         }
       }
     }
@@ -48,7 +52,7 @@
         }
       }
     }
-    console.log($scope.rems);
+    // console.log($scope.rems);
   }]);
 
   printRem.directive('checkImage', function($http) {
@@ -58,7 +62,7 @@
         attrs.$observe('ngSrc', function(ngSrc) {
           $http.get(ngSrc).success(function(){
           }).error(function(){
-            element.attr('src', 'profilepic/default.png');
+            element.attr('src', 'profilepic/profilepic_temp.jpg');
           });
         });
       }
@@ -94,7 +98,7 @@
         </div>
         <div>
           <div class="ui list">
-            <div class ='item description' ng-repeat='hostel in hostels'>{{hostel}}</li>
+            <div class ='item description' ng-repeat='hostel in hostels track by $index'>{{hostel}}</li>
             </div>
           </div>
         </td>
@@ -112,8 +116,8 @@
       <tr ng-controller='bioController'>
         <td colspan='2'>
           <div class="ui list">
-            <div  ng-repeat='response in responses' class="item">
-              <div class='heading' >{{findQuestion(response.questionId)}}</div>
+            <div ng-show='response.response'  ng-repeat='response in responses' class="item">
+              <div class='heading'>{{findQuestion(response._id)}}</div>
               <div class="description">{{response.response}}</div>
             </div>
           </div>
