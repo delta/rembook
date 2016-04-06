@@ -1,7 +1,7 @@
 var config ={
   db:"mongodb://localhost/rembook",
 
-  base : "file:///home/rizwan/projects/rembook/public/",
+  base : "/home/manix/rembook16temp/public",
   phantomPath:"./node_modules/phantomjs/bin/phantomjs",
   pdfsDirectory:"./pdfs/",
 

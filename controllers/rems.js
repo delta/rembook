@@ -20,7 +20,7 @@ var getAllRemsTo = function (req, res, next) {
       var rem;
       for (i=0;i<doc.length;i++){
         rem = {};
-        if ( (doc[i].approved !== true) && (rollNumber !== requestedBy)){
+        if ( (doc[i].approved !== true) && (rollNumber !== requestedBy) && (doc[i].from !== requestedBy)){
           continue;
         }else if (rollNumber === requestedBy){
           rem.approved = doc[i].approved;
@@ -47,13 +47,13 @@ var getAllRemsTo = function (req, res, next) {
 var updateRem = function(req, res, next){
   var from = req.session.rollNumber;
   var fromName = req.session.name;
-  var to = req.params.rollNumber;
+  var to = req.body.to;
   var data = {};
   data.from = from;
   data.fromName = fromName;
   data.to = to;
   data.toName = req.body.toName;
-  data.responses = JSON.parse(req.body.responses);
+  data.responses = req.body.responses;
   var i = 0;
   var maxCharPerResonose = globalConfig.maxCharPerResonose;
   var isResonseValid = 1;
@@ -161,10 +161,11 @@ var approveRem = function(req, res, next){
     }
   };
   if (typeof req.body.approved !== 'undefined') {
-    var approved = JSON.parse(req.body.approved);
+    var approved = req.body.approved;
     Rem.approveRemForDisplay(id, requestedBy, approved, callback);
   }else if (typeof req.body.print !== 'undefined'){
-    var print = JSON.parse(req.body.print);
+    var print = req.body.print;
+    console.log(print);
     Rem.approveRemForPrint(id, requestedBy, print, callback);
   }
 };

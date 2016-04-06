@@ -1,0 +1,143 @@
+
+html, body {
+	margin: 0;
+	padding: 0;
+	background: rgb(140,140,0);
+	font-family: calibri;
+}
+
+#logo {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	padding: 10px 20px;
+	color: black;
+	font-size: 2.5em;
+	font-family: calibri;
+	font-weight: bold;
+
+	text-shadow:
+     -1px -1px 0 #109496,  
+      1px -1px 0 #109496,
+      -1px 1px 0 #109496,
+       1px 1px 0 #109496;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    text-align: center;
+
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    transition: all 0.2s;
+
+}
+
+#logo:hover {
+	text-shadow:
+     -1px -1px 0 #26bfc1,  
+      1px -1px 0 #26bfc1,
+      -1px 1px 0 #26bfc1,
+       1px 1px 0 #26bfc1;
+
+    cursor: default;
+}
+
+#logo_v {
+	color: #109496;
+	text-shadow:
+     -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+
+}
+
+#logo:hover #logo_v {
+	color: #26bfc1;
+}
+
+#cvs {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.main {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 2;
+	overflow: auto;
+}
+
+
+input, select {
+	margin: 2px;
+	padding: 10px;
+	border-radius: 10px;
+	border: none;
+	font-size: 1.2em;
+	margin-left:50px;
+
+	-webkit-outline: none;
+	-moz-outline: none;
+	-o-outline: none;
+	-ms-outline: none;
+	outline: none;
+
+
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-o-transition: all 0.2s;
+	-ms-transition: all 0.2s;
+	transition: all 0.2s;	
+}
+
+input:focus {
+	box-shadow: 0 0 10px 0 #109496;
+}
+
+input[type="button"], input[type="submit"] {
+	background: #4183C4;
+	color: white;
+}
+
+label {
+	color: black;
+	font-size: 1.2em;
+	margin: 0;
+}
+
+a {
+	color: #4183C4;
+	font-size: 1.4em;
+	font-family: candara;
+	text-decoration: none;
+	text-shadow: 0px 0px 1px black;
+
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-o-transition: all 0.2s;
+	-ms-transition: all 0.2s;
+	transition: all 0.2s;
+
+	-webkit-outline: none;
+	-moz-outline: none;
+	-o-outline: none;
+	-ms-outline: none;
+	outline: none;
+}
+
+a:active, a:focus, a:hover {
+	color: cyan;
+	text-shadow: 0px 0px 1px black;
+}

@@ -1,14 +1,50 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
     <script>
-      var init = <%- JSON.stringify(init) %>;
+      var __RemBookInit__ = <%- JSON.stringify(init) %>;
+      var _questions = {};
+      for(var q of __RemBookInit__.questions)
+        _questions[q._id] = q;
+    __RemBookInit__.questions = _questions;
     </script>
+    <link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+    <link rel="stylesheet" type="text/css" href="BookBlock/css/bookblock.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+</head>
+<body style="background-color: rgb(140,140,0)">
+    <header class="ui equal height two column padded grid">
+        <div id="logo" class="four wide column black ">
+            <a href="#" id="title">RemBook</a>
+        </div>
+
+        <search-control-component id="search-control-mount-point"></search-control-component>
+    </header>
+
+    <nav-component id="nav-component-mount-point"></nav-component>
+    <div id="main">
+        <div class="rem-bookblock bb-bookblock">
+            <profilepage-component id="profile-page-mount-point"></profilepage-component>
+        </div>
+    </div>
+
+    <write-rem-component id="write-rem-mount-point"></write-rem-component>
+
+    <search-results-component id="search-results-mount-point"></search-results-component>
+
+    <footer>
+        Made with ❤ by <span style="color:white">Delta Force</span>
+    </footer>
+</body>
+<script src="javascripts/jquery-2.1.4.min.js"></script>
+<script src="semantic/dist/semantic.min.js"></script>
+<script src="BookBlock/js/modernizr.custom.js"></script>
+<script src="BookBlock/js/jquerypp.custom.js"></script>
+<script src="BookBlock/js/jquery.bookblock.js"></script>
+<script src="javascripts/underscore.js"></script>
+<script src="javascripts/backbone.js"></script>
+<script src="javascripts/bundle.js"></script>
 </html>

@@ -30,13 +30,13 @@ var getDepartment = function (rollNumber) {
   var department= "";
   switch (departmentCode) {
     case '1011':
-    department = "ARCH";
+    department = "ARCHI";
     break;
     case '1021':
-    department = "CIV";
+    department = "CHL";
     break;
     case '1031':
-    department = "CHEM";
+    department = "CIV";
     break;
     case '1061':
     department = "CSE";
@@ -54,10 +54,10 @@ var getDepartment = function (rollNumber) {
     department = "MECH";
     break;
     case '1121':
-    department = "PROD";
+    department = "MME";
     break;
     case '1141':
-    department = "MME";
+    department = "PROD";
     break;
   }
   return department;
@@ -86,6 +86,18 @@ var cn = username+'@'+domain;
 client.bind(cn,password,function(err){});
 
 var i;
+var init= [
+  {start:"114112001", end:"114112120"},
+  // {start:"102112001", end:"107112120"},
+  // {start:"103112001", end:"107112120"},
+  // {start:"106112001", end:"107112120"},
+  // {start:"107112001", end:"107112120"},
+  // {start:"108112001", end:"107112120"},
+  // {start:"110112001", end:"107112120"},
+  // {start:"111112001", end:"107112120"},
+  // {start:"112112001", end:"107112120"},
+  // {start:"114112001", end:"107112120"},
+];
 var rollNumbers = [];
 generateRollNumbers(init, rollNumbers);
 

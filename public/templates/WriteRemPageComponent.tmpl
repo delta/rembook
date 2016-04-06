@@ -1,0 +1,70 @@
+<!--
+    Vue-Template for the Write-Rem page.
+
+    Object to be injected: {
+        from: {
+            name: String,
+            rollNumber: String,
+            photoName: String -> Name of the profile photo
+        },
+        to: {
+            name: String,
+            rollNumber: String,
+            photoName: String -> Name of the profile photo
+        },
+        trivia: Array<{ _id, title, description, bio_description, response }>,
+        memories: String,
+        pictureUrl: String
+    }
+-->
+
+<div class="write-rem-component">
+    <div class="topbar">
+        <div class="ui header">
+            Write a Rem about {{toName}}
+        </div>
+
+        <i class="ui right floated close icon big" v-on:click="onclose($event)"></i>
+    </div>
+
+    <div class="rem-page">
+        <div class="ui padded grid side-content">
+            <div class="ui five wide column">
+                <div class="center aligned two wide column">
+                    <img class="dp ui small image" :src="'/profilepic/' + fromPhotoName">
+                </div>
+                <div class="thirteen wide column rem-author-name">
+                    <h3>{{fromName}} says,</h3>
+                </div>
+                <div class="sixteen wide column rem-trivia-container">
+                    <template v-for="t in trivia">
+                        <h4>{{t.description}}</h4>
+                        <conditionally-editable-text-area-component
+                            :data-id="'trivia#' + t._id"
+                            :data.sync="t.response"
+                            :editable="true"
+                            :placeholder="t.description">
+                        </conditionally-editable-text-area-component>
+                    </template>
+                </div>
+            </div>
+            <div class="eight wide column rem-memories-column">
+                <div class="rem-memories-wrapper">
+                    <h4>Memories</h4>
+
+                    <div class="rem-memories-container">
+                        <conditionally-editable-text-area-component
+                            :data-id="'memories'"
+                            :data.sync="memories"
+                            :editable="true"
+                            :placeholder="'Your sweet (and salty) memories...'">
+                        </conditionally-editable-text-area-component>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column rem-pic-container">
+                <img class="rem-pic ui medium image ui piled segment center aligned" :src="'/rempics/' + pictureUrl ? pictureUrl : 'temp.png'">
+            </div>
+        </div>
+    </div>
+</div>

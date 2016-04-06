@@ -5,6 +5,7 @@ var Questions = require('../models/Questions');
 var fs = require('fs');
 var pdf = require('html-pdf');
 var globalConfig = require('../config').config;
+var path = require('path');
 
 
 var printMyRem = function (req, res, next){

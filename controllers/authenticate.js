@@ -15,36 +15,37 @@ var getDepartment = function (rollNumber) {
   var departmentCode = rollNumber.slice(0,4);
   var department= "";
   switch (departmentCode) {
-    case '1011':
-      department = "ARCH";
-      break;
+  case '1011':
+    department = "ARCHI";
+    break;
     case '1021':
-      department = "CIV";
-      break;
+    department = "CHL";
+    break;
     case '1031':
-      department = "CHEM";
-      break;
+    department = "CIV";
+    break;
     case '1061':
-      department = "CSE";
-      break;
+    department = "CSE";
+    break;
     case '1071':
-      department = "EEE";
-      break;
+    department = "EEE";
+    break;
     case '1081':
-      department = "ECE";
-      break;
+    department = "ECE";
+    break;
     case '1101':
-      department = "ICE";
-      break;
+    department = "ICE";
+    break;
     case '1111':
-      department = "MECH";
-      break;
+    department = "MECH";
+    break;
     case '1121':
-      department = "PROD";
-      break;
+    department = "MME";
+    break;
     case '1141':
-      department = "MME";
-      break;
+    department = "PROD";
+    break;
+
   }
   return department;
 };
@@ -57,10 +58,6 @@ var generateDN = function (rollNumber) {
 };
 
 var authenticate=function(username, password, callback){
-  // var success = {
-  //   displayName : "Rizwan H",
-  // };
-  // callback(null, success);
   var client = ldap.createClient({
     url: 'ldap://10.0.0.39:389'
   });
@@ -120,8 +117,8 @@ var processLogin = function (req, res, next) {
       res.set("X-Rembook-Login","Authenticated");
       req.session.name = success.displayName.trim();
       req.session.rollNumber = username;
-      // res.redirect("/");
-      initalPage(req,res,next);
+      res.redirect("/");
+      //initalPage(req,res,next);
     }
   };
   authenticate(username, password, callback);
@@ -168,10 +165,7 @@ var initalPage = function (req, res, next) {
 
 var logout = function(req, res, next){
   req.session.destroy();
-  var response = {};
-  response.success =1;
-  response.message ="Logged Out";
-  res.json(response);
+  res.redirect('/');
 };
 module.exports.authenticate = authenticate;
 module.exports.processLogin = processLogin;
