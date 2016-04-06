@@ -77,7 +77,7 @@ var download = function(req, res, next){
             height:"2480px",
             width:"3508px",
             base: globalConfig.base,
-            phantomPath: globalConfig.phantomPath,
+            // phantomPath: globalConfig.phantomPath,
             timeout:150000
           };
 
