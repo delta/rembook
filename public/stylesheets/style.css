@@ -25,6 +25,10 @@ header {
 	font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
 	font-size: 23px;
 }
+/* 
+	hack over
+*/
+
 .search-container-container {
 	padding: 0 !important;
 }
@@ -102,9 +106,6 @@ header {
 	display: block;
 	margin: auto;
 }
-/* 
-	hack over
-*/
 
 #main-nav {
 	position: absolute; 
@@ -205,6 +206,26 @@ header {
 	column-width: 300px !important;
 }
 
+.rem-component.emptiness {
+	display: flex;
+	font-size: 20px;
+	color: #1B1C1D;
+	-webkit-transition: 0.1s all;
+	-moz-transition: 0.1s all;
+	-o-transition: 0.1s all;
+	-ms-transition: 0.1s all;
+	transition: 0.1s all;
+}
+
+.rem-component.emptiness div {
+	margin: auto;
+	-webkit-transition: 0.1s all;
+	-moz-transition: 0.1s all;
+	-o-transition: 0.1s all;
+	-ms-transition: 0.1s all;
+	transition: 0.1s all;
+}
+
 img.rem-pic {
 	margin: 15px auto !important;
 }
@@ -247,6 +268,64 @@ img.rem-pic {
 	outline: none;
 }
 
+.write-rem-component {
+	display: none;
+	position: absolute;
+	top: 46px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1000;
+	overflow: auto;
+	background: white;
+}
+
+.write-rem-component .topbar {
+	display: flex;
+	position: fixed;
+	width: 100%;
+	height: 50px;
+	padding: 5px;
+	background: white;
+	box-shadow: 0 0 2px #000;
+}
+
+.write-rem-component .header {
+	margin: auto !important;
+}
+
+.write-rem-component .icon {
+	margin: auto 20px;
+}
+
+.write-rem-component .icon.close:hover {
+	cursor: pointer;
+	color: black;
+}
+
+.write-rem-component .rem-page {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 60px;
+}
+
+.write-rem-component .rem-memories-wrapper {
+	width: 100%;
+	margin: 20px 20px 20px 10px !important;
+}
+
+.write-rem-component .rem-memories-container textarea {
+	width: 100%;;
+	border: 1px solid;
+	height: 400px !important;
+}
+
+.write-rem-component .rem-pic {
+	margin: 30px 10px;
+}
+
+/////////////////////
 
 footer {
 	position: fixed;

@@ -86,6 +86,12 @@ var cn = username+'@'+domain;
 client.bind(cn,password,function(err){});
 
 var i;
+var init= [
+  /*{start:"111113001", end:"111113101"},
+  {start:"107113001", end:"107113106"},*/
+  {start:"106112001", end:"106112100"}
+
+];
 var rollNumbers = [];
 generateRollNumbers(init, rollNumbers);
 

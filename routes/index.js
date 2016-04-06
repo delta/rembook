@@ -24,7 +24,7 @@ router.post('/hardcopy',users.hardCopyRequest);
 router.get('/bio/:rollNumber',bio.getBioOf);
 router.post('/bio/:rollNumber', bio.editBioOf);
 router.get('/rem/:rollNumber', rems.getAllRemsTo);
-router.post('/rem/:rollNumber', rems.updateRem);
+router.post('/rem/', rems.updateRem);
 router.post('/rem/approve/:id', rems.approveRem);
 router.post('/rempic/:rollNumber', upload.single('remPic'), rems.uploadPic);
 router.get('/notifications',notifications.getAllNotifications);

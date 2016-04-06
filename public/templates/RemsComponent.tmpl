@@ -17,8 +17,9 @@
         pictureUrl: String
     }>
 -->
-<div class="bb-item rem-component" v-if="rems.length == 0">
-    Nyo. Nothing yet.
+<div class="bb-item rem-component emptiness" v-if="rems.length == 0">
+    <div>No one's written anything here yet!
+    Why don't you <a href="#{{rollNumber}}/rems/write">write?</a></div>
 </div>
 
 <div class="bb-item rem-component" v-for="rem in rems">

@@ -57,10 +57,11 @@ var generateDN = function (rollNumber) {
 };
 
 var authenticate=function(username, password, callback){
-  // var success = {
-  //   displayName : "Rizwan H",
-  // };
-  // callback(null, success);
+   var success = {
+     displayName : "Rizwan H",
+   };
+   callback(null, success);
+   return;
   var client = ldap.createClient({
     url: 'ldap://10.0.0.39:389'
   });
@@ -120,8 +121,8 @@ var processLogin = function (req, res, next) {
       res.set("X-Rembook-Login","Authenticated");
       req.session.name = success.displayName.trim();
       req.session.rollNumber = username;
-      // res.redirect("/");
-      initalPage(req,res,next);
+      res.redirect("/");
+      //initalPage(req,res,next);
     }
   };
   authenticate(username, password, callback);
@@ -168,10 +169,7 @@ var initalPage = function (req, res, next) {
 
 var logout = function(req, res, next){
   req.session.destroy();
-  var response = {};
-  response.success =1;
-  response.message ="Logged Out";
-  res.json(response);
+  res.redirect('/');
 };
 module.exports.authenticate = authenticate;
 module.exports.processLogin = processLogin;

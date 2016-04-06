@@ -35,7 +35,7 @@ var updateRem = function (data, callback) {
       doc = new Rem();
       doc.to = to;
       doc.from = from;
-      doc.fromName = formName;
+      doc.fromName = fromName;
       doc.toName = toName;
     }
     doc.responses = data.responses;
@@ -45,6 +45,8 @@ var updateRem = function (data, callback) {
       console.log(err);
       callback(err);
     });
+  }).catch(function(e) {
+    console.log(e);
   });
 };
 
