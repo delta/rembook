@@ -18,8 +18,9 @@
     }>
 -->
 <div class="bb-item rem-component emptiness" v-if="rems.length == 0">
-    <div>No one's written anything here yet!
-    Why don't you <a href="#{{rollNumber}}/rems/write">write?</a></div>
+    <div class="rem-page">
+        <div>No one's written anything here yet! Why don't you <a href="#{{rollNumber}}/rems/write">write?</a></div>
+    </div>
 </div>
 
 <div class="bb-item rem-component" v-for="rem in rems">
@@ -40,6 +41,12 @@
                 </div>
             </div>
             <div class="eleven wide column rem-memories-column">
+                <div class="admin_panel">
+                    <button class="ui labeled icon button" v-if="rem.approved !== undefined" v-on:click="toggleApprove($event)" :id="rem.id">
+                      <i :class="rem.approved ? 'hide icon' : 'unhide icon'"></i>
+                      {{rem.approved ? 'Hide' : 'Make Public'}}
+                    </button>
+                </div>
                 <div class="rem-memories-wrapper">
                     <h4>Memories</h4>
 
