@@ -14,7 +14,6 @@ table {
 }
 .heading{
   font-size: 15px;
-  /*font-weight: bold;*/
 }
 .mainHeading{
   font-size: 17px;
@@ -22,7 +21,6 @@ table {
 .description{
   font-size: 13px;
   font-weight: 100;
-  font-style: url('../fonts/Roboto-Thin.ttf');
 }
 td div{
   min-height: 30px;

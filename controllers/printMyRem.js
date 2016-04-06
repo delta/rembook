@@ -4,10 +4,11 @@ var Bio = require('../models/Bio');
 var Questions = require('../models/Questions');
 var fs = require('fs');
 var pdf = require('html-pdf');
+var globalConfig = require('../config').config;
 var path = require('path');
 
 
-var printMyRemPreview = function (req, res, next){
+var printMyRem = function (req, res, next){
   var rollNumber = req.session.rollNumber;
   Promise.all([
     Users.getUserByRollNumber(rollNumber),
@@ -27,7 +28,7 @@ var printMyRemPreview = function (req, res, next){
     }, function(err, html){
       //Generrate PDF
       var config = {
-        directory:"./pdfs/",
+        directory:globalConfig.pdfsDirectory,
         width:"700px",
         height:"14in",
         border:{
@@ -36,15 +37,21 @@ var printMyRemPreview = function (req, res, next){
           "bottom": "0.5in",
           "left": "0.5in"
         },
-        base:path.resolve('../public/'),
-        phantomPath:"./node_modules/phantomjs/bin/phantomjs"
+        base: globalConfig.base,
+        phantomPath: globalConfig.phantomPath,
       };
 
       pdf.create(html, config).toFile(function(err, result){
         if (err){
           next(err);
         }else{
-          res.download(result.filename);
+          res.download(result.filename, "MyRems.pdf", function (err) {
+            fs.unlink(result.filename, function(err){
+              if(err){
+                console.log(err);
+              }
+            });
+          });
         }
       });
 
@@ -55,5 +62,4 @@ var printMyRemPreview = function (req, res, next){
     next(err);
   });
 };
-// module.exports.printMyRem = printMyRem;
-module.exports.printMyRemPreview = printMyRemPreview;
+module.exports.printMyRem = printMyRem;

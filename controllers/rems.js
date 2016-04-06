@@ -2,6 +2,8 @@ var Rem = require('../models/Rems');
 var Notification = require('../models/Notifications');
 var fs = require('fs');
 var easyimage = require('easyimage');
+var globalConfig = require('../config').config;
+
 
 var getAllRemsTo = function (req, res, next) {
   var rollNumber = req.params.rollNumber;
@@ -53,7 +55,7 @@ var updateRem = function(req, res, next){
   data.toName = req.body.toName;
   data.responses = req.body.responses;
   var i = 0;
-  var maxCharPerResonose = 1000;
+  var maxCharPerResonose = globalConfig.maxCharPerResonose;
   var isResonseValid = 1;
   for (i = 0; i< data.responses.length; i++){
     if (data.responses[i].response.length > maxCharPerResonose){
@@ -68,9 +70,7 @@ var updateRem = function(req, res, next){
       }else{
         var notificationCallback = function (err, doc) {
           if(err){
-            // next(err);
-          }else{
-            // console.log(JSON.stringify(doc));
+            console.log(err);
           }
         };
         var message = fromName +" wrote a rem about you";
@@ -108,7 +108,7 @@ var uploadPic = function(req, res, next){
     });
   }else{
     var photoName = from + "_" + to + ".jpg";
-    var finalPath = "./public/rempic/"+photoName;
+    var finalPath = globalConfig.remPicPath + photoName;
     easyimage.convert({
       src:req.file.path,
       dst:finalPath,

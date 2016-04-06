@@ -145,7 +145,8 @@
 
   <div class="rembookPage" ng-repeat="page in pages">
     <div class="leftPage">
-      <div class="name centerAlign">{{page.left.user.name}}
+      <div class="name centerAlign">
+        <span>{{page.left.user.name}}</span>
       </div>
       <img ng-src="{{getProfilePic(page.left.user)}}" class="profilepic" >
       <div class="rollNumber centerAlign">
@@ -173,14 +174,12 @@
         {{page.left.user.department}}
       </div>
       <div class="about">
-        {{getBioAbout(page.left.bio)}}
-        <br>
         {{getRemsAbout(page.left.rems)}}
       </div>
     </div>
     <div class="rightPage">
       <div class="name centerAlign">
-        {{page.right.user.name}}
+        <span>{{page.right.user.name}}<span>
       </div>
       <img ng-src="{{getProfilePic(page.right.user)}}" class="profilepic">
       <div class="rollNumber centerAlign">
@@ -208,8 +207,6 @@
         {{page.right.user.department}}
       </div>
       <div class="about">
-        {{getBioAbout(page.right.bio)}}
-        <br>
         {{getRemsAbout(page.right.rems)}}
       </div>
     </div>

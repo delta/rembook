@@ -1,5 +1,23 @@
+var username =""; //Octa Username
+var password = ""; //Octa Password
+//Add rollNumbers below
+var init= [
+  {start:"101112001", end: "101112008"},
+  {start:"101112010", end: "101112049"},
+  {start:"102112001", end: "102112070"},
+  {start:"103112001", end: "103112106"},
+  {start:"106112001", end: "106112107"},
+  {start:"107112001", end: "107112105"},
+  {start:"108112001", end: "108112107"},
+  {start:"110112001", end: "110112099"},
+  {start:"111112001", end: "111112109"},
+  {start:"112112001", end: "112112060"},
+  {start:"114112001", end: "114112100"},
+];
+
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/rembook');
+var globalConfig = require('../config').config;
+mongoose.connect(globalConfig.db);
 var Users = require('../models/Users');
 
 var domain = "octa.edu";
@@ -64,8 +82,6 @@ var generateRollNumbers = function (init ,rollNumbers) {
 };
 
 
-var username ="";
-var password = "";
 var cn = username+'@'+domain;
 client.bind(cn,password,function(err){});
 
