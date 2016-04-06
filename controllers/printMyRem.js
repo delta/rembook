@@ -38,7 +38,7 @@ var printMyRem = function (req, res, next){
           "left": "0.5in"
         },
         base: globalConfig.base,
-        phantomPath: globalConfig.phantomPath,
+        // phantomPath: globalConfig.phantomPath,
       };
 
       pdf.create(html, config).toFile(function(err, result){
