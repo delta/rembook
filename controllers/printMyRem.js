@@ -4,6 +4,7 @@ var Bio = require('../models/Bio');
 var Questions = require('../models/Questions');
 var fs = require('fs');
 var pdf = require('html-pdf');
+var path = require('path');
 
 
 var printMyRemPreview = function (req, res, next){
@@ -35,7 +36,7 @@ var printMyRemPreview = function (req, res, next){
           "bottom": "0.5in",
           "left": "0.5in"
         },
-        base:"file:///home/rizwan/projects/rembook/public/",
+        base:path.resolve('../public/'),
         phantomPath:"./node_modules/phantomjs/bin/phantomjs"
       };
 
