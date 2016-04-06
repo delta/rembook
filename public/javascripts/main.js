@@ -143,11 +143,52 @@ function updateNav() {
 }
 
 function onChangeBook() {
+	function changeBio(e) {
+		var questionId = e.dataId.match(/\#(.+)/)[1];
+		var responses = RemBook.currentRemBookOf.Bio.attributes.responses;
+		for(var [i,q] of responses.entries()) {
+			if(questionId == q._id) {
+				responses[i].response = e.newValue;
+			}
+		}
+		RemBook.currentRemBookOf.Bio.save({
+			responses: responses
+		});
+	}
+
+	function changeRegularProfile(e) {
+		RemBook.currentRemBookOf.Profile.set(e.dataId, e.newValue);
+		RemBook.currentRemBookOf.Profile.save();
+	}
+
+	function changeHostel(e) {
+		var hostelId = parseInt(e.dataId.match(/\#(.+)/)[1]);
+		var hostels = RemBook.currentRemBookOf.Profile.attributes.hostels;
+		hostels[hostelId] = e.newValue;
+		RemBook.currentRemBookOf.Profile.set('hostels', hostels);
+		RemBook.currentRemBookOf.Profile.save();
+	}
+
 	new ProfilePageComponent({
 		el: '#profile-page-mount-point',
 		data: {
 			profile: RemBook.currentRemBookOf.Profile.attributes,
-			bio: RemBook.currentRemBookOf.Bio.attributes
+			bio: RemBook.currentRemBookOf.Bio.attributes,
+			questionMap: __RemBookInit__.questions
+		},
+		events: {
+			change: function(e) {
+				if(/hostel\#/i.test(e.dataId))
+					changeHostel(e);
+				else if(/question\#/.test(e.dataId))
+					changeBio(e);
+				else if(e.dataId != 'dob')
+					changeRegularProfile(e);
+			},
+			blur: function(e) {
+				if(e.dataId == "dob")
+					changeRegularProfile(e);
+			}
 		}
 	});
 
