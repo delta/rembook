@@ -372,4 +372,5 @@ writeRemPageComponent = new WriteRemPageComponent({
 
 searchResultsComponent.init();
 restartBookBlock();
+Backbone.emulateHTTP = true;
 Backbone.history.start();
