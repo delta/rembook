@@ -173,8 +173,18 @@
 			},
 			methods: {
 				'toggleApprove': function toggleApprove(e) {
-					$.post('/rem/approve/' + e.target.id, function () {
-						alert("Done");
+					var cur = this.rems.find(function (x) {
+						return x.id == e.target.id;
+					});
+					var that = this;
+					$.post('/rem/approve/' + e.target.id, { approved: !cur.approved }, function () {
+						for (var i in that.rems) {
+							if (that.rems[i].id == e.target.id) {
+								var x = that.rems[i];
+								x.approved = !cur.approved;
+								that.rems.$set(i, x);
+							}
+						}
 					});
 				}
 			}
