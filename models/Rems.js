@@ -8,7 +8,7 @@ var remSchema = new Schema({
   fromName : String,
   to : String,
   toName : String,
-  approved: Boolean,
+  approved: { type: Boolean, default: false},
   photoName: {type :String, default:""},
   print : Boolean,
   responses:  [{

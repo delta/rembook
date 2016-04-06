@@ -48,6 +48,7 @@
     "mongoose": "^4.4.7",
     "morgan": "~1.6.1",
     "multer": "^1.1.0",
+    "phantomjs": "file:node_modules/phantomjs",
     "raw-loader": "^0.5.1",
     "require-dot-file": "^0.4.0",
     "run-sequence": "^1.1.5",

@@ -17,9 +17,11 @@
         pictureUrl: String
     }>
 -->
-<div class="bb-item rem-component emptiness" v-if="rems.length == 0">
+<div class="bb-item rem-component emptiness" v-if="(rems.length == 0) && (isFinalYear)">
     <div class="rem-page">
-        <div>No one's written anything here yet! Why don't you <a href="#{{rollNumber}}/rems/write">write?</a></div>
+        <div>No one's written anything here yet! 
+	<span v-if="!self">Why don't you <a href="#{{RemBook.currentRemBookOf.attributes.rollNumber}}/rems/write">write?</a></span>
+</div>
     </div>
 </div>
 

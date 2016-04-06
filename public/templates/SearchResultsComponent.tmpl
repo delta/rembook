@@ -27,7 +27,7 @@
 
 	<div class="search-results">
 		<template v-for="result in results">
-			<a href="#{{result.attributes.rollNumber}}/profile">
+			<a v-if="result.attributes.rollNumber | isFinalYear" href="#{{result.attributes.rollNumber}}/profile">
 				<img :src="'/profilepic/' + result.attributes.photoName">
 				<span>{{result.attributes.name}}</span>
 				<span>{{result.attributes.department}}</span>

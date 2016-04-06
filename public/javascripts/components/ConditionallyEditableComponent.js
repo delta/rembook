@@ -5,13 +5,15 @@ var ConditionallyEditableComponent = Vue.extend({
 		'dataId',
 		'data',
 		'placeholder',
+		'placeholderInput',
+		'placeholderEmpty',
 		'maxlength',
 		'editable',
 		'type'
 	],
     template: require('../../templates/ConditionallyEditableComponent.tmpl'),
     computed: {
-
+	
     },
     methods: {
     	onfocusdummy(e) {

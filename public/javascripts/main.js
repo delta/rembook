@@ -24,6 +24,9 @@ var searchControlComponent = null;
 var searchResultsComponent = null;
 var writeRemPageComponent = null;
 
+Vue.filter('isFinalYear', function(str) {
+	return RemBook.isFinalYear(str);
+});
 function goLeft() {
 	if(RemBook.currentRemPage >= 2) {
 		navigateToPage(RemBook.currentRemPage - 1);
@@ -114,6 +117,14 @@ function renderRems() {
 
 	new RemsComponent({
 		el: '#rems-component-mount-point',
+		computed: {
+			isFinalYear() {
+				return RemBook.isFinalYear(this.RemBook.currentRemBookOf.attributes.rollNumber)
+			},
+			self() {
+				return this.RemBook.currentRemBookOf.attributes.rollNumber == this.RemBook.currentUser.attributes.rollNumber;
+			}
+		},
 		data: {
 			rems: m,
 			RemBook: RemBook
@@ -158,6 +169,8 @@ function onChangeBook() {
 	}
 
 	function changeRegularProfile(e) {
+		if(e.dataId == "dob" && $(e.DOMEvent.target).parent().find("input[type=date]").has(":focus").length) 
+			return setTimeout(function() { changeRegularProfile(e) }, 500);
 		RemBook.currentRemBookOf.Profile.set(e.dataId, e.newValue);
 		RemBook.currentRemBookOf.Profile.save();
 	}

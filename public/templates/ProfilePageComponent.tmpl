@@ -52,7 +52,8 @@
                             :data-id="'address'"
                             :data="profile.address" 
                             :editable="_isEditable_"
-                            placeholder="Address not available"></conditionally-editable-component>
+                            placeholder-input="Enter city"
+			    placeholder-empty="City not available"></conditionally-editable-component>
                     </h4>
                     <h4 class="ui left aligned header">
                         <i class="mail icon" style="float: left"></i>
@@ -61,7 +62,8 @@
                             :data-id="'email'"
                             :data="profile.email" 
                             :editable="_isEditable_"
-                            placeholder="Email not available"></conditionally-editable-component>
+                            placeholder-input="Enter email"
+			    placeholder-empty="Email not available"></conditionally-editable-component>
                     </h4>
                     <h4 class="ui left aligned header">
                         <i class="phone icon" style="float: left"></i>
@@ -70,7 +72,8 @@
                             :data-id="'contact'"
                             :data="profile.contact" 
                             :editable="_isEditable_"
-                            placeholder="Contact not available"></conditionally-editable-component>
+                            placeholder-input="Enter contact"
+			    placeholder-empty="Contact not available"></conditionally-editable-component>
                     </h4>
                 </div>
                 <div class="ui center aligned column">
@@ -88,7 +91,8 @@
                             :data-id="'hostel#0'"
                             :data="profile.hostels[0]" 
                             :editable="_isEditable_"
-                            placeholder="1st year hostel"></conditionally-editable-component>
+                            placeholder-input="Enter 1st year hostel"
+			    placeholder-empty="1st year hostel unknown"></conditionally-editable-component>
                     </h5>
                     <h5 class="ui center aligned header" style="margin: 15px">
                         <conditionally-editable-component
@@ -96,7 +100,8 @@
                             :data-id="'hostel#1'"
                             :data="profile.hostels[1]" 
                             :editable="_isEditable_"
-                            placeholder="2nd year hostel"></conditionally-editable-component>
+                            placeholder-input="Enter 2nd year hostel"
+			    placeholder-empty="2nd year hostel unkown"></conditionally-editable-component>
                     </h5>
                     <h5 class="ui center aligned header" style="margin: 15px">
                         <conditionally-editable-component
@@ -104,7 +109,8 @@
                             :data-id="'hostel#2'"
                             :data="profile.hostels[2]" 
                             :editable="_isEditable_"
-                            placeholder="3rd year hostel"></conditionally-editable-component>
+                            placeholder-input="Enter 3rd year hostel"
+                            placeholder-empty="3rd year hostel unkown"></conditionally-editable-component>
                     </h5>
                     <h5 class="ui center aligned header" style="margin: 15px">
                         <conditionally-editable-component
@@ -112,7 +118,8 @@
                             :data-id="'hostel#3'"
                             :data="profile.hostels[3]" 
                             :editable="_isEditable_"
-                            placeholder="4th year hostel"></conditionally-editable-component>
+                            placeholder-input="Enter 4th year hostel"
+                            placeholder-empty="4th year hostel unkown"></conditionally-editable-component>
                     </h5>
                     </div>
                 </div>

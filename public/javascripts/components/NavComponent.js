@@ -11,7 +11,10 @@ var NavComponent = Vue.extend({
     	},
     	isRemPage: function() {
     		return this.RemBook.currentRemPage > 1;
-    	}
+    	},
+	self: function() {
+		return this.RemBook.currentUser.attributes.rollNumber == this.RemBook.currentRemBookOf.attributes.rollNumber;
+	}
     },
 });
 
