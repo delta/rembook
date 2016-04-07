@@ -19,10 +19,12 @@ var download = function(req, res, next){
     var questions = results[3];
     var i, j;
     var page = {};
+    var departmentleft;
     for (i = 0; i < results[0].length; i+=2){
       page ={};
       page.left ={};
       page.left.user = results[0][i];
+      departmentleft = page.left.user.department;
       for (j = 0; j < bios.length; j++){
         if (bios[j].user === page.left.user.rollNumber){
           page.left.bio = bios[j];
@@ -42,6 +44,12 @@ var download = function(req, res, next){
         }
       }
       if (typeof results[0][i+1] !== 'undefined'){
+        var departmentright = results[0][i+1].department;
+        if (departmentright !== departmentleft){
+          i--;
+          users.push(page);
+          continue;
+        }
         page.right={};
         page.right.user = results[0][i+1];
         for (j = 0; j < bios.length; j++){
