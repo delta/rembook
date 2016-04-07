@@ -53,7 +53,10 @@ var getDepartment = function (rollNumber) {
 var generateDN = function (rollNumber) {
   var year = "20"+ rollNumber.slice(4,6);
   var department = getDepartment(rollNumber);
-  var DN = "CN="+rollNumber+",OU="+year+",OU=UG,OU="+department+",DC=octa,DC=edu";
+    if(department=="ARCHI")
+	var DN = "CN="+rollNumber+",OU="+year+",OU="+department+",DC=octa,DC=edu";
+    else
+	var DN = "CN="+rollNumber+",OU="+year+",OU=UG,OU="+department+",DC=octa,DC=edu";
   return DN;
 };
 
@@ -102,7 +105,8 @@ var processLogin = function (req, res, next) {
     if (fail){
       console.log(fail);
       res.set("X-Rembook-Login","Fail");
-      res.redirect("/login");
+      res.render('login', { message: "The username or password you entered is wrong" });
+//      res.redirect("/login");
     }else{
       var year = parseInt( "20"+ username.slice(4,6));
       if (year <= batch){
