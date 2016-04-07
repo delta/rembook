@@ -55,12 +55,22 @@ body{
   font-family: SegoePrint;
 }
 .dob, .place, .hostel{
+  font: 14px;
   position: absolute;
   top: 955px;
+  display: table-cell;
+  vertical-align: middle;
   text-align: center;
   line-height: 120px;
+  height: 120px;
   width: 460px;
   font-family: LithosProRegular;
+  /*border:1px solid #000;*/
+  overflow: hidden;
+}
+.dob span, .place span ,.hostel span {
+  word-wrap: break-word;
+  /*border:1px solid #000;*/
 }
 .about{
   position: absolute;
