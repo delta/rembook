@@ -1,13 +1,13 @@
-// var Imap = require('imap');
-// var host = "10.0.0.173";
-// var port = 143;
+var Imap = require('imap');
 var Questions = require('../models/Questions');
 var Notifications = require('../models/Notifications');
 var Users = require('../models/Users');
 var ldap = require('ldapjs');
 
 var batch = 2012;
-var host = '10.0.0.39';
+var ldapurl = 'ldap://10.0.0.39:389';
+var imaphost = "10.0.0.173";
+var imapport = 143;
 var domain = 'octa.edu';
 
 
@@ -53,47 +53,79 @@ var getDepartment = function (rollNumber) {
 var generateDN = function (rollNumber) {
   var year = "20"+ rollNumber.slice(4,6);
   var department = getDepartment(rollNumber);
-    if(department=="ARCHI")
-	var DN = "CN="+rollNumber+",OU="+year+",OU="+department+",DC=octa,DC=edu";
-    else
-	var DN = "CN="+rollNumber+",OU="+year+",OU=UG,OU="+department+",DC=octa,DC=edu";
+  if (department === "ARCHI"){
+    DN = "CN="+rollNumber+",OU="+year+",OU="+department+",DC=octa,DC=edu";
+  }else{
+    DN = "CN="+rollNumber+",OU="+year+",OU=UG,OU="+department+",DC=octa,DC=edu";
+  }
   return DN;
+};
+
+var getUserInfo= function(username, callback){
+  var client = ldap.createClient({
+    url: ldapurl
+  });
+  var server ="112112008";
+  var password = "Octa112";
+  var cn = server+'@'+domain;
+  client.bind(cn,password,function(err){});
+
+  var opts = {
+    scope: 'sub',
+  };
+  var DN = generateDN(username);
+  client.search(DN, opts, function(err, res) {
+    if (err){
+      callback(err);
+    }else{
+      res.on('searchEntry', function(entry) {
+        callback(null,entry.object);
+        client.unbind(function (err) {});
+      });
+      // res.on('searchReference', function(referral) {
+      //   console.log('referral: ' + referral.uris.join());
+      // });
+      res.on('error', function(err) {
+        console.error('error: ' + err.message);
+        client.unbind(function (err) {});
+      });
+      // res.on('end', function(result) {
+        // console.log('status: ' + result.status);
+      // });
+    }
+  });
 };
 
 var authenticate=function(username, password, callback){
   var client = ldap.createClient({
-    url: 'ldap://10.0.0.39:389'
+    url: ldapurl
   });
   var cn = username+'@'+domain;
   client.bind(cn,password,function(err){
     if (err){
-      callback (err);
-    }else{
-      console.log("Authenticated");
-      var opts = {
-        scope: 'sub',
-      };
-      var DN = generateDN(username);
-      client.search(DN, opts, function(err, res) {
-        if (err){
-          callback(err);
-        }else{
-          res.on('searchEntry', function(entry) {
-            callback(null,entry.object);
-            client.unbind(function (err) {});
-          });
-          // res.on('searchReference', function(referral) {
-          //   console.log('referral: ' + referral.uris.join());
-          // });
-          res.on('error', function(err) {
-            console.error('error: ' + err.message);
-            client.unbind(function (err) {});
-          });
-          // res.on('end', function(result) {
-            // console.log('status: ' + result.status);
-          // });
-        }
+      console.log(err);
+      console.log("Trying Imap Login");
+      var imap = new Imap({
+        user: username,
+        password: password,
+        host: imaphost,
+        port: imapport,
+        tls: false
       });
+      imap.once('ready', function() {
+        imap.end();
+        console.log("Authenticated");
+        getUserInfo(username, callback);
+      });
+      imap.once('error', function(err) {
+        console.log(err);
+        callback(err);
+      });
+      imap.connect();
+    }else{
+      client.unbind(function (err) {});
+      console.log("Authenticated");
+      getUserInfo(username, callback);
     }
   });
 };
