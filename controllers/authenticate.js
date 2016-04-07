@@ -131,9 +131,9 @@ var processLogin = function (req, res, next) {
 var initalPage = function (req, res, next) {
   var init={};
   init.departmentCodes = [
-    {code:"arch", name:"Architecture"},
+    {code:"archi", name:"Architecture"},
     {code:"civ", name:"Civil"},
-    {code:"chem", name:"Chemical"},
+    {code:"chl", name:"Chemical"},
     {code:"cse", name:"Computer Science"},
     {code:"ece", name:"Electronics & Communication"},
     {code:"eee", name:"Elemctrical & Electronics"},
