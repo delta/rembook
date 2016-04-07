@@ -13,18 +13,19 @@ table {
   margin: auto;
 }
 .heading{
-  font-size: 15px;
+  font-size: 13px;
 }
 .mainHeading{
-  font-size: 17px;
+  font-size: 15px;
 }
 .description{
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 100;
 }
 td div{
   min-height: 30px;
   position: relative;
+  border:1px solid #fff;
 }
 ul li{
   list-style: none;
@@ -40,4 +41,16 @@ ul li{
   position: fixed;
   top:100px;
   right:20px;
+}
+.remlist{
+ width:290px;
+ display: inline-block;
+ vertical-align: middle;
+}
+.remlistWrapper{
+  display: inline;
+}
+.rempic{
+  height: 290px;
+  width: 290px;
 }
