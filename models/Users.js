@@ -106,6 +106,10 @@ var fuzzySearch = function (search, department, callback) {
 var getAllUsers = function () {
   return User.find({});
 };
+var getAllFinalYearUsers = function(){
+  var pattern = /....1[12].../;
+  return User.find({rollNumber:pattern});
+};
 
 module.exports.getUserByRollNumber = getUserByRollNumber;
 module.exports.updateProfile = updateProfile;
@@ -113,3 +117,4 @@ module.exports.updatePhotoName = updatePhotoName;
 module.exports.fuzzySearch = fuzzySearch;
 module.exports.createProfile = createProfile;
 module.exports.getAllUsers = getAllUsers;
+module.exports.getAllFinalYearUsers = getAllFinalYearUsers;

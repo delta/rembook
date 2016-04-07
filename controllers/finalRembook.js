@@ -8,7 +8,7 @@ var globalConfig = require('../config').config;
 
 var download = function(req, res, next){
   Promise.all([
-    Users.getAllUsers(),
+    Users.getAllFinalYearUsers(),
     Bios.getAllBios(),
     Rems.getAllApprovedForPrintRem(),
     Questions.getAllQuestions()
