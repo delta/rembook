@@ -50,7 +50,7 @@
       if (indexOftemp === -1){
         return "./profilepic/"+user.photoName;
       }else {
-        return "./profilepic/profilepic_temp.jpg";
+        return "./profilepic/temp.png";
       }
 
     }
@@ -162,10 +162,10 @@
         {{page.left.user.contact}}
       </div>
       <div class="dob">
-        {{page.left.user.dob|date:'dd.MM.yyyy' }}
+        <span>{{page.left.user.dob|date:'dd.MM.yyyy' }}</span>
       </div>
       <div class="place">
-        {{page.left.user.address}}
+        <span>{{page.left.user.address}}</span>
       </div>
       <div class="hostel">
         {{getHostel(page.left.user)}}
@@ -195,13 +195,13 @@
         {{page.right.user.contact}}
       </div>
       <div class="dob">
-        {{page.right.user.dob|date:'dd.MM.yyyy'}}
+        <span>{{page.right.user.dob|date:'dd.MM.yyyy'}}</span>
       </div>
       <div class="place">
-        {{page.right.user.address}}
+        <span>{{page.right.user.address}}</span>
       </div>
       <div class="hostel">
-        {{getHostel(page.right.user)}}
+        <span>{{getHostel(page.right.user)}}</span>
       </div>
       <div class="department">
         {{page.right.user.department}}
