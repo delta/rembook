@@ -65,8 +65,8 @@ var getUserInfo= function(username, callback){
   var client = ldap.createClient({
     url: ldapurl
   });
-  var server ="112112008";
-  var password = "Octa112";
+  var server ="111113070";
+  var password = "Mech123";
   var cn = server+'@'+domain;
   client.bind(cn,password,function(err){});
 
@@ -97,6 +97,10 @@ var getUserInfo= function(username, callback){
 };
 
 var authenticate=function(username, password, callback){
+  // var success = {
+  //   displayName : username,
+  // };
+  // callback(null, success);
   var client = ldap.createClient({
     url: ldapurl
   });
@@ -115,7 +119,14 @@ var authenticate=function(username, password, callback){
       imap.once('ready', function() {
         imap.end();
         console.log("Authenticated");
-        getUserInfo(username, callback);
+        if (username === 'sundar'){
+          var success = {
+            displayName : 'Dr. Srinivasan Sundarrajan'
+          };
+          callback(null,success);
+        }else{
+          getUserInfo(username, callback);
+        }
       });
       imap.once('error', function(err) {
         console.log(err);
