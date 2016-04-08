@@ -6,155 +6,152 @@
   font-family: SegoePrint;
   src:url(../fonts/SegoePrint.ttf);
 }
+@font-face {
+  font-family: ProximaNovaRegular;
+  src:url(../fonts/ProximaNovaRegular.otf);
+}
 body{
   margin: 0;
   padding: 0;
-  font-size: 45px;
+  font-family: ProximaNovaRegular;
 }
 .rembookPage{
-  height: 2480px;
-  width: 3508px;
-  background-image: url('../images/rembook.png');
-}
-.leftPage, .rightPage{
-  position: relative;
-}
-.leftPage .name, .leftPage .rollNumber{
-  font-size: 50px;
-  position: absolute;
-  left: 260px;
-  height: 145px;
-  line-height: 145px;
-  width: 900px;
-  font-family: LithosProRegular;
-}
- .name span{
-  display: inline-block;
-  vertical-align: middle;
-  line-height: normal;
-  margin-top: 15px;
-}
-.name{
-  top: 225px;
-}
-.rollNumber{
-  top: 445px;
-}
-.nicknames{
-  position: absolute;
-  top: 720px;
-  width: 1350px;
-  font-size: 50px;
-  font-family: LithosProRegular
-  height: 150px;
-}
-.email, .contact{
-  position: absolute;
-  top: 860px;
-  font-size:  50px;
-  font-family: SegoePrint;
-}
-.dob, .place, .hostel{
-  font: 14px;
-  position: absolute;
-  top: 955px;
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-  line-height: 120px;
-  height: 120px;
-  width: 460px;
-  font-family: LithosProRegular;
-  /*border:1px solid #000;*/
-  overflow: hidden;
-}
-.dob span, .place span ,.hostel span {
-  word-wrap: break-word;
-  /*border:1px solid #000;*/
-}
-.about{
-  position: absolute;
-  top:1140px;
-  height: 1075px;
-  width: 1350px;
-  overflow: hidden;
-  font-family: SegoePrint;
+  height: 1240px;
+  width: 1754px;
+  background-image: url('../images/rembook.jpg');
 }
 .centerAlign{
   text-align: center;
 }
-.profilepic{
-  top: 192px;
-  border-radius: 200px;
-  height: 420px;
-  width: 420px;
+.topPage, .bottomPage{
+  position: relative;
+}
+.name, .nicknames, .email, .contact,.dob, .frequentwords, .place, .hostel, .department, .about, .profilepic{
   position: absolute;
+  /*border:1px solid #000;*/
+  color:#eee;
+  font-size: 30px;
+  overflow: hidden;
+}
+.profilepic{
+  height: 365px;
+  width: 356px;
+}
+.about{
+  height: 395px;
+  width: 1160px;
+}
+.name{
+  width:355px;
+  height:192px;
+  line-height: 192px;
+}
+.name span{
+ display: inline-block;
+ vertical-align: middle;
+ line-height: normal;
 }
 .department{
-  font-family: LithosProRegular;
-  position: absolute;
-  top:2000px;
-  -webkit-transform: rotate(270deg);
-  color: #ccc;
-  width: 365px;
-  text-align: center;
-  line-height: 95px;
-  font-size: 70px;
+  width: 45px;
+  height: 215px;
+  line-height: 215px;
 }
-.leftPage .profilepic{
-  left: 1250px;
+.department span{
+  display: inline-block;
+  word-wrap: break-word;
+  width: 25px;
+  vertical-align: middle;
+  line-height: normal;
 }
-.leftPage .email, .leftPage .nicknames {
-  left: 280px;
+.frequentwords, .email , .contact, .dob, .place, .hostel, .nicknames{
+  height: 72px;
+  line-height: 72px;
 }
-.leftPage .contact{
-  left: 1200px;
+.frequentwords span, .email span , .contact span, .dob span, .place span, .hostel span, .nicknames span{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  font-size: 29px;
 }
-.leftPage .dob{
-  left:245px;
+.frequentwords, .nicknames{
+  width:440px;
 }
-.leftPage .place{
-  left:705px;
+.email{
+  width: 400px;
 }
-.leftPage .hostel{
-  left:1180px;
+.contact{
+  width: 300px;
 }
-.leftPage .department{
-  left:-70px;
+.dob, .hostel, .place{
+  width:230px;
 }
-.leftPage .about {
-  left:260px;
+.topPage .profilepic, .topPage .about{
+  top:27px;
 }
-.rightPage .name, .rightPage .rollNumber {
-  position: absolute;
-  left: 2360px;
-  height: 145px;
-  line-height: 145px;
-  width: 900px;
-  font-family: LithosProRegular;
-  font-size: 50px;
+.topPage .profilepic{
+  left:80px;
 }
-.rightPage .profilepic{
-  left:1835px;
+.topPage .name {
+  top:391px;
+  left:79px;
 }
-.rightPage .email , .rightPage .nicknames{
-  left: 1900px;
+.topPage .department{
+  top:100px;
+  left:435px;
 }
-.rightPage .contact{
-  left: 2830px;
+.topPage .frequentwords, .topPage .email, .topPage .contact{
+  top:440px;
 }
-.rightPage .dob{
-  left: 1865px;
+.topPage .nicknames, .topPage .dob, .topPage .hostel, .topPage .place {
+  top:522px;
 }
-.rightPage .place {
-  left:2335px;
+.topPage .frequentwords, .topPage .nicknames, .topPage .about{
+  left: 510px;
 }
-.rightPage .hostel{
-  left:2800px;
+.topPage .email ,.topPage .dob{
+  left:965px;
 }
-.rightPage .department{
-  left:3200px;
+.topPage .contact{
+  left:1370px;
 }
-.rightPage .about{
-  left:1885px;
+.topPage .hostel {
+  left:1208px;
+}
+.topPage .place{
+  left:1442px;
+}
+.bottomPage .profilepic, .bottomPage .about{
+  top: 642px;
+}
+.bottomPage .profilepic{
+  left:1266px;
+}
+.bottomPage .name {
+  left:1265px;
+  top:1010px;
+}
+.bottomPage .department{
+  left:1620px;
+  top:715px;
+}
+.bottomPage .frequentwords, .bottomPage .email, .bottomPage .contact{
+  top:1052px;
+}
+.bottomPage .nicknames, .bottomPage .dob, .bottomPage .hostel, .bottomPage .place {
+  top:1135px;
+}
+.bottomPage .frequentwords, .bottomPage .nicknames, .bottomPage .about{
+  left:79px;
+}
+.bottomPage .dob, .bottomPage .email{
+  left:540px;
+}
+.bottomPage .contact{
+  left:945px;
+}
+.bottomPage .hostel{
+  left:780px;
+}
+.bottomPage .place{
+  left:1015px;
 }

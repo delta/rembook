@@ -41,6 +41,14 @@
         }
       }
     })();
+    $scope.wordsQuestionId = (function(){
+      var i;
+      for (i = 0; i < questions.length; i++){
+        if (questions[i].title === "words"){
+          return questions[i]._id;
+        }
+      }
+    })();
     // console.log($scope.aboutQuestionId);
     $scope.getProfilePic = function(user){
       if (typeof user === 'undefined'){
@@ -94,6 +102,35 @@
       nicknamesArray = nicknamesArray.join(', ');
       return nicknamesArray;
     }
+    $scope.getWords = function (rems) {
+      var i, j, k;
+      var wordsArray = [];
+      if (typeof rems === 'undefined'){
+        return;
+      }
+      if (rems.length === 0){
+        return;
+      }
+      for (i = 0; i < rems.length; i++){
+        var responses = rems[i].responses;
+        if (responses.length === 0){
+          continue;
+        }
+        for (j = 0; j < responses.length; j++){
+          if (responses[j].questionId === $scope.wordsQuestionId){
+            var response = responses[j].response;
+            var words = response.split(',');
+            for (k = 0; k < words.length; k++){
+              if (wordsArray.indexOf(nicknames[k].trim()) === -1){
+                wordsArray.push(nicknames[k].trim());
+              }
+            }
+          }
+        }
+      }
+      wordsArray = wordsArray.join(', ');
+      return wordsArray;
+    };
     $scope.getBioAbout = function(bio){
       if (typeof bio === 'undefined'){
         return;
@@ -144,67 +181,73 @@
 <body ng-controller="layoutController">
 
   <div class="rembookPage" ng-repeat="page in pages">
-    <div class="leftPage">
+    <div class="topPage">
       <div class="name centerAlign">
-        <span>{{page.left.user.name}}</span>
+        <span>
+          {{page.left.user.name}}<br>
+          {{page.left.user.rollNumber}}
+        </span>
       </div>
       <img ng-src="{{getProfilePic(page.left.user)}}" class="profilepic" >
-      <div class="rollNumber centerAlign">
-        {{page.left.user.rollNumber}}
+      <div class="frequentwords centerAlign">
+        <span>{{getWords(page.left.rems)}}  </span>
       </div>
-      <div class="nicknames">
-        {{getNickNames(page.left.rems)}}
+      <div class="nicknames centerAlign">
+        <span>{{getNickNames(page.left.rems)}}</span>
       </div>
-      <div class="email">
-        {{page.left.user.email}}
+      <div class="email centerAlign">
+      <span>{{page.left.user.email}}</span>
       </div>
-      <div class="contact">
-        {{page.left.user.contact}}
+      <div class="contact centerAlign">
+        <span>{{page.left.user.contact}}</span>
       </div>
-      <div class="dob">
+      <div class="dob centerAlign">
         <span>{{page.left.user.dob|date:'dd.MM.yyyy' }}</span>
       </div>
-      <div class="place">
+      <div class="place centerAlign">
         <span>{{page.left.user.address}}</span>
       </div>
-      <div class="hostel">
-        {{getHostel(page.left.user)}}
+      <div class="hostel centerAlign">
+        <span>{{getHostel(page.left.user)}}</span>
       </div>
-      <div class="department">
-        {{page.left.user.department}}
+      <div class="department centerAlign">
+        <span>{{page.left.user.department}}</span>
       </div>
       <div class="about">
         {{getRemsAbout(page.left.rems)}}
       </div>
     </div>
-    <div class="rightPage">
+    <div class="bottomPage">
       <div class="name centerAlign">
-        <span>{{page.right.user.name}}<span>
+        <span>
+          {{page.right.user.name}}<br>
+          {{page.right.user.rollNumber}}
+        </span>
       </div>
       <img ng-src="{{getProfilePic(page.right.user)}}" class="profilepic">
-      <div class="rollNumber centerAlign">
-        {{page.right.user.rollNumber}}
+      <div class="frequentwords centerAlign">
+        <span>{{getWords(page.right.rems)}}</span>
       </div>
-      <div class="nicknames">
-        {{getNickNames(page.right.rems)}}
+      <div class="nicknames centerAlign">
+        <span>{{getNickNames(page.right.rems)}}</span>
       </div>
-      <div class="email">
-        {{page.right.user.email}}
+      <div class="email centerAlign">
+      <span>{{page.right.user.email}}</span>
       </div>
-      <div class="contact">
-        {{page.right.user.contact}}
+      <div class="contact centerAlign">
+        <span>{{page.right.user.contact}}</span>
       </div>
-      <div class="dob">
-        <span>{{page.right.user.dob|date:'dd.MM.yyyy'}}</span>
+      <div class="dob centerAlign">
+        <span>{{page.right.user.dob|date:'dd.MM.yyyy' }}</span>
       </div>
-      <div class="place">
+      <div class="place centerAlign">
         <span>{{page.right.user.address}}</span>
       </div>
-      <div class="hostel">
+      <div class="hostel centerAlign">
         <span>{{getHostel(page.right.user)}}</span>
       </div>
-      <div class="department">
-        {{page.right.user.department}}
+      <div class="department centerAlign">
+        <span>{{page.right.user.department}}</span>
       </div>
       <div class="about">
         {{getRemsAbout(page.right.rems)}}
@@ -213,7 +256,7 @@
   </div>
 </body>
 <script>
-$(".rembookPage").on('click', function(e){
+$(".rembookPage").click(function(e){
   console.log(e.pageX, e.pageY);
 })
 </script>

@@ -82,8 +82,8 @@ var download = function(req, res, next){
         }else{
           var config = {
             directory:globalConfig.pdfsDirectory,
-            height:"2480px",
-            width:"3508px",
+            height:"1240px",
+            width:"1754px",
             base: globalConfig.base,
             // phantomPath: globalConfig.phantomPath,
             timeout:150000
