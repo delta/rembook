@@ -51,6 +51,6 @@ ul li{
   display: inline;
 }
 .rempic{
-  height: 290px;
+  height: auto;
   width: 290px;
 }

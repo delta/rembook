@@ -7,9 +7,10 @@ var ConditionallyEditableComponent = Vue.extend({
 		'placeholder',
 		'placeholderInput',
 		'placeholderEmpty',
-		'maxlength',
+		'limit',
 		'editable',
-		'type'
+		'type',
+		'characterCount'
 	],
     template: require('../../templates/ConditionallyEditableComponent.tmpl'),
     computed: {

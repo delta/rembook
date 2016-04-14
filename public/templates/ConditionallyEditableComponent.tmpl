@@ -12,13 +12,14 @@
 -->
 
 <span :class="{'editable' : editable, 'editing': _editing_}" class="conditionally_editable">
-	<span v-show="!editable">{{data && data.trim() ? data : (placeholderEmpty || placeholder)}}</span>
+	<span v-show="!editable">{{{data && data.trim() ? data : (placeholderEmpty || placeholder)}}}</span>
 	<input class="_dummy_"
 			v-on:focus="onfocusdummy($event)" 
 			v-show="!_editing_ && editable" 
 			:type="type" 
 			:value="data"
-			:placeholder="(placeholderInput || placeholder)">
+			:placeholder="(placeholderInput || placeholder)"
+			:maxlength="limit ? limit : 100">
 
 	<input class="_real_" 
 			v-show="_editing_" 
@@ -26,5 +27,6 @@
 			v-model="data" 
 			:placeholder="(placeholderInput || placeholder)"
 			v-on:blur="onblurreal($event)" 
-			v-on:change="onchange($event)">
+			v-on:change="onchange($event)"
+			:maxlength="limit ? limit : 100">
 </span>

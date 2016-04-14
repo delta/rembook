@@ -27,6 +27,8 @@ var getAllRemsTo = function (req, res, next) {
           rem.approved = doc[i].approved;
           rem.print = doc[i].print;
         }
+	if(requestedBy == doc[i].from)
+		rem.approved = doc[i].approved;
         rem.id = doc[i].id;
         rem.to = doc[i].to;
         rem.toName = doc[i].toName;
@@ -94,6 +96,8 @@ var uploadPic = function(req, res, next){
   var from = req.session.rollNumber;
   var fromName = req.session.name;
   var to = req.params.rollNumber;
+  var toName = req.body.rollNumber;
+ 
   var ext = req.file.mimetype.split("/")[1];
   var fileType = req.file.mimetype.split("/")[0];
   var response = {};
@@ -121,7 +125,8 @@ var uploadPic = function(req, res, next){
       });
       var callback = function (err, doc) {
         if (err){
-          next(err);
+           console.log(err);
+	   next(err);
         }else {
           var notificationCallback = function (err, doc) {};
           var message = fromName +" uploaded a Photo";
@@ -131,9 +136,10 @@ var uploadPic = function(req, res, next){
           res.json(response);
         }
       };
-      Rem.updateRemPhoto(from, to, photoName, callback);
+      Rem.updateRemPhoto(from, to, fromName, toName, photoName, callback);
     })
     .catch(function(err){
+	console.log(err);
       next(err);
     });
   }

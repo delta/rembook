@@ -24,7 +24,7 @@
         <search-control-component id="search-control-mount-point"></search-control-component>
     </header>
 
-    <nav-component id="main-nav"></nav-component>
+    <nav-component id="nav-component-mount-point"></nav-component>
     <div id="main">
         <div class="rem-bookblock bb-bookblock">
             <profilepage-component id="profile-page-mount-point"></profilepage-component>
@@ -58,5 +58,5 @@
 		return ;
         }
 </script>
-<script src="javascripts/bundle.js"></script>
+<script src="javascripts/bundle1.js"></script>
 </html>

@@ -39,11 +39,13 @@ RemBook = {
 			this.currentRemBookOf = this._usersCache_[rollNumber];
 			this.trigger("changeRemBook", this);
 			cb && cb();
+			if(Date.now() - that._usersCache_[rollNumber].__time__ < 2*60) return;
 		}
 		this.currentRemBookOf = new User({ rollNumber: rollNumber });
 		this.currentRemBookOf.fetch({
 			success: function() {
 				that._usersCache_[rollNumber] = that.currentRemBookOf;
+				that._usersCache_[rollNumber].__time__ = Date.now();
 				that.trigger("changeRemBook", that);
 				cb && cb();
 			}
@@ -71,7 +73,7 @@ RemBook = {
 	},
 	isFinalYear: function(rollNumber) {
 		rollNumber += "";
-		return parseInt(rollNumber.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
+		return rollNumber == "sundar" ||  parseInt(rollNumber.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
 	}
 };
 

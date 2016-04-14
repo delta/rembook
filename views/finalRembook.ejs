@@ -23,7 +23,7 @@
   //   }
   // }
 
-  printRembook.controller('layoutController',['$scope', function ($scope) {
+  printRembook.controller('layoutController',['$scope', '$sce', function ($scope, $sce) {
     $scope.pages = pages;
     $scope.nickNamesQuestionId = (function(){
       var i;
@@ -121,8 +121,8 @@
             var response = responses[j].response;
             var words = response.split(',');
             for (k = 0; k < words.length; k++){
-              if (wordsArray.indexOf(nicknames[k].trim()) === -1){
-                wordsArray.push(nicknames[k].trim());
+              if (wordsArray.indexOf(words[k].trim()) === -1){
+                wordsArray.push(words[k].trim());
               }
             }
           }
@@ -167,12 +167,12 @@
             var response = responses[j].response;
             // console.log(response);
             if (response.length !== 0 ){
-              remsString +=  fromName +" says: <br>" +  +"<br>";
+              remsString +=  fromName +" says: " + response + " ";
             }
           }
         }
       }
-      return remsString;
+      return $sce.trustAsHtml(remsString);
     }
   }]);
 

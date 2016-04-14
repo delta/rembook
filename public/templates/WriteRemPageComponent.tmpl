@@ -1,25 +1,4 @@
-<!--
-    Vue-Template for the Write-Rem page.
-
-    Object to be injected: {
-        from: {
-            name: String,
-            rollNumber: String,
-            photoName: String -> Name of the profile photo
-        },
-        to: {
-            name: String,
-            rollNumber: String,
-            photoName: String -> Name of the profile photo
-        },
-        trivia: Array<{ _id, title, description, bio_description, response }>,
-        memories: String,
-        pictureUrl: String
-    }
--->
-
-<div class="write-rem-component">
-    <div class="topbar">
+<div class="write-rem-component test"><div class="topbar">
         <div class="ui header">
             Write a Rem about {{toName}}
         </div>
@@ -28,27 +7,27 @@
     </div>
 
     <div class="rem-page">
-        <div class="ui padded grid side-content">
+        <div class="ui padded stackable grid side-content">
             <div class="ui five wide column">
                 <div class="center aligned two wide column">
-                    <img class="dp ui small image" :src="'/profilepic/' + fromPhotoName">
+                    <a href="#{{from}}"><img class="dp ui small image" :src="'/profilepic/' + fromPhotoName"></a>
                 </div>
                 <div class="thirteen wide column rem-author-name">
-                    <h3>{{fromName}} says,</h3>
+                    <h3><a href="#{{from}}">{{fromName}}</a> says,</h3>
                 </div>
                 <div class="sixteen wide column rem-trivia-container">
                     <template v-for="t in trivia">
-                        <h4>{{t.description}}</h4>
+                        <h4>{{t.description + " " + toName}}</h4>
                         <conditionally-editable-text-area-component
                             :data-id="'trivia#' + t._id"
                             :data.sync="t.response"
                             :editable="true"
-                            :placeholder="t.description">
+                            :placeholder="t.description + ' ' + toName">
                         </conditionally-editable-text-area-component>
                     </template>
                 </div>
             </div>
-            <div class="eight wide column rem-memories-column">
+            <div class="six wide column rem-memories-column">
                 <div class="rem-memories-wrapper">
                     <h4>Memories</h4>
 
@@ -57,13 +36,21 @@
                             :data-id="'memories'"
                             :data.sync="memories"
                             :editable="true"
-                            :placeholder="'Your sweet (and salty) memories...'">
+                            :placeholder="'Your sweet (and salty) memories...'"
+			    :limit="500"
+			    :character-count="true">
                         </conditionally-editable-text-area-component>
                     </div>
+			<div style="padding: 15px"><button style="margin-left: -15px" class="ui labeled icon primary button" v-on:click="onsave($event)"> <i class="save icon"></i> Save</i></button><div style="margin-left: 15px" class="save-status"></div></div>
+			<!--<div style="font-size: 14px"><i>P.S: Everything gets autosaved.</i></div>-->
+			
                 </div>
             </div>
-            <div class="three wide column rem-pic-container">
-                <img class="rem-pic ui medium image ui piled segment center aligned" :src="'/rempics/' + pictureUrl ? pictureUrl : 'temp.png'">
+            <div class="five wide column rem-pic-container">
+	    	    <div class='uploadable'>
+			<input type="file" accept="image/*"  v-on:change="uploadImage($event)">
+			<img class="rem-pic ui medium image piled segment center aligned" :src="'/rempics/' + (photoName ? photoName : Math.random() < 0.5 ? 'group-green.png' : 'group-orange.png')">
+		    </div>
             </div>
         </div>
     </div>

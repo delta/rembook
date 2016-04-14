@@ -10,7 +10,7 @@ var profilepic = require('./profilepic');
 var finalRembook = require('../controllers/finalRembook');
 var multer = require('multer');
 var upload = multer({
-  dest:"./public/rempic",
+  dest:"./public/rempics",
 });
 
 router.get('/login', function(req, res, next) {
@@ -26,13 +26,14 @@ router.post('/bio/:rollNumber', bio.editBioOf);
 router.get('/rem/:rollNumber', rems.getAllRemsTo);
 router.post('/rem/', rems.updateRem);
 router.post('/rem/approve/:id', rems.approveRem);
-router.post('/rempic/:rollNumber', upload.single('remPic'), rems.uploadPic);
+router.post('/rempic/:rollNumber', upload.single('rempic'), rems.uploadPic);
 router.get('/notifications',notifications.getAllNotifications);
 router.get('/search',users.search);
 router.get('/printMyRem', printMyRem.printMyRem );
 router.get('/logout', login.logout);
 router.get('/finalRembook',finalRembook.download);
-
+router.get('/profilepic/*', function(req, res) { res.redirect('/profilepic/temp.png'); });
+router.get('/thumbnail/*', function(req, res) { res.redirect('/thumbnail/temp.png'); });
 profilepic.uploadFile(router);
 
 module.exports = router;

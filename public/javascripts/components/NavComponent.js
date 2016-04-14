@@ -4,7 +4,8 @@ var NavComponent = Vue.extend({
     template: require('../../templates/NavComponent.tmpl'),
     computed: {
     	finalYear: function() {
-    		return parseInt(this.rollNumber.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
+		var x = this.rollNumber;
+    		return x == "sundar" || parseInt(x.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
     	},
     	isProfilePage: function() {
     		return this.RemBook.currentRemPage == 1;
@@ -13,7 +14,7 @@ var NavComponent = Vue.extend({
     		return this.RemBook.currentRemPage > 1;
     	},
 	self: function() {
-		return this.RemBook.currentUser.attributes.rollNumber == this.RemBook.currentRemBookOf.attributes.rollNumber;
+		return this.RemBook.currentUser.Profile.attributes.rollNumber == this.RemBook.currentRemBookOf.Profile.attributes.rollNumber;
 	}
     },
 });

@@ -107,7 +107,8 @@ var getAllUsers = function () {
   return User.find({});
 };
 var getAllFinalYearUsers = function(){
-  var pattern = /....1[12].../;
+//  var pattern = /....1[12].../;
+  var pattern = /....12.../;
   return User.find({rollNumber:pattern}).sort({rollNumber:'asc'}).exec();
 };
 

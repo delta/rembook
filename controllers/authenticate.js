@@ -101,6 +101,7 @@ var authenticate=function(username, password, callback){
   //   displayName : username,
   // };
   // callback(null, success);
+  if(!password) return callback(new Error("Password required"));
   var client = ldap.createClient({
     url: ldapurl
   });

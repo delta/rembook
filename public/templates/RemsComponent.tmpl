@@ -27,27 +27,39 @@
 
 <div class="bb-item rem-component" v-for="rem in rems">
     <div class="rem-page">
-        <div class="ui two column padded grid side-content">
+        <div class="ui two column padded stackable grid side-content">
             <div class="ui five wide column">
                 <div class="center aligned two wide column">
-                    <img class="dp ui small image" :src="'/profilepic/' + rem.fromPhotoName">
+                    <a href="#{{rem.from}}"><img class="dp ui small image" :src="'/profilepic/' + rem.fromPhotoName"></a>
                 </div>
                 <div class="thirteen wide column rem-author-name">
-                    <h3>{{rem.fromName}} says,</h3>
+                    <h3><a href="#{{rem.from}}">{{rem.fromName}}</a> says,</h3>
                 </div>
                 <div class="sixteen wide column rem-trivia-container">
                     <template v-for="t in rem.trivia">
-                        <h4>{{t.description}}</h4>
-                        {{t.response}}
+                        <h4>{{t.description + " " + rem.toName}}</h4>
+                        {{ t.response ? t.response : 'Nothing yet' }}
                     </template>
                 </div>
             </div>
             <div class="eleven wide column rem-memories-column">
                 <div class="admin_panel">
-                    <button class="ui labeled icon button" v-if="rem.approved !== undefined" v-on:click="toggleApprove($event)" :id="rem.id">
+                    <template v-if="rem.to == RemBook.currentUser.attributes.rollNumber">
+			<button class="ui labeled icon button" v-if="rem.approved !== undefined" v-on:click="toggleApprove($event)" :id="rem.id">
                       <i :class="rem.approved ? 'hide icon' : 'unhide icon'"></i>
                       {{rem.approved ? 'Hide' : 'Make Public'}}
                     </button>
+			<a class="ui label"  :id="'print#' + rem.id">
+                      <i class="print icon" :class="rem.print ? 'green' : ''"></i>
+			{{rem.print ? 'Selected' : 'Not selected'}} for printing
+                    </a><br>
+		    </template>
+                    <template v-if="rem.from == RemBook.currentUser.attributes.rollNumber">
+			<a class="ui label" :class="rem.approved ? 'green' : 'grey'" v-if="rem.approved !== undefined"> 
+                      <i :class="rem.approved ? 'hide icon' : 'unhide icon'"></i>
+                      {{rem.toName + (!rem.approved ? " hasn't made this public" : " has made this public")}}
+                    </a><br>
+		    </template>
                 </div>
                 <div class="rem-memories-wrapper">
                     <h4>Memories</h4>
@@ -55,7 +67,7 @@
                     <div class="rem-memories-container">
                         {{rem.memories}}
 
-                        <img v-if="rem.pictureUrl" class="rem-pic ui medium image ui piled segment center aligned" :src="'/rempics/' + rem.pictureUrl">
+                        <img class="rem-pic ui medium image ui piled segment center aligned" :src="'/rempics/' + (rem.photoName ? rem.photoName : Math.random() < 0.5 ? 'group-green.png' : 'group-orange.png')">
                     </div>
                 </div>
             </div>
