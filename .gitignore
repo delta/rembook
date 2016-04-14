@@ -5,3 +5,5 @@ pdfs/
 node_modules/
 semantic/*
 semantic.json
+public/rempics/
+public/thumbnail/

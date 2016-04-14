@@ -87,3 +87,12 @@ a.tab:hover, a.tab.active, a.tab:focus, a.tab:active {
 input {
 	border: 1px solid lightblue;
 }
+
+.error {
+	color: red;
+	float: none;
+	width: 100%;
+	text-align: center;
+	display: block;
+	font-size: 14px;
+}

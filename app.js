@@ -12,6 +12,7 @@ var globalConfig = require('./config').config;
 
 var app = express();
 var mongoose = require('mongoose');
+var MongoStore = require('connect-mongo')(session);
 mongoose.connect(globalConfig.db);
 
 // view engine setup
@@ -26,10 +27,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('S3CRE7'));
 app.use(session({
-  secret: 'SUPERsekret',
+	store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
+/*app.use(session({
+  secret: 'SUPERsekret23',
   resave: true,
   saveUninitialized: true
-}));
+}));*/
 app.use(sessionCheck);
 
 app.use('/', routes);
@@ -45,7 +49,9 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+//
+// Doing this because pm2 doesn't reliably pass environment variables
+/*if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -53,7 +59,7 @@ if (app.get('env') === 'development') {
       error: err
     });
   });
-}
+}*/
 
 // production error handler
 // no stacktraces leaked to user

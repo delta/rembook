@@ -40,7 +40,7 @@ var printMyRem = function (req, res, next){
         base: globalConfig.base,
         // phantomPath: globalConfig.phantomPath,
       };
-
+//	html="asdfasdfasdf";
       pdf.create(html, config).toFile(function(err, result){
         if (err){
           next(err);
@@ -56,7 +56,7 @@ var printMyRem = function (req, res, next){
       });
 
       //For Testing
-      //  res.send(html);
+        //res.send(html);
     });
   }).catch( function(err) {
     next(err);

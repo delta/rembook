@@ -34,15 +34,18 @@ var Rem = Backbone.Model.extend({
 	url: "/rem",
 	defaults: defaults,
 	initialize: function(attr) {
-		var that = this;
-		$.get('/profile/' + attr.from, function(user) {
-			that.set('fromPhotoName', user.photoName);
-		});
-		$.get('/profile/' + attr.to, function(user) {
-			that.set('toPhotoName', user.photoName);
-		});
+		this.set('fromPhotoName', attr.from + '.jpg');
+		this.set('toPhotoName', attr.to + '.jpg');
+	//	var that = this;
+	//	$.get('/profile/' + attr.from, function(user) {
+	//		that.set('fromPhotoName', user.photoName);
+	//	});
+	//	$.get('/profile/' + attr.to, function(user) {
+	//		that.set('toPhotoName', user.photoName);
+	//	});
 	},
 	parse: function(obj) {
+		if(obj.success && obj.success == 1) return {};
 		var ret = obj;
 		ret.trivia = [];
 		for(var q of obj.responses) {

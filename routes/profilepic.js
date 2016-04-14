@@ -27,6 +27,7 @@ module.exports.uploadFile = function (router) {
     }else{
       var fileName=rollNumber+".jpg";
       var finalPath = globalConfig.profilePicPath + rollNumber+".jpg";
+      var searchPicPath = globalConfig.searchPicPath + rollNumber + ".jpg";
       easyimage.convert({
         src:req.file.path,
         dst:finalPath,
@@ -39,6 +40,21 @@ module.exports.uploadFile = function (router) {
           width:400,
           height:400,
         });
+      })
+      .then(function(image) {
+	return easyimage.resize({
+	  src:req.file.path,
+	  dst:searchPicPath,
+	  width:80,
+	  height:80
+	});
+      })
+      .then(function(image) {
+	return easyimage.convert({
+	  src:searchPicPath,
+	  dst:searchPicPath,
+	  quality:70
+	});
       })
       .then(function(image){
         fs.unlink(req.file.path,function(err){

@@ -40,6 +40,7 @@ body{
 .about{
   height: 395px;
   width: 1160px;
+  font-size: 18px;
 }
 .name{
   width:355px;
@@ -71,7 +72,7 @@ body{
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
-  font-size: 29px;
+  font-size: 28px;
 }
 .frequentwords, .nicknames{
   width:440px;

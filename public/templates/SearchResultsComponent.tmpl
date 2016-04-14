@@ -26,9 +26,17 @@
 	</div>
 
 	<div class="search-results">
+		<template v-if="results.length == 0">
+			<div class="ui segment" style="width: 100%;	position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); border: none;	box-shadow: none;">
+			<div class="ui active inverted dimmer">
+			<div class="ui text loader">Loading</div>
+		</div>
+		<p></p>
+	</div>
+</template>
 		<template v-for="result in results">
-			<a href="#{{result.attributes.rollNumber}}/profile">
-				<img :src="'/profilepic/' + result.attributes.photoName">
+			<a v-if="result.attributes.rollNumber | isFinalYear" href="#{{result.attributes.rollNumber}}/profile">
+				<img :src="'/thumbnail/' + result.attributes.photoName">
 				<span>{{result.attributes.name}}</span>
 				<span>{{result.attributes.department}}</span>
 				<span>{{result.attributes.rollNumber}}</span>

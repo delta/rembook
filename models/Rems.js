@@ -113,15 +113,26 @@ var getAllApprovedForPrintRems = function (rollNumber) {
   return Rem.find({print:true});
 };
 
-var updateRemPhoto = function (from, to, photoName, callback) {
+var getSomeRems = function (rollNumber) {
+  return Rem.find({to:rollNumber}).limit(5);
+};
+
+var updateRemPhoto = function (from, to, fromName, toName, photoName, callback) {
   Rem.findOne({from : from, to : to}).then(function (doc) {
+    if(!doc) {
+       doc = new Rem();
+       doc.from = from;
+       doc.to = to;
+       doc.toName = toName;
+       doc.fromName = fromName;
+    }
     doc.photoName = photoName;
     doc.save().then(function (doc) {
       callback(null, doc);
     }).catch(function (err){
       callback(err);
     });
-  });
+  }).catch(function(e) { console.log(e); });
 };
 
 module.exports.getAllRemsTo = getAllRemsTo;

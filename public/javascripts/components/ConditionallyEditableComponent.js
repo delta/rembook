@@ -3,8 +3,13 @@ import Vue from 'vue'
 var ConditionallyEditableComponent = Vue.extend({
 	props: [
 		'data',
-		'maxlength',
-		'editable'
+		'placeholder',
+		'placeholderInput',
+		'placeholderEmpty',
+		'limit',
+		'editable',
+		'type',
+		'characterCount'
 	],
     template: require('../../templates/ConditionallyEditableComponent.tmpl'),
     computed: {

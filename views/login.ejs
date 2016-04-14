@@ -20,12 +20,15 @@
 					</p>
 					<p>
 						<label for="txtPass1">Password: </label>
-						<input type="password" id="txtPass1" name="password" placeholder="Your OCTA password..." /> 
+						<input type="password" id="txtPass1" name="password" placeholder="Your OCTA/Webmail password..." required /> 
 					</p>
 
 					<p>
 						<label>&nbsp;</label>
 						<input type="submit" id="btnSubmit1" value="Login" />
+					</p>
+					<p>	
+						<label class="error"><%= hasOwnProperty("message") ? message : "" %></label>
 					</p>
 				</form>
 			</div>

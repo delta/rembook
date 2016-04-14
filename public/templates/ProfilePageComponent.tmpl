@@ -18,9 +18,20 @@
 <div class="bb-item">
     <div class="profile-side">
         <div class="side-content">
-            <div class="ui two column padded grid">
+            <div class="ui two column padded stackable grid">
+		<div v-if="profile.rollNumber!='sundar'" style="color: red; font-size: 14px; text-align: center;width:100%">
+			<p v-if="_isEditable_ && profile.rollNumber[5] == '2'">
+                        <a class="ui label">
+			   <i class="print icon" :class="profile.hardCopyRequested ? 'green' : ''"></i>
+			Hardcopy {{profile.hardCopyRequested ? '' : 'not'}} requested
+			</a></p>
+			Our <a href="#sundar">Director, Dr Srinivasan Sundarrajan</a> has joined the rembook!
+		</div>
                 <div class="right aligned column profile-dp-container">
-                    <img class="dp ui medium image" :src="'/profilepic/' + profile.photoName">
+	    	    <div :class="_isEditable_ ? 'uploadable' : ''">
+			<input v-if="_isEditable_" type="file" accept="image/*"  v-on:change="uploadImage($event)">
+			<img class="dp ui medium image" :src="'/profilepic/' + profile.photoName">
+		    </div>
                 </div>
                 <div class="column profile-intro-wrapper">
                     <div class="ui profile-intro-container">
@@ -31,13 +42,47 @@
                 </div>
             </div>
 
-            <div class="ui two column divided grid piled segments center aligned">
+            <div class="ui two column divided stackable grid piled segments center aligned">
                 <div class="column">
                     <h2 class="ui header center aligned">Contact</h2>
                     <div class="ui divider"></div>
+<<<<<<< 0f03015978ede9d8231d2130c5da66dad3f21b32
                     <h4 class="ui left aligned header"><i class="home icon"></i>{{profile.address}}</h4>
                     <h4 class="ui left aligned header"><i class="mail icon"></i>{{profile.email}}</h4>
                     <h4 class="ui left aligned header"><i class="phone icon"></i>{{profile.contact}}</h4>
+=======
+                    <h4 class="ui left aligned header">
+                        <i class="home icon" style="float: left"></i>
+                        <conditionally-editable-component
+                            style="display: inline"
+                            :data-id="'address'"
+                            :data="profile.address" 
+                            :editable="_isEditable_"
+                            placeholder-input="Enter city"
+			    placeholder-empty="City not available"></conditionally-editable-component>
+                    </h4>
+                    <h4 class="ui left aligned header">
+                        <i class="mail icon" style="float: left"></i>
+                        <conditionally-editable-component
+                            style="display: inline"
+                            :data-id="'email'"
+                            :data="profile.email" 
+                            :editable="_isEditable_"
+                            placeholder-input="Enter email"
+			    placeholder-empty="Email not available"></conditionally-editable-component>
+                    </h4>
+                    <h4 class="ui left aligned header">
+                        <i class="phone icon" style="float: left"></i>
+                        <conditionally-editable-component
+                            style="display: inline"
+                            :data-id="'contact'"
+                            :data="profile.contact" 
+                            :editable="_isEditable_"
+			    :limit="10"
+                            placeholder-input="Enter contact"
+			    placeholder-empty="Contact not available"></conditionally-editable-component>
+                    </h4>
+>>>>>>> everything
                 </div>
                 <div class="ui center aligned column">
                     <h2 class="ui header center aligned">Hostels</h2>
@@ -51,8 +96,18 @@
     <div class="profile-side">
         <div class="side-content bio">
             <template v-for="question in bio.responses">
+<<<<<<< 0f03015978ede9d8231d2130c5da66dad3f21b32
                 <h4>{{question.bio_description}}</h4>
                 {{question.response}}
+=======
+                <h4>{{questionMap[question._id].bio_description}}</h4>
+                <conditionally-editable-text-area-component
+                    :data-id="'question#' + question._id"
+                    :data="question.response"
+                    :editable="_isEditable_"
+                    :placeholder="_isEditable_ ? 'Nothing yet!' : '<i>Nothing yet!</i>'">
+                </conditionally-editable-text-area-component>
+>>>>>>> everything
             </template>
         </div>
     </div>

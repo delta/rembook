@@ -55,7 +55,7 @@ var updateProfile = function (req, res, next) {
 };
 
 var search = function (req, res, next) {
-  var q = req.query.q;
+  var q = req.query.q || "112";
   var department;
   if (typeof req.query.department !== 'undefined'){
     department = req.query.department;
@@ -74,9 +74,14 @@ var search = function (req, res, next) {
         response.success = 1;
         response.message = "";
         var users = [];
-        var i;
+        var i, count, limit;
         var user;
-        for (i=0;i<results.length;i++){
+	count = 0;
+	limit = q == "112" ? 110 : 45;
+        for (i=0; count < limit && i < results.length;i++){ 
+	 console.log(results[i].rollNumber);
+	  if(results[i].rollNumber.toString()[5] != ""+(new Date().getFullYear() - 2014) && results[i].rollNumber != "sundar") continue;
+	  count++;
           user ={};
           user.name = results[i].name;
           user.rollNumber = results[i].rollNumber;

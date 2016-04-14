@@ -150,10 +150,15 @@ header {
 	display: flex !important;
 	height: 100% !important;
 	float: left !important;
+	word-break: break-word;
 }
 
 .profile-side .dp {
-	max-width: 250px;
+	max-width: 100%;
+}
+
+.profile-dp-container {
+	max-width: 270px;
 }
 
 .side-content {
@@ -191,7 +196,11 @@ header {
 }
 
 .rem-memories-column {
-	display: flex !important;
+	display: block !important;
+}
+
+.rem-memories-column .admin_panel {
+	margin-bottom: 20px;
 }
 
 .rem-memories-wrapper {
@@ -226,7 +235,7 @@ img.rem-pic {
 }
 
 .conditionally_editable span {
-	width: 80%;
+	max-width: 80%;
 	display: inline-block;
 }
 
@@ -244,13 +253,14 @@ img.rem-pic {
 .editable input,
 .editable textarea {
 	border: none;
-	width: 80%;
+	max-width: 80%;
 }
 
 .editable textarea {
 	border-bottom: 1px solid black !important;
     display:inline-block;
     min-height:10px;
+	width: 80%;
 }
 
 .editable input:hover, .editable input:focus,
@@ -263,7 +273,7 @@ img.rem-pic {
 	outline: none;
 }
 
-.write-rem-component {
+.write-rem-component, .image-uploader-component {
 	display: none;
 	position: absolute;
 	top: 46px;
@@ -275,7 +285,8 @@ img.rem-pic {
 	background: white;
 }
 
-.write-rem-component .topbar {
+.write-rem-component .topbar,
+.image-uploader-component .topbar {
 	display: flex;
 	position: fixed;
 	width: 100%;
@@ -283,6 +294,34 @@ img.rem-pic {
 	padding: 5px;
 	background: white;
 	box-shadow: 0 0 2px #000;
+	z-index: 100000000;
+}
+
+.write-rem-component.saved .save-status {
+	display: inline;
+}
+
+.write-rem-component.saved .save-status::after {
+	font-size: 14px;
+	content: "Saved!";
+	color: green;
+	font-weight: bold;
+}
+
+.write-rem-component.unsaved .save-status::after {
+	font-size: 14px;
+	content: "";//Saving...";
+	color: grey;
+	font-weight: bold;
+}
+
+textarea.saved {
+	box-shadow: 0 0 2px darkgreen;
+	-webkit-transition: 0.1s all;
+	-moz-transition: 0.1s all;
+	-o-transition: 0.1s all;
+	-ms-transition: 0.1s all;
+	transition: 0.1s all;
 }
 
 .write-rem-component .header {
@@ -320,7 +359,6 @@ img.rem-pic {
 	margin: 30px 10px;
 }
 
-/////////////////////
 
 footer {
 	position: fixed;
@@ -349,12 +387,129 @@ footer {
 	perspective: 3000px !important;
 }
 
+.uploadable {
+	//display: flex;
+	position: relative;
+}
+
+.uploadable img {
+	margin: auto !important;
+}
+
+.uploadable::before, .uploadable input {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+	z-index: 100;
+	content: " ";
+}
+
+.uploadable::after {
+	//display: none;
+	opacity: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	content: "Upload";
+	padding: 10px;
+	border-radius: 10px;
+	color: white;
+	background: rgba(0,0,0,0.9);
+	z-index: 1000;
+}
+
+.write-rem-component .uploadable::after {
+	content: "Upload a memorable pic";
+	text-align: center;
+}
+
+.uploadable input:hover {
+	cursor: pointer;
+}
+
+.uploadable:hover::before {
+	display: block;
+}
+
+.uploadable:hover::after {
+	opacity: 1;
+}
+
+.uploadable:hover::after .uploadable input {
+	display: block;
+}
+
+.uploadable input {
+	opacity: 0;
+	z-index: 1009;
+	display: block;
+	top: 0; left: 0; right: 0; left: 0;
+	max-width: 100%;
+}
+
 .bb-item {
 	min-height: 100%;
 	width: 100%;
 	float: left;
 	overflow-y: auto;
 }
+
+.image-uploader-component {
+	background: black;
+	overflow: hidden;
+}
+
+.image-uploader-component .button-container {
+	margin: auto;
+}
+
+.image-uploader-component .container {
+	position: absolute;
+	top: 50px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+}
+
+.image-uploader-component .anothercontainer {
+	margin: auto;
+	width: 400px;
+	height: 400px;
+}
+
+.image-uploader-component img {
+	margin: auto;
+	width: 400px;
+	height: 400px;
+}
+
+#instructions-mount-point .topbar {
+	box-shadow: none !important;
+	margin: 10px !important;
+	text-align: center !important;
+	width: 100% !important;
+}
+#instructions-mount-point .content {
+    padding: 20px;
+    font-size: 1.5em;
+    /* height: 100%; */
+    overflow: hidden;
+    line-height: 1.5em;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    z-index: -1; 
+}
+
 
 @font-face {
 	font-family: 'arrows';
@@ -509,11 +664,19 @@ footer {
 	.bb-custom-side {
 		font-size: 70%;
 	}
+	textarea {
+		border: 1px solid lightblue !important;
+		max-width: 100% !important;
+	}
 }
 
 @media screen and (max-width: 33em){
 	.bb-custom-side {
 		font-size: 60%;
+	}
+	textarea {
+		border: 1px solid lightblue !important;
+		max-width: 100% !important;
 	}
 }
 
