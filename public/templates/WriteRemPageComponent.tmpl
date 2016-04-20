@@ -37,8 +37,8 @@
                             :data.sync="memories"
                             :editable="true"
                             :placeholder="'Your sweet (and salty) memories...'"
-			    :limit="500"
-			    :character-count="true">
+			    :limit="10000"
+			    :character-count="false">
                         </conditionally-editable-text-area-component>
                     </div>
 			<div style="padding: 15px"><button style="margin-left: -15px" class="ui labeled icon primary button" v-on:click="onsave($event)"> <i class="save icon"></i> Save</i></button><div style="margin-left: 15px" class="save-status"></div></div>
