@@ -124,6 +124,19 @@ header {
 	background: rgba(0,0,0,0.9);
 	padding: 15px 0 5px 0; 
 	margin: 5px 0;
+	position: relative;
+}
+
+#main-nav a span#rem-count {
+	font-size: 10px;
+	margin: 0;
+	padding: 0 4px;
+	position: absolute;
+	top: 3px;
+	right: 10px;
+	background: red;
+	color: white;
+	border-radius: 500px;
 }
 
 #main-nav a:not(.selected) {
