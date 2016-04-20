@@ -9,7 +9,7 @@ var config ={
   profilePicPath:"./public/profilepic/",
   searchPicPath:"./public/thumbnail/",
 
-  maxCharPerResonose : 500,
+  maxCharPerResonose : 10000,
   maxRemsForPrint:5,
 };
 module.exports.config = config;
