@@ -12,6 +12,7 @@
 	<a v-if="finalYear" href="#{{rollNumber}}/rems/" :class="isProfilePage ? '' : 'selected'">
 		<i class="comments outline icon center aligned"></i>
 		<div>Rems</div>
+		<span id="rem-count">{{ RemBook.currentRemBookOf.Rems.models.length }}</span>
 	</a>
 	
 	<a v-if="finalYear && !self" href="#{{rollNumber}}/rems/write/">
