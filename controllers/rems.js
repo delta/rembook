@@ -20,6 +20,7 @@ var getAllRemsTo = function (req, res, next) {
       var rem;
       for (i=0;i<doc.length;i++){
         rem = {};
+	//console.log(doc[i]);
         if ( (doc[i].approved !== true) && (rollNumber !== requestedBy) && (doc[i].from !== requestedBy)){
           continue;
         }else if (rollNumber === requestedBy){

@@ -79,7 +79,7 @@ var search = function (req, res, next) {
 	count = 0;
 	limit = q == "112" ? 110 : 45;
         for (i=0; count < limit && i < results.length;i++){ 
-	 console.log(results[i].rollNumber);
+	 //console.log(results[i].rollNumber);
 	  if(results[i].rollNumber.toString()[5] != ""+(new Date().getFullYear() - 2014) && results[i].rollNumber != "sundar") continue;
 	  count++;
           user ={};
