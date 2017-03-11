@@ -224,6 +224,31 @@ function renderRems(all) {
 //	navComponent.$set('RemBook', RemBook);
 //}
 
+function lazyLoadImages() {
+    for(var i = -1; i < 3; i++) {
+        var curPage = RemBook.currentRemPage-1+i;
+        if(curPage < 0) continue;
+        var curRem = RemBook.currentRemBookOf.Rems.models[curPage];
+        if(!curRem) break;
+        curRem = curRem.attributes;
+        var fromImgId = "#remFromPhoto_" + curRem.from;
+        var remPicId = "#rempic_from" + curRem.from + "_to_" + curRem.to;
+
+        var isFromLoaded = $(fromImgId).data("loaded");
+        var isRemPicLoaded = $(remPicId).data("loaded");
+
+        if(!isFromLoaded && curRem.fromPhotoName != 'temp.png') {
+            $(fromImgId).attr("src", "/profilepic/" + curRem.fromPhotoName)
+                        .data("loaded", true);
+        }
+
+        if(!isRemPicLoaded && curRem.photoName) {
+            $(remPicId).attr("src", "/rempics/" + curRem.photoName)
+                       .data("loaded", true);
+        }
+    }
+}
+
 function onChangeBook() {
 	function changeBio(e) {
 		var questionId = e.dataId.match(/\#(.+)/)[1];
@@ -322,6 +347,7 @@ function onChangeBook() {
 
 function onChangeRemPage() {
 	updateNav();
+    lazyLoadImages();
 	$(".rem-bookblock").bookblock('jump', RemBook.currentRemPage);
 }
 

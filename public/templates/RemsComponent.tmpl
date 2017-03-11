@@ -30,7 +30,7 @@
         <div class="ui two column padded stackable grid side-content">
             <div class="ui five wide column">
                 <div class="center aligned two wide column">
-                    <a href="#{{rem.from}}"><img class="dp ui small image" :src="'/profilepic/' + rem.fromPhotoName"></a>
+                    <a href="#{{rem.from}}"><img class="dp ui small image" :id="'remFromPhoto_' + rem.from" src="/profilepic/temp.png"></a>
                 </div>
                 <div class="thirteen wide column rem-author-name">
                     <h3><a href="#{{rem.from}}">{{rem.fromName}}</a> says,</h3>
@@ -67,7 +67,7 @@
                     <div class="rem-memories-container">
                         {{rem.memories}}
 
-                        <img class="rem-pic ui medium image ui piled segment center aligned" :src="'/rempics/' + (rem.photoName ? rem.photoName : Math.random() < 0.5 ? 'group-green.png' : 'group-orange.png')">
+                        <img class="rem-pic ui medium image ui piled segment center aligned" :id="'rempic_from' + rem.from + '_to_' + rem.to" :src="'/rempics/' + (Math.random() < 0.5 ? 'group-green.png' : 'group-orange.png')">
                     </div>
                 </div>
             </div>
