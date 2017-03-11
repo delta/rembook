@@ -639,6 +639,8 @@ imageUploaderComponent = new ImageUploaderComponent({
 				formData.append(that.uploadFieldName, blob);
 				formData.append('to', RemBook.currentRemBookOf.Profile.attributes.rollNumber);
 				formData.append('toName', RemBook.currentRemBookOf.Profile.attributes.name);
+                formData.append('from', RemBook.currentUser.attributes.rollNumber);
+                formData.append('fromName', RemBook.currentUser.attributes.name);
 
 				$.ajax(that.uploadUrl, {
 			        	method: "POST",
