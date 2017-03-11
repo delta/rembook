@@ -120,14 +120,7 @@ var authenticate=function(username, password, callback){
       imap.once('ready', function() {
         imap.end();
         console.log("Authenticated");
-        if (username === 'sundar'){
-          var success = {
-            displayName : 'Dr. Srinivasan Sundarrajan'
-          };
-          callback(null,success);
-        }else{
-          getUserInfo(username, callback);
-        }
+        getUserInfo(username, callback);
       });
       imap.once('error', function(err) {
         console.log(err);

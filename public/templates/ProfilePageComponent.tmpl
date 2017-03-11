@@ -19,13 +19,12 @@
     <div class="profile-side">
         <div class="side-content">
             <div class="ui two column padded stackable grid">
-		<div v-if="profile.rollNumber!='sundar'" style="color: red; font-size: 14px; text-align: center;width:100%">
+		<div style="color: red; font-size: 14px; text-align: center;width:100%">
 			<p v-if="_isEditable_ && profile.rollNumber[5] == '2'">
                         <a class="ui label">
 			   <i class="print icon" :class="profile.hardCopyRequested ? 'green' : ''"></i>
 			Hardcopy {{profile.hardCopyRequested ? '' : 'not'}} requested
 			</a></p>
-			Our <a href="#sundar">Director, Dr Srinivasan Sundarrajan</a> has joined the rembook!
 		</div>
                 <div class="right aligned column profile-dp-container">
 	    	    <div :class="_isEditable_ ? 'uploadable' : ''">

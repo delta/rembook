@@ -73,7 +73,7 @@ RemBook = {
 	},
 	isFinalYear: function(rollNumber) {
 		rollNumber += "";
-		return rollNumber == "sundar" ||  parseInt(rollNumber.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
+		return parseInt(rollNumber.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
 	}
 };
 
