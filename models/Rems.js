@@ -33,11 +33,11 @@ var updateRem = function (data, callback) {
   Rem.findOne({to:to, from:from}).then(function (doc) {
     if (doc === null){
       doc = new Rem();
+    }
       doc.to = to;
       doc.from = from;
       doc.fromName = fromName;
       doc.toName = toName;
-    }
     doc.responses = data.responses;
     doc.save().then(function(){
       callback(null,doc);
@@ -121,11 +121,11 @@ var updateRemPhoto = function (from, to, fromName, toName, photoName, callback) 
   Rem.findOne({from : from, to : to}).then(function (doc) {
     if(!doc) {
        doc = new Rem();
-       doc.from = from;
-       doc.to = to;
-       doc.toName = toName;
-       doc.fromName = fromName;
     }
+   doc.from = from;
+   doc.to = to;
+   doc.toName = toName;
+   doc.fromName = fromName;
     doc.photoName = photoName;
     doc.save().then(function (doc) {
       callback(null, doc);

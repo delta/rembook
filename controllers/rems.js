@@ -96,7 +96,7 @@ var uploadPic = function(req, res, next){
   var from = req.session.rollNumber;
   var fromName = req.session.name;
   var to = req.params.rollNumber;
-  var toName = req.body.rollNumber;
+  var toName = req.body.toName;
  
   var ext = req.file.mimetype.split("/")[1];
   var fileType = req.file.mimetype.split("/")[0];
