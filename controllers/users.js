@@ -55,7 +55,13 @@ var updateProfile = function (req, res, next) {
 };
 
 var search = function (req, res, next) {
-  var q = req.query.q || "112";
+  var q = req.query.q
+  var all = false;
+
+  if(!q) {
+    all = true;
+    q = "1" + (10 + (new Date().getFullYear() - 2014)); // warning. This will break in 2024 unless the roll number pattern becomes 106120ABC for the 2020-24 batch.
+  }
   var department;
   if (typeof req.query.department !== 'undefined'){
     department = req.query.department;
@@ -77,10 +83,10 @@ var search = function (req, res, next) {
         var i, count, limit;
         var user;
 	count = 0;
-	limit = q == "112" ? 110 : 45;
+	limit = all ? 110 : 25;
         for (i=0; count < limit && i < results.length;i++){ 
 	 //console.log(results[i].rollNumber);
-	  if(results[i].rollNumber.toString()[5] != ""+(new Date().getFullYear() - 2014)) continue;
+	  if(results[i].rollNumber.toString()[5] != ""+(new Date().getFullYear() - 2014)) continue; // this one will break in 2024 no matter what the pattern is.
 	  count++;
           user ={};
           user.name = results[i].name;
