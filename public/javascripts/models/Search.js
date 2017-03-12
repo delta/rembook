@@ -13,10 +13,11 @@ var Search = Backbone.Collection.extend({
 	},
 	parse: function(response) {
 		if(response.success == 0) return [];
-		return response.users.filter(function(s) {	
+        return response.users;
+		/*return response.users.filter(function(s) {	
 			var rollNumber = "" + s.rollNumber;
 			return (parseInt(rollNumber.substr(3,3)) + 1900 == (new Date()).getFullYear() - 4);
-		});
+		});*/
 	},
 	url: function() {
 		var s = "/search?q=" + this.params.query;

@@ -1,12 +1,13 @@
 import Vue from 'vue'
 
+var isFinalYear = require("../models/RemBook.js").isFinalYear;
+
 var NavComponent = Vue.extend({
     template: require('../../templates/NavComponent.tmpl'),
     computed: {
     	finalYear: function() {
-		var x = this.rollNumber;
-    		return parseInt(x.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
-    	},
+            return isFinalYear(this.RemBook.currentRemBookOf.Profile.attributes.rollNumber);
+        },
     	isProfilePage: function() {
     		return this.RemBook.currentRemPage == 1;
     	},

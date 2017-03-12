@@ -31,7 +31,11 @@
 	</div>
 
 	<div class="search-results">
-		<template v-if="results.length == 0">
+        <template v-if="!isLoading && !results.length">
+            <div v-if="!querySent" class="ui text" style="position: absolute; top: 50%; font-size: 20px;">Search for someone...</div>
+            <div v-if="querySent" class="ui text" style="position: absolute; top: 50%; font-size: 20px;">No matches found</div>
+        </template>
+		<template v-if="isLoading && !results.length">
 			<div class="ui segment" style="width: 100%;	position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); border: none;	box-shadow: none;">
 			<div class="ui active inverted dimmer">
 			<div class="ui text loader">Loading</div>
@@ -40,7 +44,7 @@
 	</div>
 </template>
 		<template v-for="result in results">
-			<a v-if="result.attributes.rollNumber | isFinalYear" href="#{{result.attributes.rollNumber}}/profile">
+			<a v-if="result.attributes.rollNumber" href="#{{result.attributes.rollNumber}}/profile">
 				<img :src="'/thumbnail/' + result.attributes.photoName">
 				<span>{{result.attributes.name}}</span>
 				<span>{{result.attributes.department}}</span>

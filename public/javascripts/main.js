@@ -482,14 +482,19 @@ searchResultsComponent = new SearchResultsComponent({
 			$(this.$el).hide();
 			this.isopen = false;
 			RemBook.search.off('reset', this._moreResults);
+            this.querySent = false;
 		},
 		onchange: function onchange(e) {
 			RemBook.search.setDepartment($(this.$el).find('input').val());
+            this.isLoading = false;
+            this.querySent = true;
 		}
 	},
 	data: {
 		results: RemBook.search.models,
-		RemBook: RemBook
+		RemBook: RemBook,
+        isLoading: false,
+        querySent: false,
 	}
 });
 
@@ -506,6 +511,7 @@ searchControlComponent = new SearchControlComponent({
 				var that = this;
 				setTimeout(function() {
 					RemBook.search.setQuery($(that.$el).find('input').val());
+                    searchResultsComponent.isLoading = true;
 					that._isDebouncing_ = false;
 				}, 1000);
 			}

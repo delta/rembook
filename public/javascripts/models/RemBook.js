@@ -73,7 +73,20 @@ RemBook = {
 	},
 	isFinalYear: function(rollNumber) {
 		rollNumber += "";
-		return parseInt(rollNumber.substr(3,3)) + 1900 <= (new Date()).getFullYear() - 4;
+        var fourYearCode = "1" + (new Date().getFullYear() - 2014); // for UGs
+        var threeYearCode = "1" + (new Date().getFullYear() - 2013); // for MCA
+        var twoYearCode = "1" + (new Date().getFullYear() - 2012); // for other PGs
+        var finalYearCode = fourYearCode;
+
+        if(rollNumber[0] == "2") {
+            // MCA is a 3 year course. Everything else is 2 years.
+            if(/^2051/.test(rollNumber)) { // MCA
+              finalYearCode = threeYearCode;
+            } else {
+              finalYearCode = twoYearCode;
+            }
+        }
+		return (new RegExp("^[0-9]{4}" + finalYearCode)).test(rollNumber);
 	}
 };
 
