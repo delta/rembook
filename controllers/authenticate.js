@@ -18,8 +18,10 @@ var getDepartment = function (rollNumber) {
     case '1011': // UG Arch
     department = "ARCHI";
     break;
-    case '1021': // UG Chem Engg
     case '2023': // PG Chemm Engg (Energy Engg)
+    department = "CEESAT";
+    break;
+    case '1021': // UG Chem Engg
     department = "CHL";
     break;
     case '2021': // MSc. Chem Engg
