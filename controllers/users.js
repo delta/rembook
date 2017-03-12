@@ -107,8 +107,9 @@ var search = function (req, res, next) {
 	limit = all ? 110 : 25;
         for (i=0; count < limit && i < results.length;i++){ 
 	 //console.log(results[i].rollNumber);
-	  if(results[i].rollNumber.toString()[5] != ""+(new Date().getFullYear() - 2014)) continue; // this one will break in 2024 no matter what the pattern is.
-	  count++;
+          var roll = results[i].rollNumber.toString();
+     	  if(roll.substr(4,2) != finalYearCode) continue;
+	      count++;
           user ={};
           user.name = results[i].name;
           user.rollNumber = results[i].rollNumber;

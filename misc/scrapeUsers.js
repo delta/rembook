@@ -217,7 +217,7 @@ var init= [
 var rollNumbers = [];
 generateRollNumbers(init, rollNumbers);
 
-var resultFound = function (err, res) {
+var resultFound = function (query, err, res) {
   if (err){
     callback(err);
   }else{
@@ -234,7 +234,7 @@ var resultFound = function (err, res) {
       });
     });
     res.on('error', function(err) {
-      console.error('error: ' + err.message);
+      console.error('error: ' + err.message + " Query was: " + query);
     });
   }
 };
@@ -246,5 +246,5 @@ var DN;
 
 for (i = 0; i < rollNumbers.length; i++){
   DN = generateDN(rollNumbers[i]);
-  client.search(DN, opts,resultFound);
+  client.search(DN, opts,resultFound.bind(this,DN));
 }
