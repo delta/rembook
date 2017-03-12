@@ -57,14 +57,35 @@ var updateProfile = function (req, res, next) {
 var search = function (req, res, next) {
   var q = req.query.q
   var all = false;
+  var isPg = req.session.rollNumber[0] == "2";
+  var curRoll = req.session.rollNumber;
+
+  // Warning: these calculations will break in 2022
+  var fourYearCode = "1" + (new Date().getFullYear() - 2014); // for UGs
+  var threeYearCode = "1" + (new Date().getFullYear() - 2013); // for MCA
+  var twoYearCode = "1" + (new Date().getFullYear() - 2012); // for other PGs
+
+  var finalYearCode = fourYearCode;
+  if (isPg) {
+    // MCA is a 3 year course. Everything else is 2 years.
+    if(/^2051/.test(curRoll)) { // MCA
+      finalYearCode = threeYearCode;
+    } else {
+      finalYearCode = twoYearCode;
+    }
+  }
 
   if(!q) {
     all = true;
-    q = "1" + (10 + (new Date().getFullYear() - 2014)); // warning. This will break in 2024 unless the roll number pattern becomes 106120ABC for the 2020-24 batch.
+    q = finalYearCode; // first 6 chars of roll number
   }
   var department;
   if (typeof req.query.department !== 'undefined'){
     department = req.query.department;
+    if(isPg) {
+      if(department == "MCA") finalYearCode = threeYearCode;
+      else finalYearCode = twoYearCode;
+    }
   }else{
     department = /.+/;
   }
@@ -102,7 +123,7 @@ var search = function (req, res, next) {
       res.json(response);
     }
   };
-  User.fuzzySearch(q, department, callback);
+  User.fuzzySearch(q, department, isPg, callback);
 };
 
 module.exports.getUserByRollNumber = getUserByRollNumber;

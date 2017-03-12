@@ -15,37 +15,69 @@ var getDepartment = function (rollNumber) {
   var departmentCode = rollNumber.slice(0,4);
   var department= "";
   switch (departmentCode) {
-  case '1011':
+    case '1011': // UG Arch
     department = "ARCHI";
     break;
-    case '1021':
+    case '1021': // UG Chem Engg
+    case '2023': // PG Chemm Engg (Energy Engg)
     department = "CHL";
     break;
-    case '1031':
+    case '2021': // MSc. Chem Engg
+    department = "CHEM";
+    break;
+    case '1031': // UG Civil
+    case '2031': // PG Transportation Engg
+    case '2032': // PG Structural Engg
+    case '2034': // PG Environmental Engg
     department = "CIV";
     break;
-    case '1061':
+    case '1061': // UG CSE
+    case '2061': // PG CSE
     department = "CSE";
     break;
-    case '1071':
+    case '1071': // UG EEE
+    case '2071': // PG Power Systems
+    case '2072': // PG Power Electronics
     department = "EEE";
     break;
-    case '1081':
+    case '1081': // UG ECE
+    case '2081': // PG Communication Systems
+    case '2082': // PG VLSI
     department = "ECE";
     break;
-    case '1101':
+    case '1101': // UG ICE
+    case '2101': // PG PCI
     department = "ICE";
     break;
     case '1111':
+    case '2112': // Industrial safety
+    case '2113': // Thermal Power Engg
     department = "MECH";
     break;
-    case '1121':
+    case '1121': // UG MME
+    case '2122': // PG Material Science
+    case '2123': // PG Industrial Metallurgy
+    case '2121': // PG Welding
     department = "MME";
     break;
-    case '1141':
+    case '1141': // UG PROD
+    case '2141': // Manufacturing Tech
+    case '2142': // Industrial Engg and Mgmt
     department = "PROD";
     break;
-
+    case '2162': // actually, Msc. CS. But ldap doesn't differentiate between the two
+    department = "MCA";
+    break;
+    case '2051': // real MCA
+    department = "MCA";
+    break;
+    case '2131': // NDT
+    case '2132': // MSc. Phy
+    department = "PHY";
+    break;
+    case '2151': // DOMS
+    department = "MBA";
+    break;
   }
   return department;
 };
@@ -53,10 +85,11 @@ var getDepartment = function (rollNumber) {
 var generateDN = function (rollNumber) {
   var year = "20"+ rollNumber.slice(4,6);
   var department = getDepartment(rollNumber);
-  if (department === "ARCHI"){
+  if (department === "ARCHI") {
     DN = "CN="+rollNumber+",OU="+year+",OU="+department+",DC=octa,DC=edu";
   }else{
-    DN = "CN="+rollNumber+",OU="+year+",OU=UG,OU="+department+",DC=octa,DC=edu";
+    var pgOrUg = rollNumber[0] == "1" ? "UG" : "PG";
+    DN = "CN="+rollNumber+",OU="+year+",OU="+pgOrUg+",OU="+department+",DC=octa,DC=edu";
   }
   return DN;
 };

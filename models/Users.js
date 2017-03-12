@@ -92,8 +92,11 @@ var updatePhotoName = function (rollNumber, photoName, callback) {
   });
 };
 
-var fuzzySearch = function (search, department, callback) {
-  User.find({department:department}).then(function(users){
+var fuzzySearch = function (search, department, isPg, callback) {
+  User.find({
+    department:department,
+    rollNumber: isPg ? /^2/ : /^1/,
+  }).then(function(users){
     var options={
       keys:['rollNumber','name','email']
     };
