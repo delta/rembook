@@ -22,10 +22,11 @@ var Bio = Backbone.Model.extend({
 	defaults: defaults,
 	parse: function(response) {
 		if(response.success == 0) return {};
-		response.rollNumber = response.user;
+		if(response.user)
+            response.rollNumber = response.user;
 		delete response.user;
 		return response;
-	}
+	},
 });
 
 module.exports = Bio;
