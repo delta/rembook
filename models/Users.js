@@ -1,10 +1,12 @@
 var mongoose = require('mongoose');
 var fuse = require('fuse.js');
+var crypto = require('crypto');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
   name:               String,
   rollNumber:         String,
+  password:           String,
   email:              String,
   dob:                Date,
   department:         String,
@@ -20,6 +22,32 @@ var User = mongoose.model('User', userSchema);
 
 var getUserByRollNumber = function (rollNumber) {
   return User.findOne({rollNumber:rollNumber});
+};
+
+var validatePassword = function (rollNumber, password, callback) {
+  User.findOne({rollNumber:rollNumber}).then(function (doc) {
+    if (doc.password == crypto.createHash("md5").update(password).digest("hex")) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  }).catch(function (err) {
+    callback(err);
+  });
+};
+
+var updatePassword = function (rollNumber, oldPassword, newPassword, callback) {
+  User.findOne({rollNumber:rollNumber}).then(function (doc) {
+    if (doc.password && doc.password != crypto.createHash("md5").update(oldPassword).digest("hex")) {
+      return callback(new Error("oldPasswordMisatch"));
+    }
+    doc.password = crypto.createHash("md5").update(newPassword).digest("hex");
+    doc.save().then(function (doc) {
+      callback(null);
+    }).catch(function (err) {
+      callback(err);
+    });
+  });
 };
 
 var updateProfile = function (rollNumber, data ,callback) {
@@ -116,6 +144,8 @@ var getAllFinalYearUsers = function(){
 };
 
 module.exports.getUserByRollNumber = getUserByRollNumber;
+module.exports.validatePassword = validatePassword;
+module.exports.updatePassword = updatePassword;
 module.exports.updateProfile = updateProfile;
 module.exports.updatePhotoName = updatePhotoName;
 module.exports.fuzzySearch = fuzzySearch;

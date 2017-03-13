@@ -17,6 +17,10 @@ router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Rembook' });
 });
 router.post('/login',login.processLogin);
+router.get('/updatePassword', function(req, res, next) {
+  res.render('updatePassword', { title: 'Rembook', token: req.query.token });
+});
+router.post('/updatePassword', login.updatePassword);
 router.get('/', login.initalPage);
 router.get('/profile/:rollNumber',users.getUserByRollNumber);
 router.post('/profile/:rollNumber',users.updateProfile);

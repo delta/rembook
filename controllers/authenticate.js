@@ -131,6 +131,36 @@ var getUserInfo= function(username, callback){
   });
 };
 
+var updatePassword = function (req, res, next) {
+  var rollNumber = req.session.rollNumber;
+  var oldPassword = req.body.oldPassword;
+  var newPassword = req.body.newPassword;
+  var newPasswordConfirm = req.body.newPasswordConfirm;
+
+  if (newPassword != newPasswordConfirm) {
+    return res.render('updatePassword', { message: "Passwords don't match" });
+  }
+  
+  Users.updatePassword(rollNumber, oldPassword, newPassword, function (err) {
+    if (err && err.message == "oldPasswordMismatch") {
+      return res.render("updatePassword", {
+        message: "Old password doesn't match",
+      });
+    }
+    if(err) {
+      console.log(err);
+      return res.render('updatePassword', {
+        message: "Internal server error",
+      });
+    }
+
+    return res.render('updatePassword', {
+      success: true,
+      message: "Password successfully updated",
+    });
+  });
+}
+
 var authenticate=function(username, password, callback){
   // var success = {
   //   displayName : username,
@@ -140,33 +170,38 @@ var authenticate=function(username, password, callback){
   var client = ldap.createClient({
     url: ldapurl
   });
-  var cn = username+'@'+domain;
-  client.bind(cn,password,function(err){
-    if (err){
-      console.log(err);
-      console.log("Trying Imap Login");
-      var imap = new Imap({
-        user: username,
-        password: password,
-        host: imaphost,
-        port: imapport,
-        tls: false
-      });
-      imap.once('ready', function() {
-        imap.end();
+  console.log("Trying rembook credentials");
+  Users.validatePassword(username, password, function(err, result) {
+    if(result) return getUserInfo(username, callback);
+    console.log("Trying ldap login");
+    var cn = username+'@'+domain;
+    client.bind(cn,password,function(err){
+      if (err){
+        console.log(err);
+        console.log("Trying Imap Login");
+        var imap = new Imap({
+          user: username,
+          password: password,
+          host: imaphost,
+          port: imapport,
+          tls: false
+        });
+        imap.once('ready', function() {
+          imap.end();
+          console.log("Authenticated");
+          getUserInfo(username, callback);
+        });
+        imap.once('error', function(err) {
+          console.log(err);
+          callback(err);
+        });
+        imap.connect();
+      }else{
+        client.unbind(function (err) {});
         console.log("Authenticated");
         getUserInfo(username, callback);
-      });
-      imap.once('error', function(err) {
-        console.log(err);
-        callback(err);
-      });
-      imap.connect();
-    }else{
-      client.unbind(function (err) {});
-      console.log("Authenticated");
-      getUserInfo(username, callback);
-    }
+      }
+    });
   });
 };
 
@@ -243,6 +278,7 @@ var logout = function(req, res, next){
   req.session.destroy();
   res.redirect('/');
 };
+module.exports.updatePassword = updatePassword;
 module.exports.authenticate = authenticate;
 module.exports.processLogin = processLogin;
 module.exports.initalPage = initalPage;
