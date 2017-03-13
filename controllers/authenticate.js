@@ -103,7 +103,7 @@ var getUserInfo= function(username, callback){
   var server ="111113070";
   var password = "Mech123";
   var cn = server+'@'+domain;
-  client.bind(cn,password,function(err){});
+  client.bind(cn,password,function(err){ console.log(err); });
 
   var opts = {
     scope: 'sub',
@@ -132,31 +132,44 @@ var getUserInfo= function(username, callback){
 };
 
 var updatePassword = function (req, res, next) {
-  var rollNumber = req.session.rollNumber;
+  var rollNumber = req.body.rollNumber;
+  var token = req.body.token;
   var oldPassword = req.body.oldPassword;
   var newPassword = req.body.newPassword;
   var newPasswordConfirm = req.body.newPasswordConfirm;
 
+  if (!oldPassword) oldPassword = token;
+
   if (newPassword != newPasswordConfirm) {
-    return res.render('updatePassword', { message: "Passwords don't match" });
+    return res.render('updatePassword', {
+      message: "Passwords don't match",
+      token: token,
+      rollNumber: rollNumber
+    });
   }
   
   Users.updatePassword(rollNumber, oldPassword, newPassword, function (err) {
     if (err && err.message == "oldPasswordMismatch") {
-      return res.render("updatePassword", {
+      return res.render('updatePassword', {
         message: "Old password doesn't match",
+        token: token,
+        rollNumber: rollNumber
       });
     }
     if(err) {
       console.log(err);
       return res.render('updatePassword', {
         message: "Internal server error",
+	token: token,
+	rollNumber: rollNumber,
       });
     }
 
     return res.render('updatePassword', {
       success: true,
       message: "Password successfully updated",
+      token: token,
+      rollNumber: rollNumber,
     });
   });
 }
@@ -206,6 +219,7 @@ var authenticate=function(username, password, callback){
 };
 
 var processLogin = function (req, res, next) {
+ console.log("in processLogin");
   var username = req.body.username;
   var password = req.body.password;
   var callback = function (fail, success) {
@@ -215,6 +229,7 @@ var processLogin = function (req, res, next) {
       res.render('login', { message: "The username or password you entered is wrong" });
 //      res.redirect("/login");
     }else{
+      console.log("Creds match");
       var year = parseInt( "20"+ username.slice(4,6));
       if (year <= batch){
         var data = {};
@@ -228,6 +243,7 @@ var processLogin = function (req, res, next) {
       res.set("X-Rembook-Login","Authenticated");
       req.session.name = success.displayName.trim();
       req.session.rollNumber = username;
+      console.log("redirecting to /");
       res.redirect("/");
       //initalPage(req,res,next);
     }

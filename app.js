@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
-var sessionCheck = require('./controllers/session-check');
+//var sessionCheck = require('./controllers/session-check');
 var routes = require('./routes/index');
 var globalConfig = require('./config').config;
 
@@ -26,15 +26,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('S3CRE7'));
+//app.use(session({
+//	store: new MongoStore({ mongooseConnection: mongoose.connection })
+//}));
 app.use(session({
-	store: new MongoStore({ mongooseConnection: mongoose.connection })
-}));
-/*app.use(session({
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
   secret: 'SUPERsekret23',
   resave: true,
   saveUninitialized: true
-}));*/
-app.use(sessionCheck);
+}));
+//app.use(sessionCheck);
 
 app.use('/', routes);
 

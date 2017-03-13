@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var sessionCheck = require('../controllers/session-check');
 var login = require('../controllers/authenticate');
 var users = require('../controllers/users');
 var bio = require('../controllers/bio');
@@ -18,9 +19,12 @@ router.get('/login', function(req, res, next) {
 });
 router.post('/login',login.processLogin);
 router.get('/updatePassword', function(req, res, next) {
-  res.render('updatePassword', { title: 'Rembook', token: req.query.token });
+  if (!req.session.rollNumber && !req.query.token) return res.redirect('/login');
+  var rollNumber = req.session.rollNumber || req.query.rollNumber;
+  res.render('updatePassword', { title: 'Rembook', token: req.query.token, rollNumber: rollNumber });
 });
 router.post('/updatePassword', login.updatePassword);
+router.use(sessionCheck);
 router.get('/', login.initalPage);
 router.get('/profile/:rollNumber',users.getUserByRollNumber);
 router.post('/profile/:rollNumber',users.updateProfile);
