@@ -102,6 +102,7 @@ var generateDN = function (rollNumber) {
   var year = "20"+ rollNumber.slice(4,6);
   var department = getDepartment(rollNumber);
   var pgOrUg = rollNumber[0] == "1" ? "UG" : "PG";
+  if(/^216/.test(rollNumber)) year = "OR & CA"; // Well. Weird things happen all the time.
   var DN = "CN="+rollNumber+",OU="+year+",OU="+pgOrUg+",OU="+department+",DC=octa,DC=edu";
   return DN;
 };
