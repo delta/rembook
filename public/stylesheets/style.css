@@ -125,6 +125,7 @@ header {
 	padding: 15px 0 5px 0; 
 	margin: 5px 0;
 	position: relative;
+	color: white;
 }
 
 #main-nav a span#rem-count {
@@ -140,8 +141,14 @@ header {
 }
 
 #main-nav a:not(.selected) {
-	color: black;
+	color: darkgray;//black;
 	background: rgba(0,0,0,0.5);
+}
+
+#main-nav a:not(.selected):hover,
+#main-nav a:not(.selected):focus {
+	color: lightgray;
+	background: rgba(0,0,0,0.7);
 }
 
 #main-nav a div {
@@ -196,7 +203,7 @@ header {
 	width: 100% !important;
 	display: flex !important;
 	height: 100% !important;
-	font-family: 'Comic Sans MS'
+	font-family: 'Helvetica';// 'Comic Sans MS'
 }
 
 .rem-author-name {
