@@ -123,7 +123,7 @@ var updatePhotoName = function (rollNumber, photoName, callback) {
 var fuzzySearch = function (search, department, isPg, callback) {
   User.find({
     department:department,
-    rollNumber: isPg ? /^2/ : /^1/,
+    rollNumber: !isPg ? /^1/ : /^[23]/,
   }).then(function(users){
     var options={
       keys:['rollNumber','name','email']
