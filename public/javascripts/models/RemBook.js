@@ -78,7 +78,7 @@ RemBook = {
         var twoYearCode = "1" + (new Date().getFullYear() - 2012); // for other PGs
         var finalYearCode = fourYearCode;
 
-        if(rollNumber[0] == "2") {
+        if(rollNumber[0] != "1") {
             // MCA is a 3 year course. Everything else is 2 years.
             if(/^2051/.test(rollNumber)) { // MCA
               finalYearCode = threeYearCode;
@@ -86,7 +86,9 @@ RemBook = {
               finalYearCode = twoYearCode;
             }
         }
-		return (new RegExp("^[0-9]{4}" + finalYearCode)).test(rollNumber);
+
+	var yearCode = rollNumber.substr(4, 2);
+		return (new RegExp("^[0-9]{4}" + finalYearCode)).test(rollNumber) || rollNumber == "203214030";
 	}
 };
 
