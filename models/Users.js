@@ -36,9 +36,9 @@ var validatePassword = function (rollNumber, password, callback) {
   });
 };
 
-var updatePassword = function (rollNumber, oldPassword, newPassword, callback) {
+var updatePassword = function (rollNumber, oldPassword, newPassword, rollNumberAuthenticated, callback) {
   User.findOne({rollNumber:rollNumber}).then(function (doc) {
-    if (doc.password && doc.password != crypto.createHash("md5").update(oldPassword).digest("hex")) {
+    if ((!rollNumberAuthenticated && !doc.password) || doc.password && doc.password != crypto.createHash("md5").update(oldPassword).digest("hex")) {
       return callback(new Error("oldPasswordMismatch"));
     }
     doc.password = crypto.createHash("md5").update(newPassword).digest("hex");

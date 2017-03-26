@@ -155,7 +155,7 @@ var updatePassword = function (req, res, next) {
     });
   }
   
-  Users.updatePassword(rollNumber, oldPassword, newPassword, function (err) {
+  Users.updatePassword(rollNumber, oldPassword, newPassword, req.session.rollNumber == rollNumber, function (err) {
     if (err && err.message == "oldPasswordMismatch") {
       return res.render('updatePassword', {
         message: "Old password doesn't match",
