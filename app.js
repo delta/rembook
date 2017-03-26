@@ -24,7 +24,16 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('combined'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/javascripts', express.static(path.join(__dirname, 'public/javascripts'), {
+  setHeaders: function(res, path) { 
+    if (/bundle.js/.test(path)) res.setHeader("Cache-Control", "public, max-age: 0");
+    else res.setHeader("Cache-Control", "public, max-age:3d");
+  }
+}));
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '3d',
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('S3CRE7'));
