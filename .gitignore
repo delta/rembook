@@ -7,3 +7,4 @@ semantic/*
 semantic.json
 public/rempics/
 public/thumbnail/
+public/javascripts/bundle.js
