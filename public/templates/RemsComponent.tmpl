@@ -49,10 +49,11 @@
                       <i :class="rem.approved ? 'hide icon' : 'unhide icon'"></i>
                       {{rem.approved ? 'Hide' : 'Make Public'}}
                     </button>
-			<button class="ui labeled icon button" :id="'print#' + rem.id" v-on:click="togglePrint($event)">
+			<!--<button class="ui labeled icon button" :id="'print#' + rem.id" v-on:click="togglePrint($event)">-->
+			<a class="ui labeled icon" :id="'print#' + rem.id">
                       <i class="print icon" :class="rem.print ? 'green' : ''"></i>
 			{{rem.print ? 'Selected' : 'Not selected'}} for printing
-                    </button><br>
+                    </a><br>
 		    </template>
                     <template v-if="rem.from == RemBook.currentUser.attributes.rollNumber">
 			<a class="ui label" :class="rem.approved ? 'green' : 'grey'" v-if="rem.approved !== undefined"> 
