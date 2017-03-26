@@ -379,6 +379,7 @@ function renderWriteRemPage() {
 	writeRemPageComponent.memories = tmpRem.memories;
 	writeRemPageComponent.photoName = tmpRem.photoName;
 
+	//createWriteRemPage();
 	writeRemPageComponent.show();
 }
 
@@ -519,6 +520,7 @@ searchControlComponent = new SearchControlComponent({
 	}
 });
 
+function createWriteRemPage() {
 writeRemPageComponent = new WriteRemPageComponent({
 	el: '#write-rem-mount-point',
 	methods: {
@@ -625,7 +627,8 @@ writeRemPageComponent = new WriteRemPageComponent({
 		}
 	}
 });
-
+}
+createWriteRemPage();
 
 imageUploaderComponent = new ImageUploaderComponent({
 	el: '#image-uploader-mount-point',
