@@ -33,27 +33,31 @@ var getDepartment = function (rollNumber) {
     department = "ARCHI";
     break;
     case '1021': // UG Chem Engg
+    case '2021': // PG M.Tech Chem Engg
     department = "CHL";
     break;
     case '2023': // PG Chemm Engg (Energy Engg)
     department = "CEESAT";
     break;
-    case '2021': // MSc. Chem Engg
+    case '2041': // MSc. Chem Engg
     department = "CHEM";
     break;
     case '1031': // UG Civil
     case '2031': // PG Transportation Engg
     case '2032': // PG Structural Engg
     case '2034': // PG Environmental Engg
+    case '2035': // PG Construction Management
     department = "CIV";
     break;
     case '1061': // UG CSE
     case '2061': // PG CSE
+    case '3061': // PG CSE
     department = "CSE";
     break;
     case '1071': // UG EEE
     case '2071': // PG Power Systems
     case '2072': // PG Power Electronics
+    case '3071': // PG Power Electronics
     department = "EEE";
     break;
     case '1081': // UG ECE
@@ -99,11 +103,12 @@ var getDepartment = function (rollNumber) {
 };
 
 var generateDN = function (rollNumber) {
-  var year = "20"+ rollNumber.slice(4,6);
+  var year = ",OU=20"+ rollNumber.slice(4,6);
   var department = getDepartment(rollNumber);
   var pgOrUg = rollNumber[0] == "1" ? "UG" : "PG";
-  if(/^216/.test(rollNumber)) year = "OR & CA"; // Well. Weird things happen all the time.
-  var DN = "CN="+rollNumber+",OU="+year+",OU="+pgOrUg+",OU="+department+",DC=octa,DC=edu";
+  if(/^216/.test(rollNumber)) year = ",OU=OR & CA"; // Well. Weird things happen all the time.
+  if(/^(2041|2132)/.test(rollNumber)) year = "";    // Really. They do.
+  var DN = "CN="+rollNumber+year+",OU="+pgOrUg+",OU="+department+",DC=octa,DC=edu";
   return DN;
 };
 
@@ -164,6 +169,8 @@ var init= [
   {start:'203115001', end:'203115029'}, // PG Transportation Engg
   {start:'203215001', end:'203215030'}, // PG Structural Engg
   {start:'203415001', end:'203415020'}, // PG Environmental Engg
+  {start:'203515001', end:'203515030'}, // PG Environmental Engg
+  {start:'204115001', end:'204115120'}, // PG M.Tech Chem Engg
   {start:'206115001', end:'206115100'}, // PG CSE
   {start:'207115001', end:'207115028'}, // PG Power Systems
   {start:'207215001', end:'207215031'}, // PG Power Electronics
@@ -198,6 +205,8 @@ var init= [
   {start:'203116001', end:'203116050'}, // PG Transportation Engg
   {start:'203216001', end:'203216050'}, // PG Structural Engg
   {start:'203416001', end:'203416050'}, // PG Environmental Engg
+  {start:'203516001', end:'203516050'}, // PG Construction Management
+  {start:'204116001', end:'204116120'}, // PG M.Tech Chem Engg
   {start:'206116001', end:'206116150'}, // PG CSE
   {start:'207116001', end:'207116050'}, // PG Power Systems
   {start:'207216001', end:'207216050'}, // PG Power Electronics

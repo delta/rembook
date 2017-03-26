@@ -22,24 +22,29 @@ var getDepartment = function (rollNumber) {
     department = "CEESAT";
     break;
     case '1021': // UG Chem Engg
+    case '2021': // PG M.Tech Chem Engg
     department = "CHL";
     break;
-    case '2021': // MSc. Chem Engg
+    case '2024': // MSc. Chem Engg
+    case '2041': // MSc. Chem Engg
     department = "CHEM";
     break;
     case '1031': // UG Civil
     case '2031': // PG Transportation Engg
     case '2032': // PG Structural Engg
     case '2034': // PG Environmental Engg
+    case '2035': // PG Environmental Engg
     department = "CIV";
     break;
     case '1061': // UG CSE
     case '2061': // PG CSE
+    case '3061': // PG CSE
     department = "CSE";
     break;
     case '1071': // UG EEE
     case '2071': // PG Power Systems
     case '2072': // PG Power Electronics
+    case '3071': // PG Power Electronics
     department = "EEE";
     break;
     case '1081': // UG ECE
@@ -85,13 +90,15 @@ var getDepartment = function (rollNumber) {
 };
 
 var generateDN = function (rollNumber) {
-  var year = "20"+ rollNumber.slice(4,6);
+  var year = ",OU=20"+ rollNumber.slice(4,6);
   var department = getDepartment(rollNumber);
   if (department === "ARCHI") {
-    DN = "CN="+rollNumber+",OU="+year+",OU="+department+",DC=octa,DC=edu";
+    DN = "CN="+rollNumber+year+",OU="+department+",DC=octa,DC=edu";
   }else{
     var pgOrUg = rollNumber[0] == "1" ? "UG" : "PG";
-    DN = "CN="+rollNumber+",OU="+year+",OU="+pgOrUg+",OU="+department+",DC=octa,DC=edu";
+    if (/^216/.test(rollNumber)) year = ",OU=OR & CA";
+    if (/^(2132|2041)/.test(rollNumber)) year = "";
+    DN = "CN="+rollNumber+year+",OU="+pgOrUg+",OU="+department+",DC=octa,DC=edu";
   }
   return DN;
 };

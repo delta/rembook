@@ -57,7 +57,7 @@ var updateProfile = function (req, res, next) {
 var search = function (req, res, next) {
   var q = req.query.q
   var all = false;
-  var isPg = req.session.rollNumber[0] == "2";
+  var isPg = req.session.rollNumber[0] != "1";
   var curRoll = req.session.rollNumber;
 
   // Warning: these calculations will break in 2022
