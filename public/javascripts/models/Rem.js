@@ -9,7 +9,9 @@ var defaults = {
 	toPhotoName: 'temp.png',
 	trivia: [],
 	memories: '',
-	pictureUrl: ''
+	pictureUrl: '',
+	approved: false,
+	print: false,
 };
 
 for(var i of Object.keys(__RemBookInit__.questions)) {
