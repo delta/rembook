@@ -104,7 +104,7 @@ var search = function (req, res, next) {
         var i, count, limit;
         var user;
 	count = 0;
-	limit = all ? 110 : 25;
+	limit = all ? 110 : 15;
         for (i=0; count < limit && i < results.length;i++){ 
 	 //console.log(results[i].rollNumber);
           var roll = results[i].rollNumber.toString();
@@ -121,6 +121,7 @@ var search = function (req, res, next) {
         }
         response.users = users;
       }
+      res.set('Cache-Control', 'public, max-age: 1h');
       res.json(response);
     }
   };
