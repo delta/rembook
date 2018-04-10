@@ -28,12 +28,13 @@ var writeRemPageComponent = null;
 var imageUploaderComponent = null;
 var instructionsComponent = null;
 var remsComponent = null;
-
+var hackyInstructionFirstTimeHiding = true;
 Vue.filter('isFinalYear', function (str) {
 	return RemBook.isFinalYear(str);
 });
 
 if (!localStorage.getItem('instructions')) {
+	hackyInstructionFirstTimeHiding = false;
 	localStorage.setItem('instructions', true);
 	window.location.href = "#instructions";
 }
@@ -41,9 +42,11 @@ if (!localStorage.getItem('instructions')) {
 function displayLoader() {
 	$("body").append("<div class='rem-loader' style='position:absolute;top:0;left:0;right:0;bottom:0;'><div class='ui active dimmer'><div class='ui loader'></div></div></div>").show();
 }
+
 function hideLoader() {
 	$(".rem-loader").remove();
 }
+
 function displayError(msg) {
 	$("<div class='ui basic modal'><div class='header'>Error</div><div class='content'><p>" + msg + "</p></div></div>").modal('show');
 }
@@ -51,8 +54,7 @@ function displayError(msg) {
 function goLeft() {
 	if (RemBook.currentRemPage >= 2) {
 		navigateToPage(RemBook.currentRemPage - 1);
-	}
-	else {
+	} else {
 		// just to give the 'no-more-pages' flip effect
 		$('.rem-bookblock').bookblock('prev');
 	}
@@ -61,8 +63,7 @@ function goLeft() {
 function goRight() {
 	if (RemBook.currentRemPage <= RemBook.currentRemBookOf.Rems.models.length) {
 		navigateToPage(RemBook.currentRemPage + 1);
-	}
-	else {
+	} else {
 		// just to give the 'no-more-pages' flip effect
 		$('.rem-bookblock').bookblock('next');
 	}
@@ -75,8 +76,7 @@ function navigateToPage(page) {
 	if (page <= 1) {
 		if (safelyTurnPageTo(rollNumber, page))
 			RemBookRouter.navigate(rollNumber + "/profile");
-	}
-	else {
+	} else {
 		if (safelyTurnPageTo(rollNumber, page))
 			RemBookRouter.navigate(rollNumber + "/rems/" + (page - 1));
 	}
@@ -174,14 +174,18 @@ function renderRems(all) {
 			'togglePrint': function (e) {
 				e.target.blur();
 				var id = e.target.id.match(/print#(.+)$/)[1];
-				var cur = this.rems.find((x) => { return x.id == id });
+				var cur = this.rems.find((x) => {
+					return x.id == id
+				});
 				var that = this;
 				displayLoader();
 				$.ajax({
 					type: "POST",
 					url: '/rem/approve/' + id,
 					contentType: "application/json; charset=utf-8",
-					data: JSON.stringify({ print: !cur.print }),
+					data: JSON.stringify({
+						print: !cur.print
+					}),
 					dataType: "json",
 					success: function (returned) {
 						hideLoader();
@@ -205,9 +209,13 @@ function renderRems(all) {
 				});
 			},
 			'toggleApprove': function (e) {
-				var cur = this.rems.find((x) => { return x.id == e.target.id });
+				var cur = this.rems.find((x) => {
+					return x.id == e.target.id
+				});
 				var that = this;
-				$.post('/rem/approve/' + e.target.id, { approved: !cur.approved }, function () {
+				$.post('/rem/approve/' + e.target.id, {
+					approved: !cur.approved
+				}, function () {
 					for (var i in that.rems) {
 						if (that.rems[i].id == e.target.id) {
 							var x = that.rems[i];
@@ -326,7 +334,9 @@ function onChangeBook() {
 				var that = this;
 				var curval = RemBook.currentUser.Profile.attributes.hardCopyRequested;
 				displayLoader();
-				RemBook.currentUser.Profile.save({ 'hardCopyRequested': !curval }, {
+				RemBook.currentUser.Profile.save({
+					'hardCopyRequested': !curval
+				}, {
 					success: function (model, res) {
 						hideLoader();
 						that.profile.hardCopyRequested = !curval;
@@ -405,24 +415,39 @@ var _RemBookRouter = Backbone.Router.extend({
 	},
 	"root": function root() {
 		searchResultsComponent.onclose();
-		this.navigate(RemBook.currentUser.Profile.attributes.rollNumber + "/profile/", { trigger: true, replace: true });
+		this.navigate(RemBook.currentUser.Profile.attributes.rollNumber + "/profile/", {
+			trigger: true,
+			replace: true
+		});
 	},
 	"profile": function profile(rollNumber) {
 		searchResultsComponent.onclose();
-		writeRemPageComponent.onclose({ dontgoback: true });
-		instructionsComponent.onclose({ dontgoback: true });
+		writeRemPageComponent.onclose({
+			dontgoback: true
+		});
+		instructionsComponent.onclose({
+			dontgoback: true
+		});
 		imageUploaderComponent.onclose();
-		this.navigate(rollNumber + "/profile/", { replace: true });
+		this.navigate(rollNumber + "/profile/", {
+			replace: true
+		});
 		safelyTurnPageTo(rollNumber, 1);
 		//		updateNav();
 	},
 	"rems": function rems(rollNumber, page) {
 		if (!RemBook.isFinalYear(rollNumber))
-			return this.navigate(rollNumber + "/profile/", { replace: true });
+			return this.navigate(rollNumber + "/profile/", {
+				replace: true
+			});
 
 		searchResultsComponent.onclose();
-		writeRemPageComponent.onclose({ dontgoback: true });
-		instructionsComponent.onclose({ dontgoback: true });
+		writeRemPageComponent.onclose({
+			dontgoback: true
+		});
+		instructionsComponent.onclose({
+			dontgoback: true
+		});
 		//writeRemPageComponent.onclose();
 		//instructionsComponent.onclose();
 		imageUploaderComponent.onclose();
@@ -437,10 +462,14 @@ var _RemBookRouter = Backbone.Router.extend({
 	},
 	"writeRem": function writeRem(rollNumber) {
 		if (!RemBook.isFinalYear(rollNumber))
-			return this.navigate(rollNumber + "/profile/", { replace: true });
+			return this.navigate(rollNumber + "/profile/", {
+				replace: true
+			});
 
 		searchResultsComponent.onclose();
-		writeRemPageComponent.onclose({ dontgoback: true });
+		writeRemPageComponent.onclose({
+			dontgoback: true
+		});
 		//instructionsComponent.onclose();
 		imageUploaderComponent.onclose();
 
@@ -454,7 +483,9 @@ var _RemBookRouter = Backbone.Router.extend({
 	},
 	"instructions": function () {
 		searchResultsComponent.onclose();
-		writeRemPageComponent.onclose({ dontgoback: true });
+		writeRemPageComponent.onclose({
+			dontgoback: true
+		});
 		//writeRemPageComponent.onclose();
 		imageUploaderComponent.onclose();
 		instructionsComponent.show();
@@ -565,7 +596,7 @@ function createWriteRemPage() {
 				}
 			},
 			onsave(e, highlight) {
-				highlight = false;//highlight || true;
+				highlight = false; //highlight || true;
 				var that = this;
 				that._isDebouncing_ = false;
 				that._Rem_.save({
@@ -574,17 +605,21 @@ function createWriteRemPage() {
 					trivia: that.trivia,
 					memories: that.memories
 				}, {
-						success: function (model, response) {
-							if (response.success != 1) return that.saveSoon();
-							if (highlight) {
-								$(e.DOMEvent.target).removeClass('unsaved').addClass('saved');
-								setTimeout(function () { $(e.DOMEvent.target).removeClass('saved'); }, 500);
-							}
-							$(that.$el).removeClass('unsaved').addClass('saved');
-							if (!that._Rem_.collection) RemBook.currentRemBookOf.Rems.add(that._Rem_, { merge: true });
-						},
-						error: that.saveNow
-					});
+					success: function (model, response) {
+						if (response.success != 1) return that.saveSoon();
+						if (highlight) {
+							$(e.DOMEvent.target).removeClass('unsaved').addClass('saved');
+							setTimeout(function () {
+								$(e.DOMEvent.target).removeClass('saved');
+							}, 500);
+						}
+						$(that.$el).removeClass('unsaved').addClass('saved');
+						if (!that._Rem_.collection) RemBook.currentRemBookOf.Rems.add(that._Rem_, {
+							merge: true
+						});
+					},
+					error: that.saveNow
+				});
 			}
 		},
 		data: (new Rem({
@@ -669,7 +704,7 @@ imageUploaderComponent = new ImageUploaderComponent({
 					},
 					error: function () {
 						hideLoader();
-						displayError("There seems to be a network problem. Please retry");//console.log('Upload error');
+						displayError("There seems to be a network problem. Please retry"); //console.log('Upload error');
 					}
 				});
 			}, 'image/jpeg');
@@ -694,8 +729,11 @@ instructionsComponent = new InstructionsComponent({
 		},
 		onclose: function onclose(o) {
 			$(this.$el).hide();
-			if (!o.dontgoback) window.history.back();
+			if (!hackyInstructionFirstTimeHiding) {
+				window.location.href="/";
+			} else if (!o.dontgoback) window.history.back();
 			this.isopen = false;
+			hackyInstructionFirstTimeHiding = true;
 		}
 	}
 });
