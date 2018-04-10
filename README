@@ -1,0 +1,6 @@
+1. Clone
+2. Remove "phantomjs" dependency from package.json - don't commit it. Let it be installed on the server separately. There are reasons, we just don't know them.
+3. npm install
+4. Install mongodb if you don't have it already.
+5. Run "node misc/addQuestions.js"
+6. 

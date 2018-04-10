@@ -14,25 +14,18 @@
         photoName: String -> Name of the profile photo
     }
 -->
-
 <div class="bb-item">
-    <div class="profile-side">
-        <div class="side-content">
-            <div class="ui two column padded stackable grid">
-		<div style="color: red; font-size: 14px; text-align: center;width:100%">
-			<p v-if="_isEditable_ && profile.rollNumber[5] == '2'">
-                        <a class="ui label">
-			   <i class="print icon" :class="profile.hardCopyRequested ? 'green' : ''"></i>
-			Hardcopy {{profile.hardCopyRequested ? '' : 'not'}} requested
-			</a></p>
-		</div>
-                <div class="right aligned column profile-dp-container">
-	    	    <div :class="_isEditable_ ? 'uploadable' : ''">
-			<input v-if="_isEditable_" type="file" accept="image/*"  v-on:change="uploadImage($event)">
-			<img class="dp ui medium image" :src="'/profilepic/' + profile.photoName">
-		    </div>
+ <div class="ui two column grid" style="margin: auto; height: 100%;">
+    <div class="profile-side ui sixteen wide mobile sixteen wide tablet eight wide computer column">
+        <div class="side-content" style="padding: 0">
+            <div class="ui two column padded grid">
+                <div class="right aligned sixteen wide mobile eight wide tablet eight wide computer column profile-dp-container">
+	    	        <div :class="_isEditable_ ? 'uploadable' : ''">
+			            <input v-if="_isEditable_" type="file" accept="image/*"  v-on:change="uploadImage($event)">
+			            <img class="dp ui medium image" :src="'/profilepic/' + profile.photoName">
+		            </div>
                 </div>
-                <div class="column profile-intro-wrapper">
+                <div class="sixteen wide mobile eight wide tablet eight wide computer column profile-intro-wrapper">
                     <div class="ui profile-intro-container">
                         <h2 class="ui header">{{profile.name}}</h2>
                         <h4 class="ui header">{{profile.rollNumber}}, {{profile.department}}</h4>
@@ -51,8 +44,8 @@
                 </div>
             </div>
 
-            <div class="ui two column divided stackable grid piled segments center aligned">
-                <div class="column">
+            <div class="ui two column divided grid piled segments center aligned">
+                <div class="sixteen wide mobile eight wide tablet eight wide computer column">
                     <h2 class="ui header center aligned">Contact</h2>
                     <div class="ui divider"></div>
                     <h4 class="ui left aligned header">
@@ -87,7 +80,7 @@
 			    placeholder-empty="Contact not available"></conditionally-editable-component>
                     </h4>
                 </div>
-                <div class="ui center aligned column">
+                <div class="ui center aligned sixteen wide mobile eight wide tablet eight wide computer column">
                     <h2 class="ui header center aligned">Hostels</h2>
                     <div class="ui divider"></div>
 
@@ -112,7 +105,7 @@
                             :data="profile.hostels[1]" 
                             :editable="_isEditable_"
                             placeholder-input="Enter 2nd year hostel"
-			    placeholder-empty="2nd year hostel unkown"></conditionally-editable-component>
+			    placeholder-empty="2nd year hostel unknown"></conditionally-editable-component>
                     </h5>
                     <h5 class="ui center aligned header" style="margin: 15px">
                         <conditionally-editable-component
@@ -121,7 +114,7 @@
                             :data="profile.hostels[2]" 
                             :editable="_isEditable_"
                             placeholder-input="Enter 3rd year hostel"
-                            placeholder-empty="3rd year hostel unkown"></conditionally-editable-component>
+                            placeholder-empty="3rd year hostel unknown"></conditionally-editable-component>
                     </h5>
                     <h5 class="ui center aligned header" style="margin: 15px">
                         <conditionally-editable-component
@@ -130,15 +123,15 @@
                             :data="profile.hostels[3]" 
                             :editable="_isEditable_"
                             placeholder-input="Enter 4th year hostel"
-                            placeholder-empty="4th year hostel unkown"></conditionally-editable-component>
+                            placeholder-empty="4th year hostel unknown"></conditionally-editable-component>
                     </h5>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="profile-side">
-        <div class="side-content bio">
+    <div class="profile-side ui sixteen wide mobile sixteen wide tablet eight wide computer column">
+        <div class="side-content bio" style="padding: 0">
             <template v-for="question in bio.responses">
                 <h4>{{questionMap[question._id].bio_description}}</h4>
                 <conditionally-editable-text-area-component
@@ -150,4 +143,5 @@
             </template>
         </div>
     </div>
+  </div>
 </div>

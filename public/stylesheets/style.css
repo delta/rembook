@@ -7,6 +7,41 @@ header {
 	z-index: 100;
 }
 
+@media (max-width: 320px) {
+	/* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+  }
+  @media (max-width: 480px) {
+	/* smartphones, Android phones, landscape iPhone */
+  }
+  @media (max-width: 600px) {
+	/* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+  }
+  @media (max-width: 801px) {
+	  #main{
+		  left: 3px !important;
+	  }
+	  .profile-side {
+	  }
+	/* tablet, landscape iPad, lo-res laptops ands desktops */
+  }
+  @media (min-width: 801px) {
+	.profile-side {
+		width: 50% !important;
+		display: flex !important;
+		float: left !important;
+		word-break: break-word;
+	}
+	/* big landscape tablets, laptops, and desktops */
+  }
+  @media (max-width: 1281px) {
+	/* hi-res laptops and desktops */
+  }
+  
+
+body {
+	overflow: hidden;
+}
+ 
 .search-container input {
 	border-radius: 0 !important;
 	border: none !important;
@@ -165,18 +200,6 @@ header {
 	background: rgba(255,255,255,0.95);
 }
 
-.profile-side {
-	width: 50% !important;
-	display: flex !important;
-	height: 100% !important;
-	float: left !important;
-	word-break: break-word;
-}
-
-.profile-side .dp {
-	max-width: 100%;
-}
-
 .profile-dp-container {
 	max-width: 270px;
 }
@@ -204,6 +227,10 @@ header {
 	display: flex !important;
 	height: 100% !important;
 	font-family: 'Helvetica';// 'Comic Sans MS'
+}
+
+.profile-side .dp {
+	max-width: 100%;
 }
 
 .rem-author-name {

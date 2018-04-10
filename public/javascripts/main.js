@@ -29,9 +29,14 @@ var imageUploaderComponent = null;
 var instructionsComponent = null;
 var remsComponent = null;
 
-Vue.filter('isFinalYear', function(str) {
+Vue.filter('isFinalYear', function (str) {
 	return RemBook.isFinalYear(str);
 });
+
+if (!localStorage.getItem('instructions')) {
+	localStorage.setItem('instructions', true);
+	window.location.href = "#instructions";
+}
 
 function displayLoader() {
 	$("body").append("<div class='rem-loader' style='position:absolute;top:0;left:0;right:0;bottom:0;'><div class='ui active dimmer'><div class='ui loader'></div></div></div>").show();
@@ -44,22 +49,22 @@ function displayError(msg) {
 }
 
 function goLeft() {
-	if(RemBook.currentRemPage >= 2) {
+	if (RemBook.currentRemPage >= 2) {
 		navigateToPage(RemBook.currentRemPage - 1);
 	}
 	else {
 		// just to give the 'no-more-pages' flip effect
-		$('.rem-bookblock').bookblock( 'prev' );
+		$('.rem-bookblock').bookblock('prev');
 	}
 }
 
 function goRight() {
-	if(RemBook.currentRemPage <= RemBook.currentRemBookOf.Rems.models.length) {
+	if (RemBook.currentRemPage <= RemBook.currentRemBookOf.Rems.models.length) {
 		navigateToPage(RemBook.currentRemPage + 1);
 	}
 	else {
 		// just to give the 'no-more-pages' flip effect
-		$('.rem-bookblock').bookblock( 'next' );
+		$('.rem-bookblock').bookblock('next');
 	}
 }
 
@@ -67,86 +72,86 @@ function goRight() {
 function navigateToPage(page) {
 	var rollNumber = RemBook.currentRemBookOf.Profile.attributes.rollNumber;
 	updateNav();
-	if(page <= 1) {
-		if(safelyTurnPageTo(rollNumber, page))
+	if (page <= 1) {
+		if (safelyTurnPageTo(rollNumber, page))
 			RemBookRouter.navigate(rollNumber + "/profile");
 	}
 	else {
-		if(safelyTurnPageTo(rollNumber, page))
-			RemBookRouter.navigate(rollNumber + "/rems/" + (page-1));
+		if (safelyTurnPageTo(rollNumber, page))
+			RemBookRouter.navigate(rollNumber + "/rems/" + (page - 1));
 	}
 }
 
 function safelyTurnPageTo(rollNumber, page) {
 	if (!bookBlock || bookBlock.bookblock('isActive'))
 		return false;
-	if(!RemBook.currentRemBookOf || RemBook.currentRemBookOf.attributes.rollNumber != rollNumber)
+	if (!RemBook.currentRemBookOf || RemBook.currentRemBookOf.attributes.rollNumber != rollNumber)
 		displayLoader();
 	RemBook.loadRemPage(rollNumber, page);
 	return true;
 }
 
 function bookBlockKeyHandler(e) {
-	if(e.target != document.body && e.target.tagName.toLowerCase() != 'a') return true;
-	if(writeRemPageComponent.isopen || imageUploaderComponent.isopen || instructionsComponent.isopen || searchResultsComponent.isopen)
+	if (e.target != document.body && e.target.tagName.toLowerCase() != 'a') return true;
+	if (writeRemPageComponent.isopen || imageUploaderComponent.isopen || instructionsComponent.isopen || searchResultsComponent.isopen)
 		return true;
 	var keyCode = e.keyCode || e.which;
 	var arrow = {
-		left : 37,
-		up : 38,
-		right : 39,
-		down : 40
+		left: 37,
+		up: 38,
+		right: 39,
+		down: 40
 	};
 
 	switch (keyCode) {
 		case arrow.left:
-		goLeft();
-		break;
+			goLeft();
+			break;
 		case arrow.right:
-		goRight();
-		break;
+			goRight();
+			break;
 	}
 }
 
 function restartBookBlock() {
-	$bookBlock = $( '.rem-bookblock' );
-	var init = function() {
+	$bookBlock = $('.rem-bookblock');
+	var init = function () {
 		bookBlock = $bookBlock.bookblock({
-			speed : 800,
-			shadowSides : 0.8,
-			shadowFlip : 0.5
+			speed: 800,
+			shadowSides: 0.8,
+			shadowFlip: 0.5
 		});
 		initEvents();
 	};
-	var initEvents = function() {
-		var $slides = $bookBlock.children();		
- 		
- 		$slides.on( {		
- 			'swipeleft' : function( event ) {		
- 				$bookBlock.bookblock( 'next' );		
- 				return false;		
- 			},		
- 			'swiperight' : function( event ) {		
- 				$bookBlock.bookblock( 'prev' );		
- 				return false;		
- 			}		
- 		} );		
+	var initEvents = function () {
+		var $slides = $bookBlock.children();
+
+		$slides.on({
+			'swipeleft': function (event) {
+				$bookBlock.bookblock('next');
+				return false;
+			},
+			'swiperight': function (event) {
+				$bookBlock.bookblock('prev');
+				return false;
+			}
+		});
 		// add keyboard events
-		if(!keyboardEventsHandlerRegistered) {
+		if (!keyboardEventsHandlerRegistered) {
 			keyboardEventsHandlerRegistered = true;
-			$( document ).keydown( bookBlockKeyHandler );
+			$(document).keydown(bookBlockKeyHandler);
 		}
 	};
-	
+
 	init();
 }
 
 function renderRems(all) {
 	var m = RemBook.currentRemBookOf.Rems.models.map((r) => r.attributes);
-//	for(var i = 0; i < m.length; i++) {
-//		m._originalPhotoName_ = m.photoName;
-//		m.photoName = 'temp.png';
-//	}
+	//	for(var i = 0; i < m.length; i++) {
+	//		m._originalPhotoName_ = m.photoName;
+	//		m.photoName = 'temp.png';
+	//	}
 
 	$(".rem-component").remove();
 	$("#profile-page-mount-point").after("<div id='rems-component-mount-point'><rems-component></rems-component></div>");
@@ -166,53 +171,53 @@ function renderRems(all) {
 			RemBook: RemBook
 		},
 		methods: {
-		'togglePrint': function(e) {
-			e.target.blur();
-			var id = e.target.id.match(/print#(.+)$/)[1];
-			var cur = this.rems.find((x) => { return x.id == id });
-			var that = this;
-			displayLoader();
-			$.ajax({
-				type: "POST",
-				url: '/rem/approve/' + id,
-				contentType: "application/json; charset=utf-8",
-				data: JSON.stringify({ print: !cur.print }),
-				dataType: "json",
-				success: function(returned) {
-					hideLoader();
-					if(returned.success == 0) {
-						displayError(returned.message);
-						return;
+			'togglePrint': function (e) {
+				e.target.blur();
+				var id = e.target.id.match(/print#(.+)$/)[1];
+				var cur = this.rems.find((x) => { return x.id == id });
+				var that = this;
+				displayLoader();
+				$.ajax({
+					type: "POST",
+					url: '/rem/approve/' + id,
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify({ print: !cur.print }),
+					dataType: "json",
+					success: function (returned) {
+						hideLoader();
+						if (returned.success == 0) {
+							displayError(returned.message);
+							return;
+						}
+						for (var i in that.rems) {
+							if (that.rems[i].id == id) {
+								var x = that.rems[i];
+								x.print = !cur.print;
+								that.rems.$set(i, x);
+							}
+						}
+					},
+					failure: function (error) {
+						hideLoader();
+						displayError("There seems to be a network error. Please retry.");
+						console.log(error);
 					}
-					for(var i in that.rems) {
-						if(that.rems[i].id == id) {
+				});
+			},
+			'toggleApprove': function (e) {
+				var cur = this.rems.find((x) => { return x.id == e.target.id });
+				var that = this;
+				$.post('/rem/approve/' + e.target.id, { approved: !cur.approved }, function () {
+					for (var i in that.rems) {
+						if (that.rems[i].id == e.target.id) {
 							var x = that.rems[i];
-							x.print = !cur.print;
+							x.approved = !cur.approved;
 							that.rems.$set(i, x);
 						}
 					}
-				},
-				failure: function(error) {
-					hideLoader();
-					displayError("There seems to be a network error. Please retry.");
-					console.log(error);
-				}
-			});
-		},
-	    	'toggleApprove': function(e) {
-	    		var cur = this.rems.find((x) => { return x.id == e.target.id });
-	    		var that = this;
-	    		$.post('/rem/approve/' + e.target.id, {approved: !cur.approved}, function() {
-	    			for(var i in that.rems) {
-	    				if(that.rems[i].id == e.target.id) {
-	    					var x = that.rems[i];
-	    					x.approved = !cur.approved;
-	    					that.rems.$set(i, x);
-	    				}
-	    			}
-	    		});
-	    	}
-	    }
+				});
+			}
+		}
 	});
 
 	$(".button").popup();
@@ -225,36 +230,36 @@ function renderRems(all) {
 //}
 
 function lazyLoadImages() {
-    for(var i = -1; i < 3; i++) {
-        var curPage = RemBook.currentRemPage-1+i;
-        if(curPage < 0) continue;
-        var curRem = RemBook.currentRemBookOf.Rems.models[curPage];
-        if(!curRem) break;
-        curRem = curRem.attributes;
-        var fromImgId = "#remFromPhoto_" + curRem.from;
-        var remPicId = "#rempic_from" + curRem.from + "_to_" + curRem.to;
+	for (var i = -1; i < 3; i++) {
+		var curPage = RemBook.currentRemPage - 1 + i;
+		if (curPage < 0) continue;
+		var curRem = RemBook.currentRemBookOf.Rems.models[curPage];
+		if (!curRem) break;
+		curRem = curRem.attributes;
+		var fromImgId = "#remFromPhoto_" + curRem.from;
+		var remPicId = "#rempic_from" + curRem.from + "_to_" + curRem.to;
 
-        var isFromLoaded = $(fromImgId).data("loaded");
-        var isRemPicLoaded = $(remPicId).data("loaded");
+		var isFromLoaded = $(fromImgId).data("loaded");
+		var isRemPicLoaded = $(remPicId).data("loaded");
 
-        if(!isFromLoaded && curRem.fromPhotoName != 'temp.png') {
-            $(fromImgId).attr("src", "/profilepic/" + curRem.fromPhotoName)
-                        .data("loaded", true);
-        }
+		if (!isFromLoaded && curRem.fromPhotoName != 'temp.png') {
+			$(fromImgId).attr("src", "/profilepic/" + curRem.fromPhotoName)
+				.data("loaded", true);
+		}
 
-        if(!isRemPicLoaded && curRem.photoName) {
-            $(remPicId).attr("src", "/rempics/" + curRem.photoName)
-                       .data("loaded", true);
-        }
-    }
+		if (!isRemPicLoaded && curRem.photoName) {
+			$(remPicId).attr("src", "/rempics/" + curRem.photoName)
+				.data("loaded", true);
+		}
+	}
 }
 
 function onChangeBook() {
 	function changeBio(e) {
 		var questionId = e.dataId.match(/\#(.+)/)[1];
 		var responses = RemBook.currentRemBookOf.Bio.attributes.responses;
-		for(var [i,q] of responses.entries()) {
-			if(questionId == q._id) {
+		for (var [i, q] of responses.entries()) {
+			if (questionId == q._id) {
 				responses[i].response = e.newValue;
 			}
 		}
@@ -284,16 +289,16 @@ function onChangeBook() {
 			questionMap: __RemBookInit__.questions
 		},
 		events: {
-			change: function(e) {
-				if(/hostel\#/i.test(e.dataId))
+			change: function (e) {
+				if (/hostel\#/i.test(e.dataId))
 					changeHostel(e);
-				else if(/question\#/.test(e.dataId))
+				else if (/question\#/.test(e.dataId))
 					changeBio(e);
-				else if(e.dataId != 'dob')
+				else if (e.dataId != 'dob')
 					changeRegularProfile(e);
 			},
-			blur: function(e) {
-				if(e.dataId == "dob")
+			blur: function (e) {
+				if (e.dataId == "dob")
 					changeRegularProfile(e);
 			}
 		},
@@ -305,13 +310,13 @@ function onChangeBook() {
 			uploadImage(e) {
 				var input = $(this.$el).find('input')[0];
 				var that = this;
-				if(input.files && input.files[0]) {
+				if (input.files && input.files[0]) {
 					var reader = new FileReader();
-					reader.onload = function(e) { 
+					reader.onload = function (e) {
 						imageUploaderComponent.uploadFieldName = 'profilepic';
 						imageUploaderComponent.uploadUrl = '/profilepic';
 						imageUploaderComponent.saveCallback = that._onImageSave_;
-						imageUploaderComponent.load(e, 1); 
+						imageUploaderComponent.load(e, 1);
 					}
 					reader.readAsDataURL(input.files[0]);
 				}
@@ -321,16 +326,16 @@ function onChangeBook() {
 				var that = this;
 				var curval = RemBook.currentUser.Profile.attributes.hardCopyRequested;
 				displayLoader();
-				RemBook.currentUser.Profile.save({'hardCopyRequested': !curval}, {
-					success: function(model, res) {
+				RemBook.currentUser.Profile.save({ 'hardCopyRequested': !curval }, {
+					success: function (model, res) {
 						hideLoader();
 						that.profile.hardCopyRequested = !curval;
-						if(res.success == 0) {
+						if (res.success == 0) {
 							displayError(res.message);
 							return;
 						}
 					},
-					error: function() {
+					error: function () {
 						displayError("There seems to be a network issue. Please retry.");
 					},
 					wait: true
@@ -347,7 +352,7 @@ function onChangeBook() {
 
 function onChangeRemPage() {
 	updateNav();
-    lazyLoadImages();
+	lazyLoadImages();
 	$(".rem-bookblock").bookblock('jump', RemBook.currentRemPage);
 }
 
@@ -364,10 +369,10 @@ function renderWriteRemPage() {
 		from: RemBook.currentUser.Profile.attributes.rollNumber
 	});
 
-	if(oldRem) {
+	if (oldRem) {
 		tmpRem = oldRem;
 	}
-	
+
 	tmpRem = tmpRem.attributes;
 	writeRemPageComponent.from = tmpRem.from;
 	writeRemPageComponent.fromPhotoName = tmpRem.fromPhotoName;
@@ -404,52 +409,52 @@ var _RemBookRouter = Backbone.Router.extend({
 	},
 	"profile": function profile(rollNumber) {
 		searchResultsComponent.onclose();
-		writeRemPageComponent.onclose({dontgoback:true});
-		instructionsComponent.onclose({dontgoback:true});
+		writeRemPageComponent.onclose({ dontgoback: true });
+		instructionsComponent.onclose({ dontgoback: true });
 		imageUploaderComponent.onclose();
-		this.navigate(rollNumber + "/profile/", { replace: true});
+		this.navigate(rollNumber + "/profile/", { replace: true });
 		safelyTurnPageTo(rollNumber, 1);
-//		updateNav();
+		//		updateNav();
 	},
 	"rems": function rems(rollNumber, page) {
-		if(!RemBook.isFinalYear(rollNumber))
+		if (!RemBook.isFinalYear(rollNumber))
 			return this.navigate(rollNumber + "/profile/", { replace: true });
 
 		searchResultsComponent.onclose();
-		writeRemPageComponent.onclose({dontgoback:true});
-		instructionsComponent.onclose({dontgoback:true});
+		writeRemPageComponent.onclose({ dontgoback: true });
+		instructionsComponent.onclose({ dontgoback: true });
 		//writeRemPageComponent.onclose();
 		//instructionsComponent.onclose();
 		imageUploaderComponent.onclose();
 
 		page = parseInt(page || 1);
-		page = page > 1 ? (page+1) : 2;
-//		updateNav();
+		page = page > 1 ? (page + 1) : 2;
+		//		updateNav();
 
-//		remsComponent.rems[page-2].photoName = remsComponent.rems[page-2]._originalPhotoName_;
+		//		remsComponent.rems[page-2].photoName = remsComponent.rems[page-2]._originalPhotoName_;
 
 		safelyTurnPageTo(rollNumber, page);
 	},
 	"writeRem": function writeRem(rollNumber) {
-		if(!RemBook.isFinalYear(rollNumber))
+		if (!RemBook.isFinalYear(rollNumber))
 			return this.navigate(rollNumber + "/profile/", { replace: true });
 
 		searchResultsComponent.onclose();
-		writeRemPageComponent.onclose({dontgoback:true});
+		writeRemPageComponent.onclose({ dontgoback: true });
 		//instructionsComponent.onclose();
 		imageUploaderComponent.onclose();
 
-//		updateNav();
-		RemBook.loadRemBook(rollNumber, function() {
+		//		updateNav();
+		RemBook.loadRemBook(rollNumber, function () {
 			renderWriteRemPage();
 			//RemBook.currentRemBookOf.Rems.fetch({
 			//	success: renderWriteRemPage
 			//})
 		});
 	},
-	"instructions": function() {
+	"instructions": function () {
 		searchResultsComponent.onclose();
-		writeRemPageComponent.onclose({dontgoback:true});
+		writeRemPageComponent.onclose({ dontgoback: true });
 		//writeRemPageComponent.onclose();
 		imageUploaderComponent.onclose();
 		instructionsComponent.show();
@@ -483,19 +488,19 @@ searchResultsComponent = new SearchResultsComponent({
 			$(this.$el).hide();
 			this.isopen = false;
 			RemBook.search.off('reset', this._moreResults);
-            this.querySent = false;
+			this.querySent = false;
 		},
 		onchange: function onchange(e) {
 			RemBook.search.setDepartment($(this.$el).find('input').val());
-            this.isLoading = false;
-            this.querySent = true;
+			this.isLoading = false;
+			this.querySent = true;
 		}
 	},
 	data: {
 		results: RemBook.search.models,
 		RemBook: RemBook,
-        isLoading: false,
-        querySent: false,
+		isLoading: false,
+		querySent: false,
 	}
 });
 
@@ -506,13 +511,13 @@ searchControlComponent = new SearchControlComponent({
 			searchResultsComponent.show();
 		},
 		oninput(e) {
-			if(this._isDebouncing_) return;
+			if (this._isDebouncing_) return;
 			else {
 				this._isDebouncing_ = true;
 				var that = this;
-				setTimeout(function() {
+				setTimeout(function () {
 					RemBook.search.setQuery($(that.$el).find('input').val());
-                    searchResultsComponent.isLoading = true;
+					searchResultsComponent.isLoading = true;
 					that._isDebouncing_ = false;
 				}, 1000);
 			}
@@ -521,112 +526,112 @@ searchControlComponent = new SearchControlComponent({
 });
 
 function createWriteRemPage() {
-writeRemPageComponent = new WriteRemPageComponent({
-	el: '#write-rem-mount-point',
-	methods: {
-		show: function show() {
-			this.isopen = true;
-			$(this.$el).show();
-			var that = this;
-			var query_or_new = {
-				from: that.from,
-				to: that.to
-			};
-			this._Rem_ = RemBook.currentRemBookOf.Rems.findWhere(query_or_new);
-			this._Rem_ = this._Rem_ || new Rem(query_or_new);
-		},
-		onclose: function onclose(o) {
-			this.isopen = false;
-			$(this.$el).hide();
-			if(!o.dontgoback) window.history.back();
-		},
-		_onImageSave_: function() {	
-			var img = $(".write-rem-component img.rem-pic")[0];
-			img.src = "/rempics/" + RemBook.currentUser.Profile.attributes.rollNumber + "_" + RemBook.currentRemBookOf.Profile.attributes.rollNumber + ".jpg?" + Math.random();
-			this.onsave(null, false);
-		},
-		uploadImage(e) {
-			var input = $(this.$el).find('input')[0];
-			if(input.files && input.files[0]) {
-				var reader = new FileReader();
+	writeRemPageComponent = new WriteRemPageComponent({
+		el: '#write-rem-mount-point',
+		methods: {
+			show: function show() {
+				this.isopen = true;
+				$(this.$el).show();
 				var that = this;
-				reader.onload = function(e) { 
-					imageUploaderComponent.uploadFieldName = 'rempic';
-					imageUploaderComponent.uploadUrl = '/rempic/' + RemBook.currentRemBookOf.Profile.attributes.rollNumber;
-					imageUploaderComponent.saveCallback = that._onImageSave_;
-					imageUploaderComponent.load(e); 
+				var query_or_new = {
+					from: that.from,
+					to: that.to
 				};
-				reader.readAsDataURL(input.files[0]);
+				this._Rem_ = RemBook.currentRemBookOf.Rems.findWhere(query_or_new);
+				this._Rem_ = this._Rem_ || new Rem(query_or_new);
+			},
+			onclose: function onclose(o) {
+				this.isopen = false;
+				$(this.$el).hide();
+				if (!o.dontgoback) window.history.back();
+			},
+			_onImageSave_: function () {
+				var img = $(".write-rem-component img.rem-pic")[0];
+				img.src = "/rempics/" + RemBook.currentUser.Profile.attributes.rollNumber + "_" + RemBook.currentRemBookOf.Profile.attributes.rollNumber + ".jpg?" + Math.random();
+				this.onsave(null, false);
+			},
+			uploadImage(e) {
+				var input = $(this.$el).find('input')[0];
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+					var that = this;
+					reader.onload = function (e) {
+						imageUploaderComponent.uploadFieldName = 'rempic';
+						imageUploaderComponent.uploadUrl = '/rempic/' + RemBook.currentRemBookOf.Profile.attributes.rollNumber;
+						imageUploaderComponent.saveCallback = that._onImageSave_;
+						imageUploaderComponent.load(e);
+					};
+					reader.readAsDataURL(input.files[0]);
+				}
+			},
+			onsave(e, highlight) {
+				highlight = false;//highlight || true;
+				var that = this;
+				that._isDebouncing_ = false;
+				that._Rem_.save({
+					fromName: RemBook.currentUser.Profile.attributes.name,
+					toName: RemBook.currentRemBookOf.Profile.attributes.name,
+					trivia: that.trivia,
+					memories: that.memories
+				}, {
+						success: function (model, response) {
+							if (response.success != 1) return that.saveSoon();
+							if (highlight) {
+								$(e.DOMEvent.target).removeClass('unsaved').addClass('saved');
+								setTimeout(function () { $(e.DOMEvent.target).removeClass('saved'); }, 500);
+							}
+							$(that.$el).removeClass('unsaved').addClass('saved');
+							if (!that._Rem_.collection) RemBook.currentRemBookOf.Rems.add(that._Rem_, { merge: true });
+						},
+						error: that.saveNow
+					});
 			}
 		},
-		onsave(e, highlight) {
-			highlight = false;//highlight || true;
-			var that = this;
-			that._isDebouncing_ = false;
-			that._Rem_.save({
-				fromName: RemBook.currentUser.Profile.attributes.name,
-				toName: RemBook.currentRemBookOf.Profile.attributes.name,
-				trivia: that.trivia,
-				memories: that.memories 
-			}, {
-				success: function(model, response) {
-					if(response.success != 1) return that.saveSoon();
-					if(highlight) {
-						$(e.DOMEvent.target).removeClass('unsaved').addClass('saved');
-						setTimeout(function() { $(e.DOMEvent.target).removeClass('saved'); }, 500);	
-					}
-					$(that.$el).removeClass('unsaved').addClass('saved');
-					if(!that._Rem_.collection) RemBook.currentRemBookOf.Rems.add(that._Rem_, {merge: true});
-				},
-				error: that.saveNow
-			});
-		}
-	},
-	data: (new Rem({
-		from: RemBook.currentUser.Profile.attributes.rollNumber,
-		fromName: RemBook.currentUser.Profile.attributes.name,
-		to: '',
-		toName: '',
-		trivia: [],
-		memories: '',
-		photoName: ''
-	})).attributes,
-	events: {
-		input: function(e) {
-			var that = this;
-			$(e.DOMEvent.target).removeClass('saved').addClass('unsaved');
-			$(that.$el).removeClass('saved').addClass('unsaved');
-			return;
+		data: (new Rem({
+			from: RemBook.currentUser.Profile.attributes.rollNumber,
+			fromName: RemBook.currentUser.Profile.attributes.name,
+			to: '',
+			toName: '',
+			trivia: [],
+			memories: '',
+			photoName: ''
+		})).attributes,
+		events: {
+			input: function (e) {
+				var that = this;
+				$(e.DOMEvent.target).removeClass('saved').addClass('unsaved');
+				$(that.$el).removeClass('saved').addClass('unsaved');
+				return;
 
-			if(this._isDebouncing_) return;
-			else {
-				this._isDebouncing_ = true;
+				if (this._isDebouncing_) return;
+				else {
+					this._isDebouncing_ = true;
 
-				(function saveSoon() {
-					setTimeout(that.setNow, 1500);
-					/*function saveNow() {
-						that._isDebouncing_ = false;
-						that._Rem_.save({
-							fromName: that.fromName,
-							toName: that.toName,
-							trivia: that.trivia,
-							memories: that.memories 
-						}, {
-							success: function(model, response) {
-								if(response.success != 1) return saveSoon();
-								$(e.DOMEvent.target).removeClass('unsaved').addClass('saved');
-								setTimeout(function() { $(e.DOMEvent.target).removeClass('saved'); }, 500);
-								$(that.$el).removeClass('unsaved').addClass('saved');
-								if(!that._Rem_.collection) RemBook.currentRemBookOf.Rems.add(that._Rem_, {merge: true});
-							},
-							error: saveNow
-						});
-					}, 1500);*/
-				})();
+					(function saveSoon() {
+						setTimeout(that.setNow, 1500);
+						/*function saveNow() {
+							that._isDebouncing_ = false;
+							that._Rem_.save({
+								fromName: that.fromName,
+								toName: that.toName,
+								trivia: that.trivia,
+								memories: that.memories 
+							}, {
+								success: function(model, response) {
+									if(response.success != 1) return saveSoon();
+									$(e.DOMEvent.target).removeClass('unsaved').addClass('saved');
+									setTimeout(function() { $(e.DOMEvent.target).removeClass('saved'); }, 500);
+									$(that.$el).removeClass('unsaved').addClass('saved');
+									if(!that._Rem_.collection) RemBook.currentRemBookOf.Rems.add(that._Rem_, {merge: true});
+								},
+								error: saveNow
+							});
+						}, 1500);*/
+					})();
+				}
 			}
 		}
-	}
-});
+	});
 }
 createWriteRemPage();
 
@@ -648,18 +653,18 @@ imageUploaderComponent = new ImageUploaderComponent({
 				formData.append(that.uploadFieldName, blob);
 				formData.append('to', RemBook.currentRemBookOf.Profile.attributes.rollNumber);
 				formData.append('toName', RemBook.currentRemBookOf.Profile.attributes.name);
-                formData.append('from', RemBook.currentUser.attributes.rollNumber);
-                formData.append('fromName', RemBook.currentUser.attributes.name);
+				formData.append('from', RemBook.currentUser.attributes.rollNumber);
+				formData.append('fromName', RemBook.currentUser.attributes.name);
 
 				$.ajax(that.uploadUrl, {
-			        	method: "POST",
+					method: "POST",
 					data: formData,
 					processData: false,
 					contentType: false,
 					success: function () {
 						hideLoader();
 						that.onclose();
-						if(that.saveCallback) that.saveCallback();
+						if (that.saveCallback) that.saveCallback();
 						that.saveCallback = null;
 					},
 					error: function () {
@@ -689,7 +694,7 @@ instructionsComponent = new InstructionsComponent({
 		},
 		onclose: function onclose(o) {
 			$(this.$el).hide();
-			if(!o.dontgoback) window.history.back();
+			if (!o.dontgoback) window.history.back();
 			this.isopen = false;
 		}
 	}
