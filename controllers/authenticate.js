@@ -10,40 +10,42 @@ var imaphost = "10.0.0.173";
 var imapport = 143;
 var domain = 'octa.edu';
 
-var getUserInfo= function(username, callback){
+var getUserInfo = function (username, callback) {
   var client = ldap.createClient({
     url: ldapurl
   });
-  var server ="111113070";
-  var password = "Mech123";
-  var cn = server+'@'+domain;
-  client.bind(cn,password,function(err){ console.log(err); });
+  var server = "Btech";
+  var password = "Nitt123";
+  var cn = server + '@' + domain;
+  client.bind(cn, password, function (err) {
+    console.log(err);
+  });
 
-  if(/^\d{9}/.test(username) == false) return callback(new Error("Invalid roll number"));
+  if (/^\d{9}/.test(username) == false) return callback(new Error("Invalid roll number"));
   var opts = {
     scope: 'sub',
     filter: "(cn=" + username + ")",
   };
   var DN = "dc=octa,dc=edu";
-  client.search(DN, opts, function(err, res) {
-    if (err){
+  client.search(DN, opts, function (err, res) {
+    if (err) {
       callback(err);
-    }else{
-      res.on('searchEntry', function(entry) {
+    } else {
+      res.on('searchEntry', function (entry) {
         var ret = Object.assign({}, entry.object);
         ret.department = entry.object.dn.match(/OU=([^,]+),DC=octa/)[1];
-        callback(null,ret);
+        callback(null, ret);
         client.unbind(function (err) {});
       });
       // res.on('searchReference', function(referral) {
       //   console.log('referral: ' + referral.uris.join());
       // });
-      res.on('error', function(err) {
+      res.on('error', function (err) {
         console.error('error: ' + err.message);
         client.unbind(function (err) {});
       });
       // res.on('end', function(result) {
-        // console.log('status: ' + result.status);
+      // console.log('status: ' + result.status);
       // });
     }
   });
@@ -65,7 +67,7 @@ var updatePassword = function (req, res, next) {
       rollNumber: rollNumber
     });
   }
-  
+
   Users.updatePassword(rollNumber, oldPassword, newPassword, req.session.rollNumber == rollNumber, function (err) {
     if (err && err.message == "oldPasswordMismatch") {
       return res.render('updatePassword', {
@@ -74,12 +76,12 @@ var updatePassword = function (req, res, next) {
         rollNumber: rollNumber
       });
     }
-    if(err) {
+    if (err) {
       console.log(err);
       return res.render('updatePassword', {
         message: "Internal server error",
-	token: token,
-	rollNumber: rollNumber,
+        token: token,
+        rollNumber: rollNumber,
       });
     }
 
@@ -92,22 +94,68 @@ var updatePassword = function (req, res, next) {
   });
 }
 
-var authenticate=function(username, password, callback){
+var resetPassword = function (req, res, next) {
+  console.log('hi')
+  var rollNumber = req.query.rollNumber;
+  var token = req.query.token;
+  Users.getUserByRollNumber(rollNumber).then(function (doc) {
+    doc.token=token;
+    if (doc.token && doc.token == token) {
+      var password = Math.random().toString(33).substr(2, 17);
+      console.log(password);
+      Users.createNewPassword(rollNumber, password, function (err) {
+        console.log(err);
+        if (err == null) {
+          res.redirect('/updatePassword?rollNumber=' + rollNumber + '&token=' + password)
+        } else {
+          res.redirect('/forgotPassword')
+        }
+      })
+    } else{
+      res.redirect('/forgotPassword')
+    }
+  })
+}
+
+var forgotPassword = function (req, res, next) {
+  var rollNumber = req.body.rollNumber;
+  var email = req.body.email;
+  Users.updatePassword(rollNumber, email, function (err) {
+    if (err && err.message == "emailMismatch") {
+      return res.render('forgotPassword', {
+        message: "Old password doesn't match",
+      });
+    }
+    if (err) {
+      console.log(err);
+      return res.render('forgotPassword', {
+        message: "Internal server error",
+      });
+    }
+
+    return res.render('forgotPassword', {
+      success: true,
+      message: "Email sent",
+    });
+  });
+}
+
+var authenticate = function (username, password, callback) {
   // var success = {
   //   displayName : username,
   // };
   // callback(null, success);
-  if(!password) return callback(new Error("Password required"));
+  if (!password) return callback(new Error("Password required"));
   var client = ldap.createClient({
     url: ldapurl
   });
   console.log("Trying rembook credentials");
-  Users.validatePassword(username, password, function(err, result) {
-    if(result) return getUserInfo(username, callback);
+  Users.validatePassword(username, password, function (err, result) {
+    if (result) return getUserInfo(username, callback);
     console.log("Trying ldap login");
-    var cn = username+'@'+domain;
-    client.bind(cn,password,function(err){
-      if (err){
+    var cn = username + '@' + domain;
+    client.bind(cn, password, function (err) {
+      if (err) {
         console.log(err);
         console.log("Trying Imap Login");
         var imap = new Imap({
@@ -117,17 +165,17 @@ var authenticate=function(username, password, callback){
           port: imapport,
           tls: false
         });
-        imap.once('ready', function() {
+        imap.once('ready', function () {
           imap.end();
           console.log("Authenticated");
           getUserInfo(username, callback);
         });
-        imap.once('error', function(err) {
+        imap.once('error', function (err) {
           console.log(err);
           callback(err);
         });
         imap.connect();
-      }else{
+      } else {
         client.unbind(function (err) {});
         console.log("Authenticated");
         getUserInfo(username, callback);
@@ -137,28 +185,30 @@ var authenticate=function(username, password, callback){
 };
 
 var processLogin = function (req, res, next) {
- console.log("in processLogin");
+  console.log("in processLogin");
   var username = req.body.username;
   var password = req.body.password;
   var callback = function (fail, success) {
-    if (fail){
+    if (fail) {
       console.log(fail);
-      res.set("X-Rembook-Login","Fail");
-      res.render('login', { message: "The username or password you entered is wrong" });
-//      res.redirect("/login");
-    }else{
+      res.set("X-Rembook-Login", "Fail");
+      res.render('login', {
+        message: "The username or password you entered is wrong"
+      });
+      //      res.redirect("/login");
+    } else {
       console.log("Creds match");
-      var year = parseInt( "20"+ username.slice(4,6));
+      var year = parseInt("20" + username.slice(4, 6));
       //if (year <= batch){
-        var data = {};
-        data.rollNumber = username;
-        data.name = success.displayName.trim();
-        data.email = data.rollNumber + "@nitt.edu";
-        data.department = success.department;//etDepartment(username);
-        data.lastLogin = Date.now();
-        Users.createProfile(username, data, function (err,doc){ });
+      var data = {};
+      data.rollNumber = username;
+      data.name = success.displayName.trim();
+      data.email = data.rollNumber + "@nitt.edu";
+      data.department = success.department; //etDepartment(username);
+      data.lastLogin = Date.now();
+      Users.createProfile(username, data, function (err, doc) {});
       //}
-      res.set("X-Rembook-Login","Authenticated");
+      res.set("X-Rembook-Login", "Authenticated");
       req.session.name = success.displayName.trim();
       req.session.rollNumber = username;
       console.log("redirecting to /");
@@ -170,45 +220,77 @@ var processLogin = function (req, res, next) {
 };
 
 var initalPage = function (req, res, next) {
-  var init={};
-  init.departmentCodes = [
-    {code:"archi", name:"Architecture"},
-    {code:"civ", name:"Civil"},
-    {code:"chl", name:"Chemical"},
-    {code:"cse", name:"Computer Science"},
-    {code:"ece", name:"Electronics & Communication"},
-    {code:"eee", name:"Elemctrical & Electronics"},
-    {code:"ice", name:"Instrumentation & Control"},
-    {code:"mech", name:"Mechanical"},
-    {code:"prod", name:"Production"},
-    {code:"mme", name:"Metallurgical & Materials"},
+  var init = {};
+  init.departmentCodes = [{
+      code: "archi",
+      name: "Architecture"
+    },
+    {
+      code: "civ",
+      name: "Civil"
+    },
+    {
+      code: "chl",
+      name: "Chemical"
+    },
+    {
+      code: "cse",
+      name: "Computer Science"
+    },
+    {
+      code: "ece",
+      name: "Electronics & Communication"
+    },
+    {
+      code: "eee",
+      name: "Elemctrical & Electronics"
+    },
+    {
+      code: "ice",
+      name: "Instrumentation & Control"
+    },
+    {
+      code: "mech",
+      name: "Mechanical"
+    },
+    {
+      code: "prod",
+      name: "Production"
+    },
+    {
+      code: "mme",
+      name: "Metallurgical & Materials"
+    },
   ];
   init.rollNumber = req.session.rollNumber;
   Promise.all([
-    Questions.getAllQuestions(),
-    Users.getUserByRollNumber(init.rollNumber),
-    Notifications.getAllNotificationTo(init.rollNumber)
-  ])
-    .then(function(results){
+      Questions.getAllQuestions(),
+      Users.getUserByRollNumber(init.rollNumber),
+      Notifications.getAllNotificationTo(init.rollNumber)
+    ])
+    .then(function (results) {
       var questions = results[0];
       var user = results[1];
       var notifications = results[2];
       init.questions = questions;
-      if (user !== null){
+      if (user !== null) {
         init.name = user.name;
         init.hardCopyRequested = user.hardCopyRequested;
         init.department = user.department;
         init.notifications = notifications;
       }
-      res.render('index', { init: init, title:"Rembook" });
+      res.render('index', {
+        init: init,
+        title: "Rembook"
+      });
     })
-    .catch(function(err){
+    .catch(function (err) {
       console.log(err);
       next(err);
-  });
+    });
 };
 
-var logout = function(req, res, next){
+var logout = function (req, res, next) {
   req.session.destroy();
   res.redirect('/');
 };
@@ -217,3 +299,5 @@ module.exports.authenticate = authenticate;
 module.exports.processLogin = processLogin;
 module.exports.initalPage = initalPage;
 module.exports.logout = logout;
+module.exports.resetPassword = resetPassword;
+module.exports.forgotPassword = forgotPassword;

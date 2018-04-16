@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var fuse = require('fuse.js');
 var crypto = require('crypto');
+//var mailer = require('../mail/forgotPassword.js')
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -15,6 +16,7 @@ var userSchema = new Schema({
   hostels:            [String],
   photoName:          String,
   hardCopyRequested:  Boolean,
+  forgotPasswordKey:  String,  
   lastLogin:         { type: Date, default: null },
 });
 
@@ -49,6 +51,33 @@ var updatePassword = function (rollNumber, oldPassword, newPassword, rollNumberA
     });
   });
 };
+
+var generateResetToken = function(rollNumber, email ,callback){
+  User.findOne({rollNumber:rollNumber}).then(function (doc) {
+    if (doc.email && doc.email != email) {
+      return callback(new Error("emailMismatch"));
+    }
+    var resetToken = Math.random().toString(33).substr(2,17);
+    doc.forgotPasswordKey = crypto.createHash("md5").update(resetToken).digest("hex");
+    doc.save().then(function (doc) {
+      callback(null);
+    }).catch(function (err) {
+      callback(err);
+    });
+  });
+}
+
+var createNewPassword = function(rollNumber,newPassword,callback){
+  console.log("Hi");
+  User.findOne({rollNumber:rollNumber}).then(function (doc) {
+    doc.password = crypto.createHash("md5").update(newPassword).digest("hex");
+    doc.save().then(function (doc) {
+      callback(null);
+    }).catch(function (err) {
+      callback(err);
+    });
+  });
+}
 
 var updateProfile = function (rollNumber, data ,callback) {
   User.findOne({rollNumber:rollNumber}).then(function (doc) {
@@ -152,3 +181,5 @@ module.exports.fuzzySearch = fuzzySearch;
 module.exports.createProfile = createProfile;
 module.exports.getAllUsers = getAllUsers;
 module.exports.getAllFinalYearUsers = getAllFinalYearUsers;
+module.exports.createNewPassword = createNewPassword;
+module.exports.generateResetToken = generateResetToken;
